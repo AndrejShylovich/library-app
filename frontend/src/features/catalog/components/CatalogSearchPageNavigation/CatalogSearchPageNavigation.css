@@ -1,0 +1,66 @@
+.catalog-search-page-navigator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  gap: clamp(0.5rem, 1vw, 1rem);
+  flex-wrap: wrap; /* на маленьких экранах перенос */
+}
+
+.catalog-search-page-navigator-navigate {
+  cursor: pointer;
+  padding: clamp(0.25rem, 0.5vw, 0.4rem);
+  transition: text-decoration 0.2s ease, background-color 0.2s ease;
+}
+
+.catalog-search-page-navigator-navigate:hover {
+  text-decoration: underline;
+}
+
+.catalog-search-page-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.catalog-search-page-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(1.25rem, 2vw, 1.5rem);
+  height: clamp(1.25rem, 2vw, 1.5rem);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.catalog-search-page-number:hover {
+  background-color: rgba(54, 38, 167, 0.3);
+}
+
+.catalog-search-page-navigator-navigate.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: default;
+}
+
+.number-active {
+  background-color: rgba(54, 38, 167, 0.3);
+  border-radius: 0.25rem;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 480px) {
+  .catalog-search-page-navigator {
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .catalog-search-page-number {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 0.25rem;
+  }
+}

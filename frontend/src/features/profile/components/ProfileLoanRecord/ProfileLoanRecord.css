@@ -1,0 +1,22 @@
+.profile-record {
+  width: 100%;
+  height: auto; /* заменяет fit-content */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: clamp(0.25rem, 0.5vw, 0.5rem) 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 480px) {
+  .profile-record {
+    padding: 0.25rem 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}

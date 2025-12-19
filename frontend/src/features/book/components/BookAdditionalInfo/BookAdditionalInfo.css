@@ -1,0 +1,60 @@
+.additional-book-info {
+  width: 100%;
+  padding: 1.25rem;
+  margin-top: 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--background-secondary);
+  box-shadow: var(--box-shadow);
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-sizing: border-box;
+}
+
+.additional-book-info-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; /* Адаптивность */
+}
+
+.additional-book-info-group {
+  flex: 1; /* Гибкое распределение ширины */
+  min-width: 120px; /* Чтобы не сжималось слишком сильно */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.additional-book-info-text {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .additional-book-info {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .additional-book-info-container {
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .additional-book-info-group {
+    flex: 1 1 45%; /* 2 элемента в ряд */
+    min-width: 140px;
+  }
+
+  .additional-book-info-text {
+    font-size: 0.9rem;
+  }
+}

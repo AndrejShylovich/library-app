@@ -1,0 +1,57 @@
+.register-library-card-container {
+    width: 100%;
+    max-width: 400px; /* Ограничение ширины */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; /* Расстояние между элементами */
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+.register-library-card-text {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0; /* Используем gap вместо margin */
+}
+
+.register-library-modal-button {
+    width: 100%;
+    max-width: 200px;
+    padding: 0.75rem 1rem; /* Заменяет фиксированную высоту */
+    font-size: 1rem;
+    border: 2px solid var(--primary);
+    border-radius: 0.75rem;
+    background-color: var(--background-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.register-library-modal-button:hover {
+    color: var(--primary);
+    box-shadow: var(--box-shadow);
+    transform: translateY(-2px); /* Легкий современный эффект */
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 480px) {
+    .register-library-card-container {
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+
+    .register-library-card-text {
+        font-size: 0.95rem;
+    }
+
+    .register-library-modal-button {
+        font-size: 0.95rem;
+        max-width: 100%;
+        padding: 0.65rem 0.75rem;
+    }
+}

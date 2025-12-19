@@ -1,0 +1,65 @@
+.catalog-search {
+  width: 100%;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.catalog-search-advanced-search-section {
+  width: 100%;
+  max-width: 100%;
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+.catalog-search-item-area {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.catalog-search-pages {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+  gap: 1.5rem;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Адаптивность для мобильных экранов */
+@media (max-width: 480px) {
+  .catalog-search {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .catalog-search-advanced-search-section {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .catalog-search-item-area {
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+
+  .catalog-search-pages {
+    gap: 0.35rem;
+    padding: 0.5rem;
+  }
+}

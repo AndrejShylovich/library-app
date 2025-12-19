@@ -1,0 +1,39 @@
+.catalog-overview-section {
+  width: 100%;
+  height: auto; /* заменяем фиксированную высоту */
+  padding: clamp(0.5rem, 2vw, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-sizing: border-box;
+}
+
+.catalog-overview-section-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 clamp(0.75rem, 2vw, 1rem);
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.catalog-overview-section-more {
+  cursor: pointer;
+  transition: text-decoration 0.2s ease, color 0.2s ease;
+}
+
+.catalog-overview-section-more:hover {
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 480px) {
+  .catalog-overview-section-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
+}

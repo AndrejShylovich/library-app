@@ -1,0 +1,11 @@
+.book-overview {
+    width: 100%;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    box-sizing: border-box;
+    background-color: var(--background-secondary);
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: auto; /* заменяет fit-content для лучшей совместимости */
+}

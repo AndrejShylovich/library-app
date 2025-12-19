@@ -1,0 +1,173 @@
+
+:root{
+  --background-primary: #ffffff;   /* светлый чистый фон */
+  --background-secondary: #c0c0c0bb;
+  --text: #1c120c;
+  --text-secondary: #7a7978;
+  --primary: #0d0de8;
+  --secondary: #37d310;
+  --box-shadow: rgba(100,100,100,.1) 0px 7px 29px 0px;
+}
+
+html, body, #root {
+  width: 100%;  
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-primary);
+  color: var(--text)
+}
+
+*, *::before, *::after{
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, video, canvas, svg{
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select{
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6{
+  overflow-wrap: break-word;
+}
+
+button {
+  border-radius: 0.75rem;
+  padding: 0.6rem 1.2rem;
+}
+
+#root, #_next{
+  isolation: isolate;
+}
+
+h1{
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+h2{
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+h3{
+  font-size: 2.25rem;
+  font-weight: 700;
+}
+h4{
+  font-size: 2rem;
+  font-weight: 600;  
+}
+h5{
+  font-size: 1.5rem;
+  font-weight: 600;  
+}
+h6{
+  font-size: 1.25rem;
+  font-weight: 500;  
+}
+
+p {
+  font-size: 1rem;
+  font-weight: 400;  
+}
+
+.page {
+  min-height: 100vh; /* занимаем всю высоту окна */
+  display: flex;
+  flex-direction: column;
+}
+
+
+.page-container {
+  flex: 1; /* основной контент занимает всё доступное место */
+  width: 75%;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* контент начинается сверху */
+  align-items: flex-start;
+  background-color: var(--background-primary);
+  box-shadow: var(--box-shadow);
+}
+/*:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}*/
