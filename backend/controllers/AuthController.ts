@@ -61,7 +61,7 @@ export async function handleLogin(req: Request, res: Response) {
   }
 }
 
-export const handleCheckEmail: RequestHandler = async (req, res) => {
+export const handleCheckEmail: RequestHandler = async (req: Request, res: Response) => {
   const { email } = req.body;
 
   if (!email) {
