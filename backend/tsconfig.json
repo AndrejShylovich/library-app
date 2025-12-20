@@ -6,6 +6,17 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "strict": true,
+<<<<<<< HEAD
     "skipLibCheck": true
   }
 }
+=======
+    "skipLibCheck": true,
+    "moduleResolution": "node",    
+    "resolveJsonModule": true,     
+    "types": ["node", "express", "cors"]  
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+>>>>>>> 5b277b7 (changing directory)
