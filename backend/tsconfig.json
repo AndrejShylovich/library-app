@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "moduleResolution": "node",    
     "resolveJsonModule": true,     
-    "types": ["node", "express", "cors"]  
+    "types": ["node"]  
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
