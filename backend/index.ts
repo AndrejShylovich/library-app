@@ -25,6 +25,10 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ message: "Сервер успешно запустился" });
 });
 
+app.get("/", (req: Request, res: Response) => {
+  res.send("API is running! :)");
+});
+
 // --- Start Server ---
 async function startServer() {
   try {
