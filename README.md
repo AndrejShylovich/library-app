@@ -111,7 +111,12 @@ Fullstack веб-приложение библиотеки с авторизац
 ## 🛠 Установка и запуск
 
 ### Backend
-```bash
 cd backend
 npm install
 npm run dev
+
+### Frontend
+cd frontend
+npm install
+npm run dev
+npm run test
