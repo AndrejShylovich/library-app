@@ -12,6 +12,7 @@ import AuthentificationSlice, {
   resetRegisterSuccess,
   resetUser,
 } from './AuthentificationSlice';
+const apiUrl = import.meta.env.VITE_API_URL_PRODUCTION
 
 import type {
   User,
@@ -131,7 +132,7 @@ describe('AuthentificationSlice', () => {
       expect(state.error).toBe(false);
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:8000/auth/login',
+        `${apiUrl}/auth/login`,
         { email: 'test@example.com', password: 'password' }
       );
     });
@@ -186,7 +187,7 @@ describe('AuthentificationSlice', () => {
 
       expect(store.getState().auth.profileUser).toEqual(mockUser);
 
-      expect(mockedAxios.get).toHaveBeenCalledWith('http://localhost:8000/users/user123');
+      expect(mockedAxios.get).toHaveBeenCalledWith(`${apiUrl}/users/user123`);
     });
 
     it('failure', async () => {
@@ -231,7 +232,7 @@ describe('AuthentificationSlice', () => {
       expect(store.getState().auth.libraryCard).toBe('card123');
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:8000/card/',
+        `${apiUrl}/card/`,
         { user: 'user123' }
       );
     });

@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { ProfileLoanRecord } from "../ProfileLoanRecord/ProfileLoanRecord";
 import axios from "axios";
 import type { LoanRecord } from "../../../../models/LoanRecord";
+const apiUrl = import.meta.env.VITE_API_URL_PRODUCTION
 
 interface LoanQueryResponse {
   records: LoanRecord[];
@@ -11,7 +12,6 @@ interface LoanQueryResponse {
 
 export const ProfileLoanHistory: React.FC = () => {
   const user = useSelector((state: RootState) => state.authentification.profileUser);
-
   const [records, setRecords] = useState<LoanRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,7 @@ export const ProfileLoanHistory: React.FC = () => {
       setError(null);
 
       const res = await axios.post<LoanQueryResponse>(
-        "http://localhost:8000/loan/query",
+      `${apiUrl}/loan/query`,
         { property: "patron", value: userId },
         { signal: controller.signal }
       );

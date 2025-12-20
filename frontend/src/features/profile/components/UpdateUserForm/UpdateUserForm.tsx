@@ -15,6 +15,7 @@ import {
 import type { User } from "../../../../models/User";
 import axios from "axios";
 import "./UpdateUserForm.css";
+const apiUrl = import.meta.env.VITE_API_URL_PRODUCTION
 
 // -------------------- InputField --------------------
 const InputField: React.FC<{
@@ -66,7 +67,7 @@ export const UpdateUserForm: React.FC = () => {
       if (!email || email === profileUser?.email) return true; // если email пустой или не изменился
       try {
         setCheckingEmail(true);
-        const res = await axios.post("http://localhost:8000/auth/check-email", {
+        const res = await axios.post(`${apiUrl}/auth/check-email`, {
           email,
         });
         setCheckingEmail(false);

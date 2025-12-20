@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL_PRODUCTION
 
 import BookSlice, {
   fetchAllBooks,
@@ -167,7 +168,7 @@ describe('BookSlice', () => {
       expect(state.books).toEqual([mockBook]);
       expect(state.loading).toBe(false);
       expect(state.error).toBe(false);
-      expect(mockedAxios.get).toHaveBeenCalledWith('http://localhost:8000/book/');
+      expect(mockedAxios.get).toHaveBeenCalledWith(`${apiUrl}/book/`);
     });
 
     it('failure', async () => {
@@ -230,9 +231,9 @@ describe('BookSlice', () => {
       await dispatch(checkoutBook({ book: mockBook, libraryCard: 'card123', employee: mockEmployee }));
       const state = store.getState().book;
 
-      expect(mockedAxios.get).toHaveBeenCalledWith('http://localhost:8000/card/card123');
+      expect(mockedAxios.get).toHaveBeenCalledWith(`${apiUrl}/card/card123`);
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        'http://localhost:8000/loan',
+        `${apiUrl}/loan`,
         expect.objectContaining({
           status: 'LOANED',
           patron: 'patron123',
@@ -258,7 +259,7 @@ describe('BookSlice', () => {
       mockedAxios.put.mockResolvedValueOnce({ data: { record: updatedLoanRecord } });
       await dispatch(checkinBook({ book: bookWithRecord, employee: mockEmployee }));
       expect(mockedAxios.put).toHaveBeenCalledWith(
-        'http://localhost:8000/loan',
+        `${apiUrl}/loan`,
         expect.objectContaining({
           status: 'AVAILABLE',
           employeeIn: 'emp123',

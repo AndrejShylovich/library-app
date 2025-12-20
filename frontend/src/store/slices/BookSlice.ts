@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/tool
 import type { Book, CheckinBookPayload, CheckoutBookPayload } from "../../models/Book";
 import axios from "axios";
 import type { PageInfo } from "../../models/Page";
+const apiUrl = import.meta.env.VITE_API_URL_PRODUCTION
 
 interface BookSliceState {
   loading: boolean;
@@ -25,7 +26,7 @@ export const fetchAllBooks = createAsyncThunk<Book[]>(
   'book/all',
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get('http://localhost:8000/book/');
+      const res = await axios.get(`${apiUrl}/book/`);
       return res.data.books;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
@@ -56,7 +57,7 @@ export const queryBooks = createAsyncThunk<{
   'book/query',
   async (query, thunkAPI) => {
     try {
-      const res = await axios.get(`http://localhost:8000/book/query${query}`);
+      const res = await axios.get(`${apiUrl}/book/query${query}`);
       return res.data.page;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
@@ -71,7 +72,7 @@ export const checkoutBook = createAsyncThunk(
       const returnDate = new Date();
       returnDate.setDate(returnDate.getDate() + 14);
 
-      const patronRes = await axios.get(`http://localhost:8000/card/${payload.libraryCard}`);
+      const patronRes = await axios.get(`${apiUrl}/card/${payload.libraryCard}`);
       const patronId = patronRes.data.libraryCard.user._id;
 
       const record = {
@@ -83,7 +84,7 @@ export const checkoutBook = createAsyncThunk(
         item: payload.book._id
       };
 
-      const loanRes = await axios.post('http://localhost:8000/loan', record);
+      const loanRes = await axios.post(`${apiUrl}/loan`, record);
       return loanRes.data.record;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
@@ -102,7 +103,7 @@ export const checkinBook = createAsyncThunk(
         returnedDate: new Date(),
         employeeIn: payload.employee._id
       };
-      const res = await axios.put('http://localhost:8000/loan', updatedRecord);
+      const res = await axios.put(`${apiUrl}/loan`, updatedRecord);
       return res.data.record;
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
@@ -114,7 +115,7 @@ export const loadBookByBarcode = createAsyncThunk<Book, string>(
   'book/id',
   async (barcode, thunkAPI) => {
     try {
-      const res = await axios.get(`http://localhost:8000/book/query?barcode=${barcode}`);
+      const res = await axios.get(`${apiUrl}/book/query?barcode=${barcode}`);
       const book = res.data.page.items[0];
       if (!book || book.barcode !== barcode) throw new Error('Book not found');
       return book;
