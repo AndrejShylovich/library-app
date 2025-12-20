@@ -6,8 +6,11 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "strict": true,
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+    "moduleResolution": "node",    
+    "resolveJsonModule": true,     
+    "types": ["node", "express", "cors"]  
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
-
-
