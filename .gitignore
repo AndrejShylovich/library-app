@@ -25,6 +25,7 @@ build/
 out/
 .next/
 .nuxt/
+.history/
 
 # Environment variables
 .env
