@@ -19,8 +19,26 @@ app.use(
   }),
 );
 
-app.get("/health", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Server started successfully" });
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({ message: "Server is running!" });
+});
+
+app.get("/health", async (req: Request, res: Response) => {
+  const mongoState = mongoose.connection.readyState; 
+
+  if (mongoState === 1) {
+    res.status(200).json({
+      status: "ok",
+      uptime: process.uptime(),
+      mongo: "connected",
+    });
+  } else {
+    res.status(503).json({
+      status: "error",
+      message: "MongoDB not connected",
+      mongoState,
+    });
+  }
 });
 
 async function startServer() {
