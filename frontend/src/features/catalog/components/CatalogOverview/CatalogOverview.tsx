@@ -1,22 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import "./CatalogOverview.css";
-import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
-import { useEffect, useMemo } from "react";
-import { fetchAllBooks } from "../../../../store/slices/BookSlice";
-import { generateRandomGenres, getRandomBooksByGenre } from "../../utils/CatalogUtils";
+import React from "react";
 import { CatalogOverviewSection } from "../CatalogOverviewSection/CatalogOverviewSection";
+import "./CatalogOverview.css";
+import { useCatalogOverview } from "./useCatalogOverview";
 
 export const CatalogOverview: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { books, loading } = useSelector((state: RootState) => state.book);
-
-  // Generate random genres once when the component mounts
-  const genres = useMemo(() => generateRandomGenres(), []);
-
-  // Fetch all books on mount
-  useEffect(() => {
-    dispatch(fetchAllBooks());
-  }, [dispatch]);
+  const { loading, books, genres, booksByGenre } = useCatalogOverview();
 
   if (loading || books.length === 0) return null;
 
@@ -28,7 +16,7 @@ export const CatalogOverview: React.FC = () => {
       {genres.map((genre) => (
         <CatalogOverviewSection
           key={genre}
-          books={getRandomBooksByGenre(genre, books)}
+          books={booksByGenre[genre]}
           label={genre}
         />
       ))}

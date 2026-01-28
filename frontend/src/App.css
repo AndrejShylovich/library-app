@@ -15,7 +15,7 @@
 
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
-  transform: scale(1.05); /* лёгкий масштаб при наведении */
+  transform: scale(1.05); 
 }
 
 .logo.react:hover {

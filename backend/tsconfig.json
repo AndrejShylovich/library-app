@@ -6,11 +6,6 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "strict": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",    
-    "resolveJsonModule": true,     
-    "types": ["node"]  
-  },
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+    "skipLibCheck": true
+  }
 }

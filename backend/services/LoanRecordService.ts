@@ -11,7 +11,6 @@ export async function generateRecord(
 
     const book = await findBookById(record.item);
 
-    // добавляем новую запись в начало массива
     book.records.unshift(createdRecord as any);
     await modifyBook(book);
 

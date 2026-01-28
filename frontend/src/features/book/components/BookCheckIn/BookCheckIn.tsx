@@ -1,56 +1,37 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
-import { checkinBook, setCurrentBook } from "../../../../store/slices/BookSlice";
-import { setDisplayLoan } from "../../../../store/slices/ModalSlice";
-
+import type React from "react";
+import { useBookCheckin } from "./useBookCheckin";
 import "./BookCheckIn.css";
+import { Input } from "../../../../shared/ui/Input/Input";
+import { Button } from "../../../../shared/ui/Button/Button";
 
 export const BookCheckin: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+  const { user, book, handleCheckin } = useBookCheckin();
 
-    const user = useSelector((state: RootState) => state.authentification.loggedInUser);
-    const book = useSelector((state: RootState) => state.book.currentBook);
+  if (!book || !user) return <div className="book-checkin" />;
 
-    const handleCheckin = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+  return (
+    <div className="book-checkin">
+      <form className="book-checkin-form" onSubmit={(e) => e.preventDefault()}>
+        <h3>Check In Book: {book.title}</h3>
 
-        if (book && user) {
-            dispatch(checkinBook({ book, employee: user }));
-        }
+        <label className="book-checkin-label">
+          Employee ID:
+          <Input
+            className="book-checkin-input"
+            value={user._id}
+            disabled
+            aria-label="Employee ID"
+          />
+        </label>
 
-        // закрываем модалку и очищаем выбранную книгу
-        dispatch(setCurrentBook(undefined));
-        dispatch(setDisplayLoan(false));
-    };
-
-    // Если нет книги или юзера — ничего не рендерим
-    if (!book || !user) {
-        return <div className="book-checkin" />;
-    }
-
-    return (
-        <div className="book-checkin">
-            <form className="book-checkin-form">
-                <h3>Check In Book: {book.title}</h3>
-
-                <label className="book-checkin-label">
-                    Employee ID:
-                    <input
-                        className="book-checkin-input"
-                        value={user._id}
-                        disabled
-                        aria-label="Employee ID"
-                    />
-                </label>
-
-                <button
-                    className="book-checkin-button"
-                    onClick={handleCheckin}
-                    type="submit"
-                >
-                    Check In Book
-                </button>
-            </form>
-        </div>
-    );
+        <Button
+          className="book-checkin-button"
+          onClick={handleCheckin}
+          type="button"
+        >
+          Check In Book
+        </Button>
+      </form>
+    </div>
+  );
 };

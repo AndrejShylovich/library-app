@@ -8,12 +8,10 @@ import { ILibraryCard } from "../models/LibraryCard";
 import { ILoanRecord } from "../models/LoanRecord";
 import { ILoanRecordModel } from "../daos/LoanRecordDao";
 
-// Регулярные выражения
 const emailRegex = /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/;
 const objectIdRegex = /^[0-9a-fA-F]{24}$/;
 const barcodeRegex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/;
 
-// Middleware валидации
 export function ValidateSchema(schema: ObjectSchema, property: keyof Request) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -26,7 +24,6 @@ export function ValidateSchema(schema: ObjectSchema, property: keyof Request) {
   };
 }
 
-// Общие схемы полей
 const userBase = {
   type: Joi.string().valid("ADMIN", "EMPLOYEE", "PATRON").required(),
   firstName: Joi.string().required(),
@@ -43,7 +40,6 @@ const employeeIdField = { employeeOut: Joi.string().regex(objectIdRegex).require
 const patronIdField = { patron: Joi.string().regex(objectIdRegex).required() };
 const barcodeField = { barcode: Joi.string().regex(barcodeRegex).required() };
 
-// Схемы
 export const Schemas = {
   user: {
     create: Joi.object<IUser>(userBase),

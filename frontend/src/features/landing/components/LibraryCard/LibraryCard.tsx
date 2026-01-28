@@ -1,16 +1,10 @@
-// LibraryCard.tsx
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../../../store/ReduxStore";
-import { setDisplayLibraryCard } from "../../../../store/slices/ModalSlice";
+import React from "react";
 import libraryCard from "../../../../assets/librarycard.png";
 import "./LibraryCard.css";
+import { useLibraryCard } from "./useLibraryCard";
 
 export const LibraryCard: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const handleDisplayModal = () => {
-    dispatch(setDisplayLibraryCard(true));
-  };
+  const { showModal } = useLibraryCard();
 
   return (
     <section className="library-card">
@@ -18,7 +12,7 @@ export const LibraryCard: React.FC = () => {
       <img src={libraryCard} alt="Library Card" className="library-card-img" />
       <p>
         Learn how to get your library card{" "}
-        <span className="get-library-card-link" onClick={handleDisplayModal}>
+        <span className="get-library-card-link" onClick={showModal}>
           here
         </span>
       </p>

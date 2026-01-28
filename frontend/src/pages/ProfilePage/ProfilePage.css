@@ -1,14 +1,14 @@
 .profile-page-cols {
     width: 100%;
     display: flex;
-    flex-wrap: wrap; /* позволяет колонкам переноситься на маленьких экранах */
+    flex-wrap: wrap; 
     gap: clamp(1rem, 2vw, 2rem);
     box-sizing: border-box;
 }
 
 .profile-page-left-column {
-    flex: 1 1 35%; /* гибкая ширина, минимум 35% */
-    min-width: 280px; /* минимальная ширина для мобильных */
+    flex: 1 1 35%; 
+    min-width: 280px; 
     background-color: var(--background-secondary);
     border-radius: 0.75rem;
     box-shadow: var(--box-shadow);
@@ -20,9 +20,9 @@
 }
 
 .profile-page-right-column {
-    flex: 1 1 60%; /* гибкая ширина, минимум 60% */
+    flex: 1 1 60%;
     min-width: 300px;
-    max-height: 80vh; /* адаптивный скролл при необходимости */
+    max-height: 80vh; 
     overflow-y: auto;
     background-color: var(--background-secondary);
     border-radius: 0.75rem;
@@ -31,7 +31,7 @@
     box-sizing: border-box;
 }
 
-/* Адаптивность для экранов <= 768px */
+
 @media (max-width: 768px) {
     .profile-page-cols {
         flex-direction: column;

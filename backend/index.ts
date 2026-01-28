@@ -5,52 +5,54 @@ import { config } from "./config";
 import { registerRoutes } from "./routes";
 
 const PORT = config.server.port;
-
 const app: Express = express();
 
-// --- Middleware ---
 app.use(express.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? `${process.env.FRONTEND_URL}`
+        : [`${process.env.FRONTEND_LOCAL_REACT_APP_URL}`, `${process.env.FRONTEND_LOCAL_VITE_URL}`],
+    credentials: true,
+  }),
+);
 
-
-// --- Health check ---
 app.get("/health", (req: Request, res: Response) => {
-  res.status(200).json({ message: "Сервер успешно запустился" });
+  res.status(200).json({ message: "Server started successfully" });
 });
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("API is running! :)");
-});
-
-// --- Start Server ---
 async function startServer() {
   try {
-    // Подключение к MongoDB
     await mongoose.connect(config.mongo.url, {
       w: "majority",
       retryWrites: true,
       authMechanism: "DEFAULT",
     });
-    console.log("✅ Подключение к базе данных прошло успешно");
+    console.log("✅ Database connection successful");
 
-    // Регистрация маршрутов
     registerRoutes(app);
 
-    // Запуск сервера
     app.listen(PORT, () => {
-      console.log(`🚀 Сервер запущен на порту ${PORT}`);
+      console.log(`🚀 Server running on port ${PORT}`);
     });
 
-    // Глобальная обработка ошибок
-    app.use((err: any, req: Request, res: Response, next: Function) => {
-      console.error("Произошла ошибка:", err);
-      res.status(500).json({ message: "Внутренняя ошибка сервера", error: err.message });
-    });
-
+    app.use(
+      (err: any, req: Request, res: Response, next: Function) => {
+        console.error("Error occurred:", err);
+        res.status(500).json({
+          message: "Internal server error",
+          error: err.message,
+        });
+      },
+    );
   } catch (error) {
-    console.error("❌ Не удалось подключиться к серверу или базе данных", error);
-    process.exit(1); // Завершаем процесс, если не удалось подключиться к БД
+    console.error(
+      "❌ Failed to connect to the server or database",
+      error,
+    );
+    process.exit(1);
   }
 }
 

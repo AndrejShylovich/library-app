@@ -1,35 +1,20 @@
-import { useSelector } from "react-redux";
+import React from "react";
 import "./CatalogSearchPageNavigation.css";
-import type { RootState } from "../../../../store/ReduxStore";
-import { useLocation, useNavigate } from "react-router-dom";
-import { calculatePaging } from "../../utils/CatalogUtils";
+import { useCatalogSearchPagination } from "./useCatalogSearchPagination";
 
 export const CatalogSearchPageNavigation: React.FC = () => {
-  const { pagingInformation } = useSelector((state: RootState) => state.book);
-  const navigate = useNavigate();
-  const { pathname, search } = useLocation();
+  const pagination = useCatalogSearchPagination();
 
-  if (!pagingInformation || pagingInformation.totalPages === 0) return null;
+  if (!pagination) return null;
 
-  const { currentPage, totalPages } = pagingInformation;
-
-  const updatePageInQuery = (page: number) => {
-    const params = new URLSearchParams(search);
-    params.set("page", page.toString());
-    navigate(`${pathname}?${params.toString()}`);
-  };
-
-  const navigatePrevious = () => {
-    if (currentPage > 1) updatePageInQuery(currentPage - 1);
-  };
-
-  const navigateNext = () => {
-    if (currentPage < totalPages) updatePageInQuery(currentPage + 1);
-  };
-
-  const navigateToNumber = (page: number) => updatePageInQuery(page);
-
-  const pageNumbers = calculatePaging(pagingInformation);
+  const {
+    currentPage,
+    totalPages,
+    pageNumbers,
+    navigatePrevious,
+    navigateNext,
+    navigateToNumber,
+  } = pagination;
 
   return (
     <div className="catalog-search-page-navigator">
@@ -51,9 +36,7 @@ export const CatalogSearchPageNavigation: React.FC = () => {
             <p
               key={num}
               id={num}
-              className={`catalog-search-page-number ${
-                isActive ? "number-active" : ""
-              }`}
+              className={`catalog-search-page-number ${isActive ? "number-active" : ""}`}
               onClick={!isActive ? () => navigateToNumber(pageNum) : undefined}
             >
               {num}

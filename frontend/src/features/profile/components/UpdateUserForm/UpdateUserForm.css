@@ -1,6 +1,6 @@
 .update-user-form {
   width: 100%;
-  max-width: 500px; /* ограничение ширины для удобства */
+  max-width: 500px; 
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -16,6 +16,43 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 2rem;
+}
+
+.profile-button {
+  width: 100%;
+  max-width: 80%;
+  padding: 0.75rem;
+  font-size: clamp(1rem, 1.25vw, 1.25rem);
+  border-radius: 0.75rem;
+  border: none;
+  background-color: var(--secondary);
+  color: var(--text-on-primary);
+  align-self: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-button:hover {
+  background-color: var(--primary);
+  color: var(--text-secondary);
+}
+
+
+@media (max-width: 480px) {
+  .update-user-form {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .update-user-input {
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    padding: 0.5rem;
+  }
+
+  .profile-button {
+    padding: 0.65rem;
+    font-size: 1rem;
+  }
 }
 
 .update-user-input {
@@ -39,41 +76,4 @@
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
-}
-
-.profile-button {
-  width: 100%;
-  max-width: 80%;
-  padding: 0.75rem;
-  font-size: clamp(1rem, 1.25vw, 1.25rem);
-  border-radius: 0.75rem;
-  border: none;
-  background-color: var(--secondary);
-  color: var(--text-on-primary);
-  align-self: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.profile-button:hover {
-  background-color: var(--primary);
-  color: var(--text-secondary);
-}
-
-/* Адаптивность для маленьких экранов */
-@media (max-width: 480px) {
-  .update-user-form {
-    padding: 0.75rem;
-    gap: 0.75rem;
-  }
-
-  .update-user-input {
-    font-size: clamp(0.9rem, 1.2vw, 1rem);
-    padding: 0.5rem;
-  }
-
-  .profile-button {
-    padding: 0.65rem;
-    font-size: 1rem;
-  }
 }

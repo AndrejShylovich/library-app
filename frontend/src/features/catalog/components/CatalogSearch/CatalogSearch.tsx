@@ -1,22 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { queryBooks } from "../../../../store/slices/BookSlice";
+import React from "react";
 import { BookCard } from "../../../book/components";
-import "./CatalogSearch.css";
 import { CatalogAdvancedSearch } from "../CatalogAdvancedSearch/CatalogAdvancedSearch";
 import { CatalogSearchPageNavigation } from "../CatalogSearchPageNavigation/CatalogSearchPageNavigation";
+import "./CatalogSearch.css";
+import { useCatalogSearch } from "./useCatalogSearch";
 
 export const CatalogSearch: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const location = useLocation();
-
-  const { books, loading, pagingInformation } = useSelector((state: RootState) => state.book);
-
-  useEffect(() => {
-    dispatch(queryBooks(location.search));
-  }, [location.search, dispatch]);
+  const { books, loading, pagingInformation } = useCatalogSearch();
 
   return (
     <div className="catalog-search">
@@ -27,7 +17,8 @@ export const CatalogSearch: React.FC = () => {
       {!loading && (
         <>
           <h2>
-            Displaying {pagingInformation?.pageCount || 0} books out of {pagingInformation?.totalCount || 0}
+            Displaying {pagingInformation?.pageCount || 0} books out of{" "}
+            {pagingInformation?.totalCount || 0}
           </h2>
 
           <div className="catalog-search-item-area">

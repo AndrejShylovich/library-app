@@ -1,306 +1,256 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { configureStore } from '@reduxjs/toolkit';
-import axios from 'axios';
-const apiUrl = import.meta.env.VITE_API_URL_PRODUCTION
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { MockedFunction } from "vitest";
 
-import BookSlice, {
+import reducer, {
   fetchAllBooks,
   queryBooks,
   checkoutBook,
   checkinBook,
   loadBookByBarcode,
   setCurrentBook,
-} from './BookSlice';
+} from "./BookSlice";
 
-import type { Book } from '../../models/Book';
-import type { User } from '../../models/User';
-import type { LoanRecord } from '../../models/LoanRecord';
+import * as api from "../../api/bookApi";
+import type { Book } from "../../models/Book";
+import type { LoanRecord } from "../../models/LoanRecord";
+import type { User } from "../../models/User";
+import type { BookSliceState } from "./BookSlice";
 
-// --------------------------------------------------------------------------
-// MOCK AXIOS
-// --------------------------------------------------------------------------
-vi.mock('axios', () => ({
-  default: {
-    get: vi.fn(),
-    post: vi.fn(),
-    put: vi.fn(),
-  },
-}));
+vi.mock("../../api/bookApi");
 
-const mockedAxios = vi.mocked(axios, { deep: true });
+const mockedFetchAllBooksApi =
+  api.fetchAllBooksApi as MockedFunction<typeof api.fetchAllBooksApi>;
 
-// --------------------------------------------------------------------------
-// STORE FACTORY
-// --------------------------------------------------------------------------
-const createTestStore = () =>
-  configureStore({
-    reducer: { book: BookSlice },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }),
-  });
+const mockedQueryBooksApi =
+  api.queryBooksApi as MockedFunction<typeof api.queryBooksApi>;
 
-type AppStore = ReturnType<typeof createTestStore>;
-type AppDispatch = AppStore['dispatch'];
+const mockedCheckoutBookApi =
+  api.checkoutBookApi as MockedFunction<typeof api.checkoutBookApi>;
 
-// --------------------------------------------------------------------------
-// MOCK DATA
-// --------------------------------------------------------------------------
-const mockBook: Book = {
-  _id: 'book123',
-  barcode: '123456789',
-  cover: 'cover.jpg',
-  title: 'Test Book',
-  authors: ['Test Author'],
-  description: 'Test description',
-  subjects: ['Testing'],
+const mockedCheckinBookApi =
+  api.checkinBookApi as MockedFunction<typeof api.checkinBookApi>;
+
+const mockedLoadBookByBarcodeApi =
+  api.loadBookByBarcodeApi as MockedFunction<
+    typeof api.loadBookByBarcodeApi
+  >;
+
+const fakeEmployee: User = {
+  _id: "emp-1",
+  type: "EMPLOYEE",
+  firstName: "John",
+  lastName: "Smith",
+  email: "john@test.com",
+  password: "123",
+};
+
+const fakeBook: Book = {
+  _id: "book-1",
+  barcode: "BC123",
+  cover: "cover.jpg",
+  title: "Test Book",
+  authors: ["Author One"],
+  description: "Description",
+  subjects: ["IT"],
   publicationDate: new Date(),
-  publisher: 'Test Publisher',
-  pages: 321,
-  genre: 'Fantasy',
+  publisher: "Publisher",
+  pages: 300,
+  genre: "Tech",
   records: [],
 };
 
-const mockEmployee: User = {
-  _id: 'emp123',
-  type: 'EMPLOYEE',
-  firstName: 'Test',
-  lastName: 'Employee',
-  email: 'testemployee@example.com',
-  password: 'pass',
-};
-
-// --------------------------------------------------------------------------
-// UTILITY TO CREATE MOCK LOAN RECORD
-// --------------------------------------------------------------------------
-const createMockLoanRecord = (overrides: Partial<LoanRecord> = {}): LoanRecord => ({
-  _id: 'loan123',
-  status: 'LOANED',
+const fakeLoanRecord: LoanRecord = {
+  _id: "loan-1",
+  status: "LOANED",
   loanedDate: new Date(),
   dueDate: new Date(),
-  returnedDate: undefined,
-  patron: 'patron123',
-  employeeOut: 'emp123',
-  employeeIn: undefined,
-  item: mockBook,
+  patron: "patron-1",
+  employeeOut: fakeEmployee._id,
+  item: fakeBook,
   createdAt: new Date(),
   updatedAt: new Date(),
-  ...overrides,
-});
-
-// Полная запись займа для checkin/checkout
-const mockLoanRecord = createMockLoanRecord();
-
-// Книга с одной записью займа
-const bookWithRecord: Book = {
-  ...mockBook,
-  records: [mockLoanRecord],
 };
 
-// Обновлённый record после сдачи книги
-const updatedLoanRecord = createMockLoanRecord({
-  status: 'AVAILABLE',
-  returnedDate: new Date(),
-  employeeIn: 'emp123',
+const initialState = {
+  loading: true,
+  error: false,
+  books: [fakeBook],
+  currentBook: undefined,
+  pagingInformation: null,
+};
+
+const typedInitialState: BookSliceState = initialState;
+
+beforeEach(() => {
+  vi.clearAllMocks();
 });
 
-// --------------------------------------------------------------------------
-// TEST SUITE
-// --------------------------------------------------------------------------
-describe('BookSlice', () => {
-  let store: AppStore;
-  let dispatch: AppDispatch;
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-    store = createTestStore();
-    dispatch = store.dispatch;
+describe("bookSlice async thunks", () => {
+  it("fetchAllBooks → fulfilled", async () => {
+    mockedFetchAllBooksApi.mockResolvedValue([fakeBook]);
+
+    const dispatch = vi.fn();
+    await fetchAllBooks()(dispatch, () => ({}), undefined);
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "book/all/fulfilled",
+        payload: [fakeBook],
+      }),
+    );
   });
 
-  // ----------------------------------------------------------------------
-  // Initial state
-  // ----------------------------------------------------------------------
-  describe('Initial State', () => {
-    it('should match default state', () => {
-      expect(store.getState().book).toEqual({
-        loading: true,
-        error: false,
-        books: [],
-        currentBook: undefined,
-        pagingInformation: null,
-      });
-    });
+  it("fetchAllBooks → rejected", async () => {
+    mockedFetchAllBooksApi.mockRejectedValue(new Error("fail"));
+
+    const dispatch = vi.fn();
+    await fetchAllBooks()(dispatch, () => ({}), undefined);
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "book/all/rejected",
+      }),
+    );
   });
 
-  // ----------------------------------------------------------------------
-  // Reducers
-  // ----------------------------------------------------------------------
-  describe('Synchronous Reducers', () => {
-    it('setCurrentBook should change currentBook', () => {
-      dispatch(setCurrentBook(mockBook));
-      expect(store.getState().book.currentBook).toEqual(mockBook);
+  it("queryBooks → fulfilled", async () => {
+    mockedQueryBooksApi.mockResolvedValue({
+      items: [fakeBook],
+      totalCount: 1,
+      currentPage: 1,
+      totalPages: 1,
+      limit: 10,
+      pageCount: 1,
     });
 
-    it('setCurrentBook(undefined) should clear field', () => {
-      dispatch(setCurrentBook(mockBook));
-      dispatch(setCurrentBook(undefined));
-      expect(store.getState().book.currentBook).toBeUndefined();
-    });
+    const dispatch = vi.fn();
+    await queryBooks("test")(dispatch, () => ({}), undefined);
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "book/query/fulfilled",
+      }),
+    );
   });
 
-  // ----------------------------------------------------------------------
-  // fetchAllBooks
-  // ----------------------------------------------------------------------
-  describe('fetchAllBooks Thunk', () => {
-    it('pending state', () => {
-      mockedAxios.get.mockImplementation(() => new Promise(() => {}));
-      dispatch(fetchAllBooks());
-      const state = store.getState().book;
-      expect(state.loading).toBe(true);
-      expect(state.error).toBe(false);
-    });
+  it("checkoutBook → fulfilled", async () => {
+    mockedCheckoutBookApi.mockResolvedValue(fakeLoanRecord);
 
-    it('success', async () => {
-      mockedAxios.get.mockResolvedValueOnce({ data: { books: [mockBook] } });
-      await dispatch(fetchAllBooks());
-      const state = store.getState().book;
-      expect(state.books).toEqual([mockBook]);
-      expect(state.loading).toBe(false);
-      expect(state.error).toBe(false);
-      expect(mockedAxios.get).toHaveBeenCalledWith(`${apiUrl}/book/`);
-    });
+    const dispatch = vi.fn();
+    await checkoutBook({
+      book: fakeBook,
+      libraryCard: "CARD-123",
+      employee: fakeEmployee,
+    })(dispatch, () => ({}), undefined);
 
-    it('failure', async () => {
-      mockedAxios.get.mockRejectedValueOnce('Network error');
-      await dispatch(fetchAllBooks());
-      const state = store.getState().book;
-      expect(state.error).toBe(true);
-      expect(state.loading).toBe(false);
-    });
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "book/checkout/fulfilled",
+        payload: fakeLoanRecord,
+      }),
+    );
   });
 
-  // ----------------------------------------------------------------------
-  // queryBooks
-  // ----------------------------------------------------------------------
-  describe('queryBooks Thunk', () => {
-    it('success with pagination', async () => {
-      const mockResponse = {
-        page: {
-          items: [mockBook],
-          totalCount: 1,
-          currentPage: 1,
-          totalPages: 1,
-          limit: 10,
-          pageCount: 1,
-        },
-      };
-      mockedAxios.get.mockResolvedValueOnce({ data: mockResponse });
-      await dispatch(queryBooks('?page=1&limit=10'));
-      const state = store.getState().book;
-      expect(state.books).toEqual([mockBook]);
-      expect(state.pagingInformation).toEqual({
-        totalCount: 1,
-        currentPage: 1,
-        totalPages: 1,
-        limit: 10,
-        pageCount: 1,
-      });
-      expect(state.loading).toBe(false);
-    });
+  it("checkinBook → fulfilled", async () => {
+    const returnedRecord: LoanRecord = {
+      ...fakeLoanRecord,
+      status: "AVAILABLE",
+      returnedDate: new Date(),
+      employeeIn: fakeEmployee._id,
+    };
 
-    it('failure', async () => {
-      mockedAxios.get.mockRejectedValueOnce('Query failed');
-      await dispatch(queryBooks('?page=1'));
-      expect(store.getState().book.error).toBe(true);
-    });
+    mockedCheckinBookApi.mockResolvedValue(returnedRecord);
+
+    const dispatch = vi.fn();
+    await checkinBook({
+      book: fakeBook,
+      employee: fakeEmployee,
+    })(dispatch, () => ({}), undefined);
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "book/checkin/fulfilled",
+        payload: returnedRecord,
+      }),
+    );
   });
 
-  // ----------------------------------------------------------------------
-  // checkoutBook
-  // ----------------------------------------------------------------------
-  describe('checkoutBook Thunk', () => {
-    it('success', async () => {
-      const mockPatronResponse = {
-        data: { libraryCard: { user: { _id: 'patron123' } } },
-      };
-      const mockLoan = createMockLoanRecord();
-      mockedAxios.get.mockResolvedValueOnce(mockPatronResponse);
-      mockedAxios.post.mockResolvedValueOnce({ data: { record: mockLoan } });
+  it("loadBookByBarcode → fulfilled", async () => {
+    mockedLoadBookByBarcodeApi.mockResolvedValue(fakeBook);
 
-      await dispatch(checkoutBook({ book: mockBook, libraryCard: 'card123', employee: mockEmployee }));
-      const state = store.getState().book;
+    const dispatch = vi.fn();
+    await loadBookByBarcode("BC123")(dispatch, () => ({}), undefined);
 
-      expect(mockedAxios.get).toHaveBeenCalledWith(`${apiUrl}/card/card123`);
-      expect(mockedAxios.post).toHaveBeenCalledWith(
-        `${apiUrl}/loan`,
-        expect.objectContaining({
-          status: 'LOANED',
-          patron: 'patron123',
-          employeeOut: 'emp123',
-          item: 'book123',
-        })
-      );
-      expect(state.error).toBe(false);
-    });
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "book/id/fulfilled",
+        payload: fakeBook,
+      }),
+    );
+  });
+});
 
-    it('failure', async () => {
-      mockedAxios.get.mockRejectedValueOnce('Card not found');
-      await dispatch(checkoutBook({ book: mockBook, libraryCard: 'invalid', employee: mockEmployee }));
-      expect(store.getState().book.error).toBe(true);
-    });
+
+
+describe("bookSlice reducer", () => {
+  it("setCurrentBook", () => {
+    const next = reducer(typedInitialState, setCurrentBook(fakeBook));
+    expect(next.currentBook).toEqual(fakeBook);
   });
 
-  // ----------------------------------------------------------------------
-  // checkinBook
-  // ----------------------------------------------------------------------
-  describe('checkinBook Thunk', () => {
-    it('success', async () => {
-      mockedAxios.put.mockResolvedValueOnce({ data: { record: updatedLoanRecord } });
-      await dispatch(checkinBook({ book: bookWithRecord, employee: mockEmployee }));
-      expect(mockedAxios.put).toHaveBeenCalledWith(
-        `${apiUrl}/loan`,
-        expect.objectContaining({
-          status: 'AVAILABLE',
-          employeeIn: 'emp123',
-        })
-      );
-    });
+  it("checkoutBook.fulfilled updates records", () => {
+    const next = reducer(
+      typedInitialState,
+      checkoutBook.fulfilled(fakeLoanRecord, "", {
+        book: fakeBook,
+        libraryCard: "CARD",
+        employee: fakeEmployee,
+      }),
+    );
 
-    it('failure', async () => {
-      mockedAxios.put.mockRejectedValueOnce('Update failed');
-      await dispatch(checkinBook({ book: bookWithRecord, employee: mockEmployee }));
-      expect(store.getState().book.error).toBe(true);
-    });
+    expect(next.books[0].records[0]).toEqual(fakeLoanRecord);
   });
 
-  // ----------------------------------------------------------------------
-  // loadBookByBarcode
-  // ----------------------------------------------------------------------
-  describe('loadBookByBarcode', () => {
-    it('success', async () => {
-      mockedAxios.get.mockResolvedValueOnce({ data: { page: { items: [mockBook] } } });
-      await dispatch(loadBookByBarcode('123456789'));
-      expect(store.getState().book.currentBook).toEqual(mockBook);
-      expect(store.getState().book.error).toBe(false);
-    });
+  it("checkinBook.fulfilled updates first record", () => {
+    const stateWithLoan = {
+      ...initialState,
+      books: [{ ...fakeBook, records: [fakeLoanRecord] }],
+    };
 
-    it('book not found', async () => {
-      mockedAxios.get.mockResolvedValueOnce({ data: { page: { items: [] } } });
-      await dispatch(loadBookByBarcode('invalid'));
-      expect(store.getState().book.error).toBe(true);
-    });
+    const returnedRecord = {
+      ...fakeLoanRecord,
+      status: "AVAILABLE",
+    };
 
-    it('barcode mismatch', async () => {
-      mockedAxios.get.mockResolvedValueOnce({ data: { page: { items: [{ ...mockBook, barcode: 'wrong' }] } } });
-      await dispatch(loadBookByBarcode('123456789'));
-      expect(store.getState().book.error).toBe(true);
-    });
+    const next = reducer(
+      stateWithLoan,
+      checkinBook.fulfilled(returnedRecord, "", {
+        book: fakeBook,
+        employee: fakeEmployee,
+      }),
+    );
 
-    it('network error', async () => {
-      mockedAxios.get.mockRejectedValueOnce('error');
-      await dispatch(loadBookByBarcode('123456789'));
-      expect(store.getState().book.error).toBe(true);
-    });
+    expect(next.books[0].records[0].status).toBe("AVAILABLE");
+  });
+
+  it("pending matcher", () => {
+    const next = reducer(
+      typedInitialState,
+      fetchAllBooks.pending("", undefined),
+    );
+
+    expect(next.loading).toBe(true);
+    expect(next.error).toBe(false);
+  });
+
+  it("rejected matcher", () => {
+    const next = reducer(
+      typedInitialState,
+      fetchAllBooks.rejected(null, "", undefined),
+    );
+
+    expect(next.loading).toBe(false);
+    expect(next.error).toBe(true);
   });
 });

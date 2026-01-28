@@ -1,6 +1,6 @@
 .catalog-overview-section {
   width: 100%;
-  height: auto; /* заменяем фиксированную высоту */
+  height: auto; 
   padding: clamp(0.5rem, 2vw, 1rem);
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@
   text-decoration: underline;
 }
 
-/* Адаптивность для мобильных */
+
 @media (max-width: 480px) {
   .catalog-overview-section-top {
     flex-direction: column;

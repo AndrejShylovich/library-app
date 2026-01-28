@@ -1,6 +1,6 @@
 .profile-record {
   width: 100%;
-  height: auto; /* заменяет fit-content */
+  height: auto; 
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: clamp(0.25rem, 0.5vw, 0.5rem) 0;
   box-sizing: border-box;
@@ -11,7 +11,7 @@
   padding: 2rem;
 }
 
-/* Адаптивность для маленьких экранов */
+
 @media (max-width: 480px) {
   .profile-record {
     padding: 0.25rem 0;

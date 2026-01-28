@@ -3,16 +3,29 @@ import { IUser } from "../models/User";
 import { findUserByEmail, login, register } from "../services/UserService";
 import { IUserModel } from "../daos/UserDao";
 import { InvalidUsernameOrPasswordError } from "../utils/LibraryErrors";
+import { generateToken } from "../utils/Jwt";
 
 function handleError(res: Response, error: any, options?: { conflict?: boolean }) {
   if (options?.conflict) {
-    return res.status(409).json({ message: "Пользователь с данным email уже существует", error: error.message });
+    return res.status(409).json({
+      message: "A user with this email already exists",
+      error: error.message,
+    });
   }
-  console.log(error)
+
+  console.log(error);
+
   if (error instanceof InvalidUsernameOrPasswordError) {
-    return res.status(401).json({ message: "Неверный логин или пароль", error: error.message });
-  } 
-  return res.status(500).json({ message: "Произошла ошибка на сервере", error: error.message });
+    return res.status(401).json({
+      message: "Invalid username or password",
+      error: error.message,
+    });
+  }
+
+  return res.status(500).json({
+    message: "An internal server error occurred",
+    error: error.message,
+  });
 }
 
 export async function handleRegister(req: Request, res: Response) {
@@ -22,7 +35,7 @@ export async function handleRegister(req: Request, res: Response) {
     const registeredUser: IUserModel = await register(user);
 
     res.status(201).json({
-      message: "Пользователь успешно создан",
+      message: "User successfully created",
       user: {
         _id: registeredUser._id,
         type: registeredUser.type,
@@ -41,19 +54,26 @@ export async function handleRegister(req: Request, res: Response) {
 }
 
 export async function handleLogin(req: Request, res: Response) {
-  const credentials = req.body;
+  const { email, password } = req.body;
 
   try {
-    const loggedIn: IUserModel = await login(credentials);
+    const loggedInUser: IUserModel = await login({ email, password });
+
+    const token = generateToken({
+      _id: loggedInUser._id,
+      email: loggedInUser.email,
+      type: loggedInUser.type,
+    });
 
     res.status(200).json({
-      message: "Пользователь авторизировался успешно",
+      message: "User successfully logged in",
+      token,
       user: {
-        _id: loggedIn._id,
-        type: loggedIn.type,
-        firstName: loggedIn.firstName,
-        lastName: loggedIn.lastName,
-        email: loggedIn.email,
+        _id: loggedInUser._id,
+        type: loggedInUser.type,
+        firstName: loggedInUser.firstName,
+        lastName: loggedInUser.lastName,
+        email: loggedInUser.email,
       },
     });
   } catch (error: any) {
@@ -65,7 +85,7 @@ export const handleCheckEmail: RequestHandler = async (req: Request, res: Respon
   const { email } = req.body;
 
   if (!email) {
-    res.status(400).json({ message: "Email обязателен" });
+    res.status(400).json({ message: "Email is required" });
     return;
   }
 
@@ -74,7 +94,10 @@ export const handleCheckEmail: RequestHandler = async (req: Request, res: Respon
     res.status(200).json({ available: !existingUser });
   } catch (error: any) {
     console.error(error);
-    res.status(500).json({ message: "Ошибка сервера", error: error.message });
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 

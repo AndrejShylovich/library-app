@@ -1,0 +1,15 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input {
+  padding: 8px;
+  font-size: 14px;
+}
+
+.input-error {
+  color: red;
+  font-size: 12px;
+}

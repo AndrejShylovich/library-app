@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/ReduxStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, type JSX } from "react";
-import { fetchUser } from "../../store/slices/AuthentificationSlice";
+import { fetchUser } from "../../store/slices/AuthenticationSlice";
 
 import "./ProfilePage.css";
 import { ProfileLoanHistory, UpdateUserForm } from "../../features/profile";
@@ -13,7 +13,7 @@ export default function ProfilePage(): JSX.Element {
   const { userId } = useParams();
 
   const { loggedInUser, profileUser } = useSelector(
-    (state: RootState) => state.authentification
+    (state: RootState) => state.authentication
   );
 
   const canAccess = loggedInUser?._id === userId || loggedInUser?.type === "EMPLOYEE";

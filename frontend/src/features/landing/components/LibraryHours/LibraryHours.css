@@ -1,7 +1,7 @@
 .library-hours {
   width: 100%;
   max-width: 100%;
-  padding: 0.5rem; /* уменьшили padding */
+  padding: 0.5rem; 
   height: auto;
   background-color: var(--background-secondary);
   border-radius: 0.75rem;
@@ -11,15 +11,15 @@
   flex-direction: column;
   gap: 1.5rem;  
   margin-top: clamp(1rem, 2vw, 1.5rem);
-  padding: 2rem; /* уменьшили gap */
-  overflow-x: auto; /* оставляем на всякий случай */
+  padding: 2rem; 
+  overflow-x: auto; 
 }
 
 .library-hours-table {
   border-collapse: collapse;
   width: 98%;
-  min-width: 0; /* снимаем ограничение */
-  table-layout: fixed; /* фиксированная ширина столбцов для компактности */
+  min-width: 0; 
+  table-layout: fixed; 
 }
 
 #hours tr {
@@ -35,12 +35,12 @@
 }
 
 #hours td {
-  font-size: clamp(0.75rem, 1vw, 0.9rem); /* уменьшили шрифт */
-  padding: 0.25rem 0.4rem; /* уменьшили padding */
-  word-wrap: break-word; /* перенос слов, чтобы не растягивали таблицу */
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  padding: 0.25rem 0.4rem;
+  word-wrap: break-word; 
 }
 
-/* Адаптивность для мобильных экранов */
+
 @media (max-width: 480px) {
   #hours td {
     font-size: clamp(0.65rem, 0.9vw, 0.8rem);

@@ -2,7 +2,7 @@
     width: 100%;
     padding: clamp(1rem, 2vw, 2rem);
     display: flex;
-    flex-direction: column; /* ВСЁ В СТОЛБИК */
+    flex-direction: column; 
     gap: clamp(1rem, 2vw, 1.5rem);
     background-color: var(--background-primary);
     box-shadow: var(--box-shadow);

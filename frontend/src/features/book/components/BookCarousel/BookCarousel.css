@@ -18,7 +18,7 @@
   min-height: 18rem;
 }
 
-/* Универсальный стиль кнопки */
+
 .book-carousel-button {
   position: absolute;
   top: 50%;
@@ -40,7 +40,7 @@
   cursor: pointer;
 }
 
-/* Левая и правая */
+
 .book-carousel-button.left {
   left: clamp(0.5rem, 2vw, 1rem);
 }
@@ -48,14 +48,14 @@
   right: clamp(0.5rem, 2vw, 1rem);
 }
 
-/* Hover/Focus */
+
 .book-carousel-button:hover,
 .book-carousel-button:focus-visible {
   background-color: rgba(0, 0, 0, 0.15);
   transform: translateY(-50%) scale(1.1);
 }
 
-/* Mobile */
+
 @media (max-width: 600px) {
   .book-carousel-track {
     gap: 1rem;

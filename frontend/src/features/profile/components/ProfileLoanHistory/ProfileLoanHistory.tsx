@@ -1,49 +1,11 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../../store/ReduxStore";
-import React, { useEffect, useState, useCallback } from "react";
 import { ProfileLoanRecord } from "../ProfileLoanRecord/ProfileLoanRecord";
-import axios from "axios";
-import type { LoanRecord } from "../../../../models/LoanRecord";
-const apiUrl = import.meta.env.VITE_API_URL_PRODUCTION
-
-interface LoanQueryResponse {
-  records: LoanRecord[];
-}
+import { useProfileLoanHistory } from "./useProfileLoanHistory";
 
 export const ProfileLoanHistory: React.FC = () => {
-  const user = useSelector((state: RootState) => state.authentification.profileUser);
-  const [records, setRecords] = useState<LoanRecord[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchRecords = useCallback(async (userId: string, controller: AbortController) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const res = await axios.post<LoanQueryResponse>(
-      `${apiUrl}/loan/query`,
-        { property: "patron", value: userId },
-        { signal: controller.signal }
-      );
-      setRecords(res.data.records ?? []);
-    } catch (err) {
-      if (!axios.isCancel(err)) {
-        setError("Failed to load loan history");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!user) return;
-
-    const controller = new AbortController();
-    fetchRecords(user._id, controller);
-
-    return () => controller.abort();
-  }, [user, fetchRecords]);
+  const user = useSelector((state: RootState) => state.authentication.profileUser);
+  const { records, loading, error } = useProfileLoanHistory(user?._id);
 
   if (!user) return null;
 

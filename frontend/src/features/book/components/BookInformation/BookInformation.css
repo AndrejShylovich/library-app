@@ -12,16 +12,16 @@
 .book-info-container {
     width: 100%;
     display: flex;
-    flex-wrap: wrap; /* для адаптивности */
+    flex-wrap: wrap; 
     justify-content: space-evenly;
     align-items: flex-start;
     gap: clamp(1rem, 2vw, 1.5rem);
     box-sizing: border-box;
 }
 
-/* Обложка книги */
+
 .book-info-cover {
-    flex: 0 0 clamp(12rem, 25%, 20rem); /* адаптивная ширина */
+    flex: 0 0 clamp(12rem, 25%, 20rem); 
     max-width: 100%;
     height: auto;
     margin-right: clamp(1rem, 2vw, 1.5rem);
@@ -29,7 +29,7 @@
     object-fit: cover;
 }
 
-/* Адаптивность для мобильных экранов */
+
 @media (max-width: 480px) {
     .book-info-container {
         flex-direction: column;

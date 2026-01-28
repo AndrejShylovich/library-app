@@ -1,7 +1,7 @@
 .profile-loan-history {
   width: 100%;
-  height: auto; /* адаптивная высота */
-  max-height: 60vh; /* ограничение по высоте для скролла на больших экранах */
+  height: auto;
+  max-height: 60vh; 
   overflow-y: auto;
   box-sizing: border-box;
   padding: 1rem;
@@ -20,7 +20,7 @@
   font-weight: 600;
 }
 
-/* Адаптивность для маленьких экранов */
+
 @media (max-width: 480px) {
   .profile-loan-history {
     max-height: 50vh;

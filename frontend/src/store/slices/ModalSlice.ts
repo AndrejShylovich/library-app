@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 
-interface ModalSliceState {
+export interface ModalSliceState {
     displayLogin: boolean;
     displayLibraryCard: boolean;
     displayLoan: boolean;
@@ -26,7 +26,7 @@ export const ModalSlice = createSlice({
         },
 
         setDisplayLoan(state, action:PayloadAction<boolean>){
-            state.displayLoan = action.payload;   // ✔ Исправлено
+            state.displayLoan = action.payload;   
         },
     }
 });

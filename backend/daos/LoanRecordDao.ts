@@ -1,7 +1,5 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 import { ILoanRecord } from '../models/LoanRecord';
-
-// Убираем лишний импорт `required` из joi – он здесь не используется
 
 export interface ILoanRecordModel extends ILoanRecord, Document {}
 

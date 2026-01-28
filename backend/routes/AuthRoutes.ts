@@ -4,14 +4,12 @@ import { Schemas, ValidateSchema } from '../middlewares/Validation';
 
 const router = Router();
 
-// Регистрация пользователя
 router.post(
   "/register",
   ValidateSchema(Schemas.user.create, 'body'),
   AuthController.handleRegister
 );
 
-// Логин пользователя
 router.post(
   "/login",
   ValidateSchema(Schemas.user.login, 'body'),

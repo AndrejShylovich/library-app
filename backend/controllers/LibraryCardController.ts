@@ -8,10 +8,15 @@ import { LibraryCardDoesNotExistError } from "../utils/LibraryErrors";
 
 function handleError(res: Response, error: any, notFoundMessage: string) {
   if (error instanceof LibraryCardDoesNotExistError) {
-    return res.status(404).json({ message: notFoundMessage, error: error.message });
+    return res.status(404).json({
+      message: notFoundMessage,
+      error: error.message,
+    });
   }
 
-  return res.status(500).json({ message: error.message || "Internal server error" });
+  return res.status(500).json({
+    message: error.message || "Internal server error",
+  });
 }
 
 export async function getLibraryCard(req: Request, res: Response) {
@@ -19,7 +24,10 @@ export async function getLibraryCard(req: Request, res: Response) {
 
   try {
     const libraryCard = await findLibraryCard(cardId);
-    res.status(200).json({ message: "Retrieved the user's library card", libraryCard });
+    res.status(200).json({
+      message: "User library card retrieved successfully",
+      libraryCard,
+    });
   } catch (error) {
     handleError(res, error, "The specified library card does not exist");
   }
@@ -30,7 +38,10 @@ export async function createLibraryCard(req: Request, res: Response) {
 
   try {
     const libraryCard = await registerLibraryCard(card);
-    res.status(201).json({ message: "Library card generated for user", libraryCard });
+    res.status(201).json({
+      message: "Library card successfully created for the user",
+      libraryCard,
+    });
   } catch (error) {
     handleError(res, error, "Unable to create the library card at this time");
   }

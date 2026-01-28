@@ -1,7 +1,3 @@
-/* ========================= */
-/*   КАРТОЧКА                */
-/* ========================= */
-
 .book-card {
   width: 100%;
   max-width: 22rem;
@@ -25,13 +21,9 @@
   box-shadow: var(--box-shadow-hover);
 }
 
-/* ========================= */
-/*   ОБЛОЖКА                 */
-/* ========================= */
-
 .book-card-cover {
   width: 100%;
-  height: 60%; /* фиксированная пропорция в рамках аспект-рейшо */
+  height: 60%; 
   flex: none;
 
   display: flex;
@@ -46,9 +38,6 @@
   border-radius: 0.5rem;
 }
 
-/* ========================= */
-/*   ИНФОРМАЦИЯ              */
-/* ========================= */
 
 .book-card-info {
   width: 100%;
@@ -56,11 +45,11 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 2rem;
-  flex: none; /* было flex:1 — убираем, именно оно ломало высоту! */
-  height: 15rem; /* фиксируем высоту всего блока текста */
+  flex: none; 
+  height: 15rem; 
 }
 
-/* ---------- Заголовок (фиксированная высота 2 строки) ---------- */
+
 
 .book-card-title {
   font-size: clamp(1rem, 1.2vw, 1.25rem);
@@ -72,11 +61,11 @@
   -webkit-line-clamp: 2;
   line-clamp: 2;
 
-  height: 2.8rem; /* фиксированная высота */
+  height: 2.8rem; 
   line-height: 1.4rem;
 }
 
-/* ---------- Автор (фиксированная высота 1 строка) ---------- */
+
 
 .book-card-author {
   font-size: clamp(0.9rem, 1vw, 1.1rem);
@@ -86,13 +75,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  height: 1.3rem; /* фиксированная высота */
+  height: 1.3rem; 
   line-height: 1.3rem;
 
   color: var(--text-secondary);
 }
 
-/* ---------- Описание (автоматически растёт до конца блока) ---------- */
+
 
 .book-card-description {
   font-size: clamp(0.8rem, 1vw, 0.95rem);
@@ -106,15 +95,11 @@
   flex-grow: 1;
 }
 
-/* ========================= */
-/*   КНОПКА                  */
-/* ========================= */
-
 .book-card-loan-button {
   width: 100%;
   padding: 0 1rem;
 
-  height: 3rem; /* фиксированная высота кнопки */
+  height: 3rem;
   line-height: 3rem;
 
   font-size: clamp(0.9rem, 1.1vw, 1rem);
@@ -125,7 +110,7 @@
   transition: background-color 0.2s ease, border 0.2s ease;
 }
 
-/* Состояния */
+
 .available {
   background-color: var(--secondary);
 }
@@ -146,9 +131,6 @@
   color: #cb4c4e;
 }
 
-/* ========================= */
-/*   АДАПТИВНОСТЬ            */
-/* ========================= */
 
 @media (max-width: 480px) {
   .book-card {
@@ -161,7 +143,7 @@
     gap: 0.35rem;
   }
 
-  /* уменьшаем блоки под мелкий экран */
+
 
   .book-card-title {
     height: 2.4rem;

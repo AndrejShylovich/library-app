@@ -41,7 +41,7 @@
   box-sizing: border-box;
 }
 
-/* Адаптивность для мобильных экранов */
+
 @media (max-width: 480px) {
   .catalog-search {
     padding: 0.75rem;

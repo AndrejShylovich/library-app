@@ -11,17 +11,9 @@
   gap: 1rem;
   margin-top: clamp(1rem, 2vw, 1.5rem);
 
-  height: auto; /* заменяет fit-content */
+  height: auto; 
 }
 
-/*.book-of-the-week img {
-    max-height: 350px; 
-    width: auto; 
-    object-fit: cover; 
-    border-radius: 0.5rem;
-}*/
-
-/* Адаптивность для мобильных экранов */
 @media (max-width: 480px) {
   .book-of-the-week {
     padding: 0.75rem;

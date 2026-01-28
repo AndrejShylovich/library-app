@@ -1,21 +1,14 @@
-import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
-import { setDisplayLoan } from "../../../../store/slices/ModalSlice";
-import { Modal } from "../../../../components";
-import { determineLoanModalContent } from "../../utils/BookUtils";
+import React from "react";
+import { useLoanBookModal } from "./useLoanBookModal";
+import { LoanBookModalContext } from "./LoanBookModalContent";
+import { Modal } from "../../../../shared/ui/Modal/Modal";
 
 export const LoanBookModal: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const currentBook = useSelector((state: RootState) => state.book.currentBook);
-
-  const closeModal = useCallback(() => {
-    dispatch(setDisplayLoan(false));
-  }, [dispatch]);
+  const { closeModal, currentBook } = useLoanBookModal();
 
   return (
     <Modal toggleModal={closeModal}>
-      {currentBook && determineLoanModalContent(currentBook)}
+      {currentBook && <LoanBookModalContext book={currentBook} />}
     </Modal>
   );
 };

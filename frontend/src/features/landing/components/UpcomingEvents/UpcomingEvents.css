@@ -1,7 +1,7 @@
 .upcoming-events {
   width: 100%;
   max-width: 100%;
-  height: auto; /* заменяет fit-content */
+  height: auto; 
   border-radius: 0.75rem;
   padding: clamp(1rem, 2vw, 1.5rem);
   box-shadow: var(--box-shadow);
@@ -16,13 +16,13 @@
 .upcoming-events-header-group {
   width: 100%;
   display: flex;
-  justify-content: space-between; /* более современный стиль чем space-evenly */
+  justify-content: space-between; 
   align-items: center;
-  flex-wrap: wrap; /* на маленьких экранах перенос элементов */
+  flex-wrap: wrap; 
   gap: clamp(0.5rem, 1vw, 1rem);
 }
 
-/* Адаптивность для мобильных экранов */
+
 @media (max-width: 480px) {
   .upcoming-events {
     padding: 0.75rem;

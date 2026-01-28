@@ -17,12 +17,12 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap; /* Адаптивность */
+  flex-wrap: wrap; 
 }
 
 .additional-book-info-group {
-  flex: 1; /* Гибкое распределение ширины */
-  min-width: 120px; /* Чтобы не сжималось слишком сильно */
+  flex: 1; 
+  min-width: 120px; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,7 +37,7 @@
   color: var(--text-primary);
 }
 
-/* Адаптивность */
+
 @media (max-width: 480px) {
   .additional-book-info {
     padding: 1rem;
@@ -50,7 +50,7 @@
   }
 
   .additional-book-info-group {
-    flex: 1 1 45%; /* 2 элемента в ряд */
+    flex: 1 1 45%; 
     min-width: 140px;
   }
 

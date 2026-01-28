@@ -1,30 +1,30 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
 import { Schemas, ValidateSchema } from '../middlewares/Validation';
+import { authenticateToken } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Получение всех пользователей
-router.get('/', UserController.getAllUsers);
+router.get('/', authenticateToken, UserController.getAllUsers);
 
-// Получение пользователя по ID
 router.get(
   '/:userId',
   ValidateSchema(Schemas.user.userId, 'params'),
+  authenticateToken,
   UserController.getUserById
 );
 
-// Обновление пользователя
 router.put(
   '/',
   ValidateSchema(Schemas.user.update, 'body'),
+  authenticateToken,
   UserController.updateUser
 );
 
-// Удаление пользователя
 router.delete(
   '/',
   ValidateSchema(Schemas.user.userId, 'params'),
+  authenticateToken,
   UserController.deleteUser
 );
 

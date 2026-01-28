@@ -1,70 +1,46 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import type React from "react";
 import type { Book } from "../../../../models/Book";
 import { BookCard } from "../BookCard/BookCard";
-
+import { useBookCarousel } from "./useBookCarousel";
 import "./BookCarousel.css";
+import { Button } from "../../../../shared/ui/Button/Button";
 
 interface BookCarouselProps {
   books: Book[];
 }
 
 export const BookCarousel: React.FC<BookCarouselProps> = ({ books }) => {
-  const [index, setIndex] = useState(0);
-
-  // Сбрасываем индекс при обновлении массива книг
-  useEffect(() => {
-    setIndex(0);
-  }, [books]);
-
-  const hasBooks = books.length > 0;
-
-  // Универсальное смещение карусели
-  const shift = useCallback(
-    (delta: number) => {
-      if (!hasBooks) return;
-      setIndex(prev => (prev + delta + books.length) % books.length);
-    },
-    [books, hasBooks]
-  );
-
-  const currentBook = useMemo(
-    () => (hasBooks ? books[index] : null),
-    [books, index, hasBooks]
-  );
+  const { currentBook, shift, hasBooks } = useBookCarousel(books);
 
   if (!hasBooks) {
     return (
-      <div className="book-carousel empty" aria-label="Карусель книг">
-        <p>Нет доступных книг</p>
+      <div className="book-carousel empty" aria-label="Book Carousel">
+        <p>No available books</p>
       </div>
     );
   }
 
   return (
-    <div className="book-carousel" role="region" aria-label="Карусель книг">
-
-      <button
+    <div className="book-carousel" role="region" aria-label="Book Carousel">
+      <Button
         className="book-carousel-button left"
         onClick={() => shift(1)}
-        aria-label="Листать влево"
+        aria-label="Scroll Left"
       >
         &lt;
-      </button>
+      </Button>
 
-      <button
+      <Button
         className="book-carousel-button right"
         onClick={() => shift(-1)}
-        aria-label="Листать вправо"
+        aria-label="Scroll Right"
       >
         &gt;
-      </button>
+      </Button>
 
       <div className="book-carousel-track">
-        {currentBook && (
-          <BookCard key={currentBook.barcode} book={currentBook} />
-        )}
+        {currentBook && <BookCard key={currentBook.barcode} book={currentBook} />}
       </div>
-
     </div>
   );
 };

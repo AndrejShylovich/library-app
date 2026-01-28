@@ -4,7 +4,7 @@
   align-items: center;
   margin-top: clamp(1.5rem, 3vw, 2rem);
   gap: clamp(0.5rem, 1vw, 1rem);
-  flex-wrap: wrap; /* на маленьких экранах перенос */
+  flex-wrap: wrap; 
 }
 
 .catalog-search-page-navigator-navigate {
@@ -51,7 +51,7 @@
   border-radius: 0.25rem;
 }
 
-/* Адаптивность для мобильных */
+
 @media (max-width: 480px) {
   .catalog-search-page-navigator {
     gap: 1.5rem;

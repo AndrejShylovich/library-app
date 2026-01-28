@@ -1,6 +1,6 @@
 .book-subjects {
   width: 100%;
-  max-height: clamp(14rem, 25vh, 16rem); /* адаптивная высота */
+  max-height: clamp(14rem, 25vh, 16rem); 
   padding: clamp(1rem, 2vw, 1.25rem);
   margin-top: clamp(0.75rem, 2vw, 1rem);
 
@@ -16,7 +16,7 @@
 
 .book-info-subjects-box {
   width: 100%;
-  max-height: clamp(8rem, 20vh, 10rem); /* адаптивная высота для скролла */
+  max-height: clamp(8rem, 20vh, 10rem); 
   overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
@@ -24,7 +24,7 @@
   padding: 2rem;
   box-sizing: border-box;
 
-  /* Современный стиль скролла */
+
   scrollbar-width: thin;
   scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
 }
@@ -51,7 +51,7 @@
   box-sizing: border-box;
 }
 
-/* Адаптивность для мобильных */
+
 @media (max-width: 480px) {
   .book-subjects {
     padding: 0.75rem;

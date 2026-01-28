@@ -8,13 +8,13 @@
 }
 
 .book-checkin-form {
-    width: min(100%, 30rem); /* Ограниченная, но адаптивная ширина */
+    width: min(100%, 30rem); 
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-/* Поле ввода */
+
 .book-checkin-input {
     width: 100%;
     padding: clamp(0.65rem, 2vw, 0.9rem);
@@ -37,7 +37,7 @@
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 30%, transparent);
 }
 
-/* Кнопка */
+
 .book-checkin-button {
     width: 100%;
     padding: clamp(0.7rem, 2vw, 1rem);
@@ -63,7 +63,7 @@
     box-shadow: var(--box-shadow);
 }
 
-/* Мобильная адаптация */
+
 @media (max-width: 480px) {
     .book-checkin-form {
         gap: 0.75rem;

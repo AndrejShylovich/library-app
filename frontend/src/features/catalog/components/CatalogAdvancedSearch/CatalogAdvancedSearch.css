@@ -13,26 +13,26 @@
 .catalog-advanced-search-form {
     width: 100%;
     display: flex;
-    flex-wrap: wrap; /* адаптивность для маленьких экранов */
+    flex-wrap: wrap; 
     justify-content: space-evenly;
     align-items: center;
     gap: clamp(0.5rem, 2vw, 1rem);
     margin-bottom: clamp(0.75rem, 2vw, 1rem);
 }
 
-/* Группы инпутов */
+
 .catalog-advanced-form-input-group {
-    flex: 1 1 clamp(8rem, 15%, 15rem); /* адаптивная ширина */
+    flex: 1 1 clamp(8rem, 15%, 15rem);
     min-width: clamp(6rem, 20%, 10rem);
 }
 
-/* Inputs */
+
 .catalog-advanced-form-input {
     width: 100%;
     padding: clamp(0.25rem, 1vw, 0.5rem) clamp(0.5rem, 1.5vw, 0.75rem);
     font-size: clamp(0.75rem, 1vw, 0.9rem);
     font-weight: 400;
-    border: 2px solid var(--secondary); /* поменяли на синий для границы по умолчанию */
+    border: 2px solid var(--secondary); 
     border-radius: 0.5rem;
     box-sizing: border-box;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
@@ -40,8 +40,8 @@
 
 .catalog-advanced-form-input:focus {
     outline: none;
-    border-color: var(--primary); /* зеленый при фокусе */
-    box-shadow: 0 0 0 2px rgba(0,128,0,0.2); /* легкий зеленый glow */
+    border-color: var(--primary); 
+    box-shadow: 0 0 0 2px rgba(0,128,0,0.2); 
 }
 
 .catalog-advanced-form-input::placeholder {
@@ -50,7 +50,7 @@
     font-size: clamp(0.75rem, 1vw, 0.9rem);
 }
 
-/* Кнопка поиска */
+
 .catalog-advanced-search-button {
     flex: 1 1 clamp(8rem, 25%, 20rem);
     min-width: clamp(6rem, 20%, 10rem);
@@ -59,11 +59,11 @@
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    background-color: var(--secondary); /* исходный цвет */
-    color: #fff; /* текст белый для контраста */
-    transition: background-color 0.25s ease; /* плавное изменение цвета */
+    background-color: var(--secondary); 
+    color: #fff; 
+    transition: background-color 0.25s ease; 
 }
 
 .catalog-advanced-search-button:hover {
-    background-color: var(--primary); /* синий при наведении */
+    background-color: var(--primary); 
 }
