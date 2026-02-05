@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { MockedFunction } from "vitest";
 
 import {
   loginUserApi,
@@ -9,133 +8,154 @@ import {
   updateUserApi,
   getLibraryCardApi,
 } from "./authApi";
+import { api } from "./axios";
+import type { UserDto } from "../models/dto/UserDto";
 
-import type {
-  User,
-  LoginUserPayload,
-  RegisterUserPayload,
-  FetchUserPayload,
-} from "../models/User";
+vi.mock("./axios", () => ({
+  api: {
+    post: vi.fn(),
+    get: vi.fn(),
+    put: vi.fn(),
+  },
+}));
 
-const VITE_API_URL = "http://localhost:8000";
+const mockedPost = api.post as MockedFunction<typeof api.post>;
+const mockedGet = api.get as MockedFunction<typeof api.get>;
+const mockedPut = api.put as MockedFunction<typeof api.put>;
 
-describe("Auth API", () => {
-  let mock: MockAdapter;
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
 
+  return {
+    getItem: vi.fn((key: string) => store[key]),
+    setItem: vi.fn((key: string, value: string) => {
+      store[key] = value;
+    }),
+    clear: vi.fn(() => {
+      store = {};
+    }),
+  };
+})();
+
+Object.defineProperty(window, "localStorage", {
+  value: localStorageMock,
+});
+
+const mockUser: UserDto = {
+  _id: "user-123",
+  type: "PATRON",
+  firstName: "John",
+  lastName: "Doe",
+  email: "john@example.com",
+};
+
+describe("authApi", () => {
   beforeEach(() => {
-    mock = new MockAdapter(axios);
+    vi.clearAllMocks();
     localStorage.clear();
   });
 
-  it("loginUserApi should store token and userId and return user", async () => {
-    const fakeUser: User = {
-      _id: "123",
+  it("loginUserApi: logs in user and stores token & userId", async () => {
+    mockedPost.mockResolvedValue({
+      data: {
+        user: mockUser,
+        token: "jwt-token",
+      },
+    });
+
+    const result = await loginUserApi({
+      email: "john@example.com",
+      password: "secret",
+    });
+
+    expect(mockedPost).toHaveBeenCalledWith("/auth/login", {
+      email: "john@example.com",
+      password: "secret",
+    });
+
+    expect(localStorage.setItem).toHaveBeenCalledWith("token", "jwt-token");
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      "userId",
+      mockUser._id
+    );
+
+    expect(result).toEqual(mockUser);
+  });
+
+  it("registerUserApi: registers user", async () => {
+    mockedPost.mockResolvedValue({
+      data: {
+        user: mockUser,
+      },
+    });
+
+    const result = await registerUserApi({
       type: "PATRON",
       firstName: "John",
       lastName: "Doe",
-      email: "john@test.com",
-      password: "123",
-    };
-
-    const fakeToken = "token123";
-
-    mock.onPost(`${VITE_API_URL}/auth/login`).reply(200, {
-      user: fakeUser,
-      token: fakeToken,
+      email: "john@example.com",
+      password: "secret",
     });
 
-    const payload: LoginUserPayload = {
-      email: fakeUser.email,
-      password: fakeUser.password,
-    };
-
-    const user = await loginUserApi(payload);
-
-    expect(user).toEqual(fakeUser);
-    expect(localStorage.getItem("token")).toBe(fakeToken);
-    expect(localStorage.getItem("userId")).toBe(fakeUser._id);
-  });
-
-  it("registerUserApi should return user", async () => {
-    const fakeUser: User = {
-      _id: "456",
-      type: "EMPLOYEE",
-      firstName: "Alice",
-      lastName: "Smith",
-      email: "alice@test.com",
-      password: "123",
-    };
-
-    mock.onPost(`${VITE_API_URL}/auth/register`).reply(200, {
-      user: fakeUser,
-    });
-
-    const payload: RegisterUserPayload = {
-      type: fakeUser.type,
-      firstName: fakeUser.firstName,
-      lastName: fakeUser.lastName,
-      email: fakeUser.email,
-      password: fakeUser.password,
-    };
-
-    const user = await registerUserApi(payload);
-    expect(user).toEqual(fakeUser);
-  });
-
-  it("fetchUserApi should return user and property", async () => {
-    const fakeUser: User = {
-      _id: "789",
-      type: "ADMIN",
-      firstName: "Bob",
-      lastName: "Builder",
-      email: "bob@test.com",
-      password: "123",
-    };
-
-    localStorage.setItem("token", "token123");
-
-    mock.onGet(`${VITE_API_URL}/users/789`).reply(200, {
-      user: fakeUser,
-    });
-
-    const payload: FetchUserPayload = {
-      userId: "789",
-      property: "profileUser",
-    };
-    const result = await fetchUserApi(payload);
-
-    expect(result).toEqual({ user: fakeUser, property: "profileUser" });
-  });
-
-  it("updateUserApi should return updated user", async () => {
-    const updatedUser: User = {
-      _id: "123",
+    expect(mockedPost).toHaveBeenCalledWith("/auth/register", {
       type: "PATRON",
       firstName: "John",
-      lastName: "Doe Updated",
-      email: "john@test.com",
-      password: "123",
-    };
-
-    localStorage.setItem("token", "token123");
-
-    mock.onPut(`${VITE_API_URL}/users/`).reply(200, {
-      user: updatedUser,
+      lastName: "Doe",
+      email: "john@example.com",
+      password: "secret",
     });
 
-    const result = await updateUserApi(updatedUser);
-    expect(result).toEqual(updatedUser);
+    expect(result).toEqual(mockUser);
   });
 
-  it("getLibraryCardApi should return libraryCard id", async () => {
-    localStorage.setItem("token", "token123");
-    const fakeCardId = "card123";
-
-    mock.onPost(`${VITE_API_URL}/card/`).reply(200, {
-      libraryCard: { _id: fakeCardId },
+  it("fetchUserApi: fetches user and returns with property", async () => {
+    mockedGet.mockResolvedValue({
+      data: {
+        user: mockUser,
+      },
     });
 
-    const result = await getLibraryCardApi("user123");
-    expect(result).toBe(fakeCardId);
+    const result = await fetchUserApi({
+      userId: "user-123",
+      property: "profileUser",
+    });
+
+    expect(mockedGet).toHaveBeenCalledWith("/users/user-123");
+
+    expect(result).toEqual({
+      user: mockUser,
+      property: "profileUser",
+    });
+  });
+
+  it("updateUserApi: updates user", async () => {
+    mockedPut.mockResolvedValue({
+      data: {
+        user: mockUser,
+      },
+    });
+
+    const result = await updateUserApi(mockUser);
+
+    expect(mockedPut).toHaveBeenCalledWith("/users/", mockUser);
+    expect(result).toEqual(mockUser);
+  });
+
+  it("getLibraryCardApi: returns library card id", async () => {
+    mockedPost.mockResolvedValue({
+      data: {
+        libraryCard: {
+          _id: "card-456",
+        },
+      },
+    });
+
+    const result = await getLibraryCardApi("user-123");
+
+    expect(mockedPost).toHaveBeenCalledWith("/card/", {
+      user: "user-123",
+    });
+
+    expect(result).toBe("card-456");
   });
 });

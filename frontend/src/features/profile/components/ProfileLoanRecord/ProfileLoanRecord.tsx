@@ -1,4 +1,4 @@
-import type { LoanRecord } from "../../../../models/LoanRecord";
+import type { DomainLoanRecord as LoanRecord } from "../../../../models/domain/LoanRecord";
 
 interface ProfileLoanRecordProps {
   record: LoanRecord;
@@ -9,7 +9,7 @@ export const ProfileLoanRecord: React.FC<ProfileLoanRecordProps> = ({
 }) => {
   return (
     <div className="profile-record">
-      <h4>Title: {record.item.title}</h4>
+      <h4>Title: {record.item?.title}</h4>
       <h4>Status: {record.status === "AVAILABLE" ? "RETURNED" : "LOANED"}</h4>
       <p>Loan Date: {new Date(record.loanedDate).toDateString()}</p>
       <p>Return by Date: {new Date(record.dueDate).toDateString()}</p>

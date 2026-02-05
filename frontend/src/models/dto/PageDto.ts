@@ -1,4 +1,4 @@
-export type PageInfo = {
+export interface PageInfo {
     totalCount: number,
     currentPage: number,
     totalPages: number,

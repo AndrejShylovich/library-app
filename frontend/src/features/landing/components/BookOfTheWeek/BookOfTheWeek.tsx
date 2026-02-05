@@ -1,9 +1,9 @@
-import type { Book } from "../../../../models/Book";
+import type { DomainBook as Book } from "../../../../models/domain/Book";
 import { BookInformation } from "../../../book/components/BookInformation/BookInformation";
 import './BookOfTheWeek.css';
 
 const WEEKLY_BOOK: Book = {
-  _id: "0316379379",
+  id: "0316379379",
   barcode: "0316379379",
   cover:
     "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1489176444i/34523174.jpg",

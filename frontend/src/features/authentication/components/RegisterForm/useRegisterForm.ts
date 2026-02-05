@@ -1,10 +1,16 @@
 import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
-import { registerUser, resetRegisterSuccess } from "../../../../store/slices/AuthenticationSlice";
+import {
+  registerUser,
+  resetRegisterSuccess,
+} from "../../../../store/slices/AuthenticationSlice";
 
 export const useRegisterForm = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const { error, loading, registerSuccess } = useSelector(
     (state: RootState) => state.authentication
   );
@@ -17,12 +23,21 @@ export const useRegisterForm = () => {
   });
 
   useEffect(() => {
-    dispatch(resetRegisterSuccess());
-  }, [dispatch]);
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (registerSuccess) {
+      toast.success("Registration was successful");
+      dispatch(resetRegisterSuccess());
+    }
+  }, [registerSuccess, dispatch]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

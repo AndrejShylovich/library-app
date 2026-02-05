@@ -16,7 +16,7 @@ export const CatalogOverview: React.FC = () => {
       {genres.map((genre) => (
         <CatalogOverviewSection
           key={genre}
-          books={booksByGenre[genre]}
+          books={booksByGenre[genre]} 
           label={genre}
         />
       ))}

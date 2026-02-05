@@ -1,5 +1,5 @@
 import type React from "react";
-import type { LoanRecord } from "../../../../models/LoanRecord";
+import type { DomainLoanRecord as LoanRecord } from "../../../../models/domain/LoanRecord";
 import { useBookHistoryItem } from "./useBookHistoryItem";
 import "./BookHistoryItem.css";
 
@@ -25,7 +25,7 @@ export const BookHistoryItem: React.FC<BookHistoryItemProps> = ({ record }) => {
           role="button"
           tabIndex={0}
         >
-          Patron: {record.patron}
+          Patron: {record.patronId}
         </p>
 
         <p>Loan Date: {loanDate}</p>
@@ -33,10 +33,10 @@ export const BookHistoryItem: React.FC<BookHistoryItemProps> = ({ record }) => {
       </div>
 
       <div className="book-history-item-group">
-        <p>Loaner: {record.employeeOut}</p>
+        <p>Loaner: {record.employeeOutId}</p>
         <p>Return By Date: {dueDate}</p>
-        {isAvailable && record.employeeIn && (
-          <p>Returner: {record.employeeIn}</p>
+        {isAvailable && record.employeeInId && (
+          <p>Returner: {record.employeeInId}</p>
         )}
       </div>
     </div>

@@ -8,43 +8,48 @@ import reducer, {
   checkinBook,
   loadBookByBarcode,
   setCurrentBook,
+  type BookSliceState,
 } from "./BookSlice";
 
 import * as api from "../../api/bookApi";
-import type { Book } from "../../models/Book";
-import type { LoanRecord } from "../../models/LoanRecord";
-import type { User } from "../../models/User";
-import type { BookSliceState } from "./BookSlice";
+
+import type { BookDto } from "../../models/dto/BookDto";
+import type { LoanRecordDto } from "../../models/dto/LoanRecordDto";
+import type { UserDto } from "../../models/dto/UserDto";
+
 
 vi.mock("../../api/bookApi");
 
-const mockedFetchAllBooksApi =
-  api.fetchAllBooksApi as MockedFunction<typeof api.fetchAllBooksApi>;
+const mockedFetchAllBooksApi = api.fetchAllBooksApi as MockedFunction<
+  typeof api.fetchAllBooksApi
+>;
 
-const mockedQueryBooksApi =
-  api.queryBooksApi as MockedFunction<typeof api.queryBooksApi>;
+const mockedQueryBooksApi = api.queryBooksApi as MockedFunction<
+  typeof api.queryBooksApi
+>;
 
-const mockedCheckoutBookApi =
-  api.checkoutBookApi as MockedFunction<typeof api.checkoutBookApi>;
+const mockedCheckoutBookApi = api.checkoutBookApi as MockedFunction<
+  typeof api.checkoutBookApi
+>;
 
-const mockedCheckinBookApi =
-  api.checkinBookApi as MockedFunction<typeof api.checkinBookApi>;
+const mockedCheckinBookApi = api.checkinBookApi as MockedFunction<
+  typeof api.checkinBookApi
+>;
 
-const mockedLoadBookByBarcodeApi =
-  api.loadBookByBarcodeApi as MockedFunction<
-    typeof api.loadBookByBarcodeApi
-  >;
+const mockedLoadBookByBarcodeApi = api.loadBookByBarcodeApi as MockedFunction<
+  typeof api.loadBookByBarcodeApi
+>;
 
-const fakeEmployee: User = {
+const fakeEmployee: UserDto = {
   _id: "emp-1",
   type: "EMPLOYEE",
   firstName: "John",
   lastName: "Smith",
   email: "john@test.com",
-  password: "123",
 };
 
-const fakeBook: Book = {
+
+const fakeBook: BookDto = {
   _id: "book-1",
   barcode: "BC123",
   cover: "cover.jpg",
@@ -52,26 +57,26 @@ const fakeBook: Book = {
   authors: ["Author One"],
   description: "Description",
   subjects: ["IT"],
-  publicationDate: new Date(),
+  publicationDate: "2024-01-01",
   publisher: "Publisher",
   pages: 300,
   genre: "Tech",
   records: [],
 };
 
-const fakeLoanRecord: LoanRecord = {
+const fakeLoanRecord: LoanRecordDto = {
   _id: "loan-1",
   status: "LOANED",
-  loanedDate: new Date(),
-  dueDate: new Date(),
+  loanedDate: "2024-01-01",
+  dueDate: "2024-01-10",
   patron: "patron-1",
-  employeeOut: fakeEmployee._id,
-  item: fakeBook,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  employeeOut: "emp-1",
+  item: "book-1",
+  createdAt: "2024-01-01",
+  updatedAt: "2024-01-01",
 };
 
-const initialState = {
+const initialState: BookSliceState = {
   loading: true,
   error: false,
   books: [fakeBook],
@@ -79,12 +84,10 @@ const initialState = {
   pagingInformation: null,
 };
 
-const typedInitialState: BookSliceState = initialState;
 
 beforeEach(() => {
   vi.clearAllMocks();
 });
-
 
 describe("bookSlice async thunks", () => {
   it("fetchAllBooks → fulfilled", async () => {
@@ -153,11 +156,9 @@ describe("bookSlice async thunks", () => {
   });
 
   it("checkinBook → fulfilled", async () => {
-    const returnedRecord: LoanRecord = {
+    const returnedRecord: LoanRecordDto = {
       ...fakeLoanRecord,
       status: "AVAILABLE",
-      returnedDate: new Date(),
-      employeeIn: fakeEmployee._id,
     };
 
     mockedCheckinBookApi.mockResolvedValue(returnedRecord);
@@ -184,24 +185,22 @@ describe("bookSlice async thunks", () => {
 
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: "book/id/fulfilled",
+        type: "book/barcode/fulfilled",
         payload: fakeBook,
       }),
     );
   });
 });
 
-
-
 describe("bookSlice reducer", () => {
   it("setCurrentBook", () => {
-    const next = reducer(typedInitialState, setCurrentBook(fakeBook));
+    const next = reducer(initialState, setCurrentBook(fakeBook));
     expect(next.currentBook).toEqual(fakeBook);
   });
 
-  it("checkoutBook.fulfilled updates records", () => {
+  it("checkoutBook.fulfilled adds record to book", () => {
     const next = reducer(
-      typedInitialState,
+      initialState,
       checkoutBook.fulfilled(fakeLoanRecord, "", {
         book: fakeBook,
         libraryCard: "CARD",
@@ -213,12 +212,12 @@ describe("bookSlice reducer", () => {
   });
 
   it("checkinBook.fulfilled updates first record", () => {
-    const stateWithLoan = {
+    const stateWithLoan: BookSliceState = {
       ...initialState,
       books: [{ ...fakeBook, records: [fakeLoanRecord] }],
     };
 
-    const returnedRecord = {
+    const returnedRecord: LoanRecordDto = {
       ...fakeLoanRecord,
       status: "AVAILABLE",
     };
@@ -235,10 +234,7 @@ describe("bookSlice reducer", () => {
   });
 
   it("pending matcher", () => {
-    const next = reducer(
-      typedInitialState,
-      fetchAllBooks.pending("", undefined),
-    );
+    const next = reducer(initialState, fetchAllBooks.pending("", undefined));
 
     expect(next.loading).toBe(true);
     expect(next.error).toBe(false);
@@ -246,7 +242,7 @@ describe("bookSlice reducer", () => {
 
   it("rejected matcher", () => {
     const next = reducer(
-      typedInitialState,
+      initialState,
       fetchAllBooks.rejected(null, "", undefined),
     );
 

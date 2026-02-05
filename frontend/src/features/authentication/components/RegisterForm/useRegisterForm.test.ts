@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useRegisterForm } from "./useRegisterForm";
-import { registerUser, resetRegisterSuccess } from "../../../../store/slices/AuthenticationSlice";
+import {
+  registerUser,
+  resetRegisterSuccess,
+} from "../../../../store/slices/AuthenticationSlice";
 
 const dispatchMock = vi.fn();
 
@@ -11,7 +14,8 @@ vi.mock("../../../../store/slices/AuthenticationSlice", () => ({
 }));
 
 vi.mock("react-redux", async () => {
-  const actual = await vi.importActual<typeof import("react-redux")>("react-redux");
+  const actual =
+    await vi.importActual<typeof import("react-redux")>("react-redux");
 
   return {
     ...actual,
@@ -23,10 +27,13 @@ vi.mock("react-redux", async () => {
 import { useSelector } from "react-redux";
 const mockUseSelector = useSelector as unknown as Mock;
 
-const createChangeEvent = (name: string, value: string): React.ChangeEvent<HTMLInputElement> =>
+const createChangeEvent = (
+  name: string,
+  value: string,
+): React.ChangeEvent<HTMLInputElement> =>
   ({
     target: { name, value },
-  } as React.ChangeEvent<HTMLInputElement>);
+  }) as React.ChangeEvent<HTMLInputElement>;
 
 describe("useRegisterForm", () => {
   beforeEach(() => {
@@ -50,8 +57,15 @@ describe("useRegisterForm", () => {
     });
   });
 
-  it("dispatches resetRegisterSuccess on mount", () => {
+  it("dispatches resetRegisterSuccess when registerSuccess is true", () => {
+    mockUseSelector.mockReturnValue({
+      error: null,
+      loading: false,
+      registerSuccess: true,
+    });
+
     renderHook(() => useRegisterForm());
+
     expect(dispatchMock).toHaveBeenCalledWith(resetRegisterSuccess());
   });
 

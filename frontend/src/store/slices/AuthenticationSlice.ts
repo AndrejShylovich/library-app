@@ -3,27 +3,29 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
+
 import type {
-  FetchUserPayload,
-  LoginUserPayload,
-  RegisterUserPayload,
-  User,
-} from "../../models/User";
+  UserDto,
+  LoginUserDto,
+  RegisterUserDto,
+  FetchUserDto,
+} from "../../models/dto/UserDto";
 import {
-  fetchUserApi,
-  getLibraryCardApi,
   loginUserApi,
   registerUserApi,
+  fetchUserApi,
   updateUserApi,
+  getLibraryCardApi,
 } from "../../api/authApi";
 
 interface AuthenticationSliceState {
-  loggedInUser?: User;
-  profileUser?: User;
+  loggedInUser?: UserDto;
+  profileUser?: UserDto;
   libraryCard: string;
   loading: boolean;
   error: boolean;
   registerSuccess: boolean;
+  updateSuccess: boolean;
 }
 
 const initialState: AuthenticationSliceState = {
@@ -33,63 +35,64 @@ const initialState: AuthenticationSliceState = {
   loading: false,
   error: false,
   registerSuccess: false,
+  updateSuccess: false,
 };
 
 type ResettableKeys = keyof AuthenticationSliceState;
 
-export const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk<UserDto, LoginUserDto>(
   "auth/login",
-  async (payload: LoginUserPayload, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      return await loginUserApi(payload);
+      return await loginUserApi(payload); 
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
 
-export const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk<void, RegisterUserDto>(
   "auth/register",
-  async (payload: RegisterUserPayload, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
       await registerUserApi(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
 
-export const fetchUser = createAsyncThunk(
-  "auth/fetch",
-  async (payload: FetchUserPayload, thunkAPI) => {
-    try {
-      return await fetchUserApi(payload);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e);
-    }
+export const fetchUser = createAsyncThunk<
+  { user: UserDto; property: FetchUserDto["property"] },
+  FetchUserDto
+>("auth/fetch", async (payload, thunkAPI) => {
+  try {
+    return await fetchUserApi(payload); 
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e);
   }
-);
+});
 
-export const updateUser = createAsyncThunk(
+export const updateUser = createAsyncThunk<UserDto, UserDto>(
   "auth/update",
-  async (payload: User, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
-      return await updateUserApi(payload);
+      return await updateUserApi(payload); 
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
 
-export const getLibraryCard = createAsyncThunk(
+export const getLibraryCard = createAsyncThunk<string, string>(
   "auth/librarycard",
-  async (userId: string, thunkAPI) => {
+  async (userId, thunkAPI) => {
     try {
       return await getLibraryCardApi(userId);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
 
 export const authenticationSlice = createSlice({
@@ -104,6 +107,9 @@ export const authenticationSlice = createSlice({
       (state[key] as AuthenticationSliceState[typeof key] | undefined) =
         undefined;
     },
+    resetUpdateSuccess(state) {
+      state.updateSuccess = false;
+    },
   },
   extraReducers: (builder) => {
     const setPending = (state: AuthenticationSliceState) => {
@@ -117,15 +123,18 @@ export const authenticationSlice = createSlice({
     };
 
     builder
+
       .addCase(loginUser.pending, setPending)
       .addCase(registerUser.pending, setPending)
       .addCase(fetchUser.pending, setPending)
       .addCase(updateUser.pending, setPending)
       .addCase(getLibraryCard.pending, setPending)
 
+
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.loggedInUser = action.payload;
+        state.profileUser = action.payload; 
       })
       .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
@@ -141,6 +150,7 @@ export const authenticationSlice = createSlice({
         state.loading = false;
         state.loggedInUser = action.payload;
         state.profileUser = action.payload;
+        state.updateSuccess = true;
       })
       .addCase(getLibraryCard.fulfilled, (state, action) => {
         state.loading = false;
@@ -155,7 +165,6 @@ export const authenticationSlice = createSlice({
   },
 });
 
-export const { resetRegisterSuccess, resetUser } =
-  authenticationSlice.actions;
+export const { resetRegisterSuccess, resetUser, resetUpdateSuccess } = authenticationSlice.actions;
 
 export default authenticationSlice.reducer;

@@ -3,7 +3,8 @@ import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
 import { setCurrentBook } from "../../../../store/slices/BookSlice";
 import { setDisplayLoan } from "../../../../store/slices/ModalSlice";
 import { useNavigate } from "react-router-dom";
-import type { Book } from "../../../../models/Book";
+import type { DomainBook as Book } from "../../../../models/domain/Book";
+import { BookMapper } from "../../../../models/mapper/BookMapper";
 
 export const useBookCard = (book: Book) => {
   const user = useSelector(
@@ -24,7 +25,7 @@ export const useBookCard = (book: Book) => {
   const handleLoan = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (user?.type === "EMPLOYEE") {
-      dispatch(setCurrentBook(book));
+      dispatch(setCurrentBook(BookMapper.toDto(book)));
       dispatch(setDisplayLoan(true));
     }
   };

@@ -3,12 +3,7 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type {
-  Book,
-  CheckinBookPayload,
-  CheckoutBookPayload,
-} from "../../models/Book";
-import type { PageInfo } from "../../models/Page";
+
 import {
   fetchAllBooksApi,
   queryBooksApi,
@@ -17,11 +12,16 @@ import {
   loadBookByBarcodeApi,
 } from "../../api/bookApi";
 
+import type { BookDto, CheckoutBookDto, CheckinBookDto } from "../../models/dto/BookDto";
+import type { LoanRecordDto } from "../../models/dto/LoanRecordDto";
+import type { PageInfo } from "../../models/dto/PageDto";
+
+
 export interface BookSliceState {
   loading: boolean;
   error: boolean;
-  books: Book[];
-  currentBook?: Book;
+  books: BookDto[];
+  currentBook?: BookDto;
   pagingInformation: PageInfo | null;
 }
 
@@ -33,7 +33,8 @@ const initialState: BookSliceState = {
   pagingInformation: null,
 };
 
-export const fetchAllBooks = createAsyncThunk<Book[]>(
+
+export const fetchAllBooks = createAsyncThunk<BookDto[]>(
   "book/all",
   async (_, thunkAPI) => {
     try {
@@ -41,12 +42,12 @@ export const fetchAllBooks = createAsyncThunk<Book[]>(
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  },
+  }
 );
 
 export const queryBooks = createAsyncThunk<
   {
-    items: Book[];
+    items: BookDto[];
     totalCount: number;
     currentPage: number;
     totalPages: number;
@@ -62,49 +63,51 @@ export const queryBooks = createAsyncThunk<
   }
 });
 
-export const checkoutBook = createAsyncThunk(
+export const checkoutBook = createAsyncThunk<LoanRecordDto, CheckoutBookDto>(
   "book/checkout",
-  async (payload: CheckoutBookPayload, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
       return await checkoutBookApi(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  },
+  }
 );
 
-export const checkinBook = createAsyncThunk(
+export const checkinBook = createAsyncThunk<LoanRecordDto, CheckinBookDto>(
   "book/checkin",
-  async (payload: CheckinBookPayload, thunkAPI) => {
+  async (payload, thunkAPI) => {
     try {
       return await checkinBookApi(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  },
+  }
 );
 
-export const loadBookByBarcode = createAsyncThunk<Book, string>(
-  "book/id",
+export const loadBookByBarcode = createAsyncThunk<BookDto, string>(
+  "book/barcode",
   async (barcode, thunkAPI) => {
     try {
       return await loadBookByBarcodeApi(barcode);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  },
+  }
 );
+
 
 export const bookSlice = createSlice({
   name: "book",
   initialState,
   reducers: {
-    setCurrentBook(state, action: PayloadAction<Book | undefined>) {
+    setCurrentBook(state, action: PayloadAction<BookDto | undefined>) {
       state.currentBook = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
+
       .addCase(fetchAllBooks.fulfilled, (state, action) => {
         state.books = action.payload;
         state.loading = false;
@@ -121,27 +124,34 @@ export const bookSlice = createSlice({
         state.loading = false;
       })
       .addCase(checkoutBook.fulfilled, (state, action) => {
-        state.books = state.books.map((book) => {
-          if (book._id === action.payload.item._id) {
-            book.records = [action.payload, ...book.records];
-          }
-          return book;
-        });
-      })
-      .addCase(checkinBook.fulfilled, (state, action) => {
-        state.books = state.books.map((book) => {
-          if (book._id === action.payload.item._id) {
-            book.records[0] = action.payload;
-          }
-          return book;
-        });
+        const record = action.payload;
+        const itemId = record.item;
+
+        state.books = state.books.map((book) =>
+          book._id === itemId
+            ? { ...book, records: [record, ...book.records] }
+            : book
+        );
+
         state.loading = false;
       })
-      
+      .addCase(checkinBook.fulfilled, (state, action) => {
+        const updatedRecord = action.payload;
+        const itemId = updatedRecord.item;
+
+        state.books = state.books.map((book) =>
+          book._id === itemId
+            ? { ...book, records: [updatedRecord, ...book.records.slice(1)] }
+            : book
+        );
+
+        state.loading = false;
+      })
       .addCase(loadBookByBarcode.fulfilled, (state, action) => {
         state.currentBook = action.payload;
         state.loading = false;
       });
+
 
     builder
       .addMatcher(
@@ -149,14 +159,14 @@ export const bookSlice = createSlice({
         (state) => {
           state.loading = true;
           state.error = false;
-        },
+        }
       )
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
         (state) => {
           state.loading = false;
           state.error = true;
-        },
+        }
       );
   },
 });

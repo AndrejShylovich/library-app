@@ -13,8 +13,6 @@ function handleError(res: Response, error: any, options?: { conflict?: boolean }
     });
   }
 
-  console.log(error);
-
   if (error instanceof InvalidUsernameOrPasswordError) {
     return res.status(401).json({
       message: "Invalid username or password",

@@ -29,14 +29,19 @@ const userBase = {
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
   email: Joi.string().regex(emailRegex).required(),
-  password: Joi.string().required(),
+  password: Joi.string().optional(),
 };
 
 const idField = { _id: Joi.string().regex(objectIdRegex).required() };
 const userIdField = { userId: Joi.string().regex(objectIdRegex).required() };
-const libraryCardIdField = { cardId: Joi.string().regex(objectIdRegex).required() };
+const libraryCardIdField = {
+  cardId: Joi.string().regex(objectIdRegex).required(),
+};
 const itemIdField = { item: Joi.string().regex(objectIdRegex).required() };
-const employeeIdField = { employeeOut: Joi.string().regex(objectIdRegex).required(), employeeIn: Joi.string().regex(objectIdRegex) };
+const employeeIdField = {
+  employeeOut: Joi.string().regex(objectIdRegex).required(),
+  employeeIn: Joi.string().regex(objectIdRegex),
+};
 const patronIdField = { patron: Joi.string().regex(objectIdRegex).required() };
 const barcodeField = { barcode: Joi.string().regex(barcodeRegex).required() };
 
@@ -67,23 +72,28 @@ export const Schemas = {
       pages: Joi.number().required(),
       genre: Joi.string().required(),
     }),
-    update: Joi.object<IBookModel>({ ...idField, ...{
-      ...barcodeField,
-      cover: Joi.string().required(),
-      title: Joi.string().required(),
-      authors: Joi.array().required(),
-      description: Joi.string().required(),
-      subjects: Joi.array().required(),
-      publicationDate: Joi.date().required(),
-      publisher: Joi.string().required(),
-      pages: Joi.number().required(),
-      genre: Joi.string().required(),
-    }}),
+    update: Joi.object<IBookModel>({
+      ...idField,
+      ...{
+        ...barcodeField,
+        cover: Joi.string().required(),
+        title: Joi.string().required(),
+        authors: Joi.array().required(),
+        description: Joi.string().required(),
+        subjects: Joi.array().required(),
+        publicationDate: Joi.date().required(),
+        publisher: Joi.string().required(),
+        pages: Joi.number().required(),
+        genre: Joi.string().required(),
+      },
+    }),
     delete: Joi.object(barcodeField),
   },
 
   libraryCard: {
-    create: Joi.object<ILibraryCard>({ user: Joi.string().regex(objectIdRegex).required() }),
+    create: Joi.object<ILibraryCard>({
+      user: Joi.string().regex(objectIdRegex).required(),
+    }),
     get: Joi.object(libraryCardIdField),
   },
 
@@ -93,7 +103,7 @@ export const Schemas = {
       loanedDate: Joi.date().required(),
       dueDate: Joi.date().required(),
       returnedDate: Joi.date(),
-      
+
       ...patronIdField,
       ...employeeIdField,
       ...itemIdField,
@@ -109,17 +119,19 @@ export const Schemas = {
       ...itemIdField,
     }).unknown(true),
     query: Joi.object<{ property: string; value: string | Date }>({
-      property: Joi.string().valid(
-        "_id",
-        "status",
-        "loanedDate",
-        "dueDate",
-        "returnedDate",
-        "patron",
-        "employeeOut",
-        "employeeIn",
-        "item"
-      ).required(),
+      property: Joi.string()
+        .valid(
+          "_id",
+          "status",
+          "loanedDate",
+          "dueDate",
+          "returnedDate",
+          "patron",
+          "employeeOut",
+          "employeeIn",
+          "item",
+        )
+        .required(),
       value: Joi.alternatives().try(Joi.string(), Joi.date()).required(),
     }),
   },

@@ -6,15 +6,22 @@ import {
   generateRandomGenres,
   getRandomBooksByGenre,
 } from "../../utils/catalog.utils";
+import type { DomainBook } from "../../../../models/domain/Book";
+import { BookMapper } from "../../../../models/mapper/BookMapper";
 
 export const useCatalogOverview = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { books, loading } = useSelector((state: RootState) => state.book);
+  const { books: bookDtos, loading } = useSelector((state: RootState) => state.book);
 
   useEffect(() => {
     dispatch(fetchAllBooks());
   }, [dispatch]);
 
+  const books = useMemo<DomainBook[]>(
+    () => bookDtos.map(BookMapper.toDomain),
+    [bookDtos]
+  );
+  
   const genres = useMemo(() => generateRandomGenres(), []);
 
   const booksByGenre = useMemo(

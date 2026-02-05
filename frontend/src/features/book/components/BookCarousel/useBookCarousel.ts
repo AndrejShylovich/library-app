@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Book } from "../../../../models/Book";
+import type { DomainBook as Book } from "../../../../models/domain/Book";
 
 export const useBookCarousel = (books: Book[]) => {
   const [index, setIndex] = useState(0);

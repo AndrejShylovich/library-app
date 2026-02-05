@@ -8,7 +8,7 @@ import "./BookOverview.css";
 
 export const BookOverview: React.FC = () => {
   const { currentBook, loading, user } = useBookOverview();
-
+  
   if (loading) return <div className="book-overview">Loading...</div>;
   if (!currentBook)
     return <div className="book-overview">No book selected.</div>;

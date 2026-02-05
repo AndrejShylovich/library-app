@@ -20,7 +20,7 @@ export const UpdateUserForm: React.FC = () => {
       <Input
         label="First Name:"
         name="firstName"
-        value={user?.firstName}
+        value={user?.firstName || ""}
         disabled={disabled}
         onChange={handleChange}
         className="update-user-input"
@@ -28,7 +28,7 @@ export const UpdateUserForm: React.FC = () => {
       <Input
         label="Last Name:"
         name="lastName"
-        value={user?.lastName}
+        value={user?.lastName || ""}
         disabled={disabled}
         onChange={handleChange}
         className="update-user-input"
@@ -36,7 +36,7 @@ export const UpdateUserForm: React.FC = () => {
       <Input
         label="Email:"
         name="email"
-        value={user?.email}
+        value={user?.email || ""}
         disabled={disabled}
         onChange={handleChange}
         error={emailError}

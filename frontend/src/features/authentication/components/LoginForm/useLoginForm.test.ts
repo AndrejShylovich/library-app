@@ -4,6 +4,7 @@ import { useLoginForm } from "./useLoginForm";
 import { loginUser } from "../../../../store/slices/AuthenticationSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { ChangeEvent, FormEvent } from "react";
+import * as Router from "react-router-dom"; 
 
 vi.mock("react-redux", () => ({
   useDispatch: vi.fn(),
@@ -14,21 +15,37 @@ vi.mock("../../../../store/slices/AuthenticationSlice", () => ({
   loginUser: vi.fn(),
 }));
 
+vi.mock("react-router-dom", () => ({
+  useNavigate: vi.fn(),
+}));
+
+vi.mock("react-toastify", () => ({
+  toast: {
+    error: vi.fn(),
+    success: vi.fn(),
+  },
+}));
+
 describe("useLoginForm", () => {
   const dispatchMock = vi.fn();
+  const navigateMock = vi.fn();
 
   beforeEach(() => {
     dispatchMock.mockClear();
-    vi.mocked(useDispatch).mockReturnValue(dispatchMock);
+    navigateMock.mockClear();
 
+    vi.mocked(useDispatch).mockReturnValue(dispatchMock);
     vi.mocked(useSelector).mockImplementation((selector) =>
       selector({
         authentication: {
           error: false,
           loading: false,
+          profileUser: null,
         },
       }),
     );
+
+    vi.mocked(Router.useNavigate).mockReturnValue(navigateMock);
   });
 
   it("should initialize with empty email and password", () => {
@@ -99,6 +116,7 @@ describe("useLoginForm", () => {
         authentication: {
           error: true,
           loading: true,
+          profileUser: null,
         },
       }),
     );

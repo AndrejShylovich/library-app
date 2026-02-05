@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
-import type { LoanRecord } from "../../../../models/LoanRecord";
+import type { DomainLoanRecord as LoanRecord } from "../../../../models/domain/LoanRecord";
 
 interface UseProfileLoanHistoryResult {
   records: LoanRecord[];

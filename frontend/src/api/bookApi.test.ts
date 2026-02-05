@@ -1,133 +1,221 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import type {
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
+
 import {
   fetchAllBooksApi,
   queryBooksApi,
   checkoutBookApi,
+  checkinBookApi,
   loadBookByBarcodeApi,
 } from "./bookApi";
-import type { Book, CheckoutBookPayload } from "../models/Book";
-import type { User } from "../models/User";
 
-const VITE_API_URL = "http://localhost:8000";
+import { api } from "./axios";
 
-describe("Books API", () => {
-  let mock: MockAdapter;
+import type {
+  BookDto,
+  CheckoutBookDto,
+  CheckinBookDto,
+} from "../models/dto/BookDto";
+import type { LoanRecordDto } from "../models/dto/LoanRecordDto";
+import type { UserDto } from "../models/dto/UserDto";
 
-  beforeEach(() => {
-    mock = new MockAdapter(axios);
-  });
+vi.mock("./axios", () => ({
+  api: {
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+  },
+}));
 
-  it("fetchAllBooksApi should return array of books", async () => {
-    const fakeBooks = [
-      {
-        _id: "1",
-        barcode: "123",
-        cover: "",
-        title: "Book1",
-        authors: [],
-        description: "",
-        subjects: [],
-        publicationDate: new Date(),
-        publisher: "",
-        pages: 100,
-        genre: "Fiction",
-        records: [],
-      },
-    ];
+const mockAxiosResponse = <T,>(data: T): AxiosResponse<T> => ({
+  data,
+  status: 200,
+  statusText: "OK",
+  headers: {},
+  config: {
+    headers: {},
+  } as InternalAxiosRequestConfig,
+});
 
-    mock.onGet(`${VITE_API_URL}/book/`).reply(200, { books: fakeBooks });
+beforeEach(() => {
+  vi.clearAllMocks();
+});
 
-    const books = await fetchAllBooksApi();
-    const booksWithDate = books.map((b) => ({
-      ...b,
-      publicationDate: new Date(b.publicationDate),
-    }));
+const mockEmployee: UserDto = {
+  _id: "employee-1",
+  type: "EMPLOYEE",
+  firstName: "Test",
+  lastName: "Employee",
+  email: "employee@test.com",
+};
 
-    expect(booksWithDate).toEqual(fakeBooks);
-  });
+const mockBook: BookDto = {
+  _id: "book-1",
+  barcode: "123456",
+  cover: "",
+  title: "Clean Code",
+  authors: ["Robert C. Martin"],
+  description: "Test book",
+  subjects: [],
+  publicationDate: "2008-01-01",
+  publisher: "Prentice Hall",
+  pages: 400,
+  genre: "Non-Fiction",
+  records: [],
+};
 
-  it("queryBooksApi should return page", async () => {
-    const fakePage = { items: [{ _id: "1" }] };
-    mock
-      .onGet(`${VITE_API_URL}/book/query?title=test`)
-      .reply(200, { page: fakePage });
+const mockLoanRecord: LoanRecordDto = {
+  _id: "loan-1",
+  status: "LOANED",
+  loanedDate: new Date().toISOString(),
+  dueDate: new Date().toISOString(),
+  patron: "user-1",
+  employeeOut: "employee-1",
+  item: "book-1",
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
 
-    const page = await queryBooksApi("?title=test");
-    expect(page).toEqual(fakePage);
-  });
-
-  it("checkoutBookApi should create a loan record", async () => {
-    const fakeBook: Book = {
-      _id: "1",
-      barcode: "123",
-      cover: "",
-      title: "Book1",
-      authors: [],
-      description: "",
-      subjects: [],
-      publicationDate: new Date(),
-      publisher: "",
-      pages: 100,
-      genre: "Fiction",
-      records: [],
-    };
-
-    const fakeUser: User = {
-      _id: "emp1",
-      type: "EMPLOYEE",
-      firstName: "John",
-      lastName: "Doe",
-      email: "john@example.com",
-      password: "123",
-    };
-
-    const fakeLibraryCard = "card1";
-    const patronId = "patron1";
-
-    mock.onGet(`${VITE_API_URL}/card/${fakeLibraryCard}`).reply(200, {
-      libraryCard: { user: { _id: patronId } },
-    });
-
-    mock.onPost(`${VITE_API_URL}/loan`).reply(200, {
-      record: { _id: "loan1", patron: patronId, item: fakeBook._id },
-    });
-
-    const payload: CheckoutBookPayload = {
-      book: fakeBook,
-      libraryCard: fakeLibraryCard,
-      employee: fakeUser,
-    };
-
-    const record = await checkoutBookApi(payload);
-
-    expect(record).toHaveProperty("_id", "loan1");
-    expect(record).toHaveProperty("patron", patronId);
-    expect(record).toHaveProperty("item", fakeBook._id);
-  });
-
-  it("loadBookByBarcodeApi should return the correct book", async () => {
-    const barcode = "123456";
-    const fakeBook = { _id: "1", barcode };
-
-    mock.onGet(`${VITE_API_URL}/book/query?barcode=${barcode}`).reply(200, {
-      page: { items: [fakeBook] },
-    });
-
-    const book = await loadBookByBarcodeApi(barcode);
-    expect(book).toEqual(fakeBook);
-  });
-
-  it("loadBookByBarcodeApi should throw error if book not found", async () => {
-    const barcode = "999";
-
-    mock.onGet(`${VITE_API_URL}/book/query?barcode=${barcode}`).reply(200, {
-      page: { items: [] },
-    });
-
-    await expect(loadBookByBarcodeApi(barcode)).rejects.toThrow(
-      "Book not found",
+describe("fetchAllBooksApi", () => {
+  it("returns list of books", async () => {
+    vi.mocked(api.get).mockResolvedValueOnce(
+      mockAxiosResponse({ books: [mockBook] })
     );
+
+    const result = await fetchAllBooksApi();
+
+    expect(api.get).toHaveBeenCalledWith("/book/");
+    expect(result).toEqual([mockBook]);
+  });
+});
+
+describe("queryBooksApi", () => {
+  it("returns paginated books", async () => {
+    vi.mocked(api.get).mockResolvedValueOnce(
+      mockAxiosResponse({
+        page: {
+          page: 1,
+          limit: 10,
+          total: 1,
+          items: [mockBook],
+        },
+      })
+    );
+
+    const result = await queryBooksApi("?title=clean");
+
+    expect(api.get).toHaveBeenCalledWith("/book/query?title=clean");
+    expect(result.items).toEqual([mockBook]);
+    expect(result.total).toBe(1);
+  });
+});
+
+describe("checkoutBookApi", () => {
+  it("creates loan record", async () => {
+    vi.mocked(api.get).mockResolvedValueOnce(
+      mockAxiosResponse({
+        libraryCard: {
+          user: { _id: "user-1" },
+        },
+      })
+    );
+
+    vi.mocked(api.post).mockResolvedValueOnce(
+      mockAxiosResponse({
+        record: {
+          ...mockLoanRecord,
+          item: { _id: "book-1" },
+        },
+      })
+    );
+
+    const payload: CheckoutBookDto = {
+      book: mockBook,
+      libraryCard: "CARD-123",
+      employee: mockEmployee,
+    };
+
+    const result = await checkoutBookApi(payload);
+
+    expect(api.get).toHaveBeenCalledWith("/card/CARD-123");
+    expect(api.post).toHaveBeenCalledWith(
+      "/loan",
+      expect.objectContaining({
+        status: "LOANED",
+        patron: "user-1",
+        employeeOut: "employee-1",
+        item: "book-1",
+      })
+    );
+
+    expect(result.item).toEqual({ _id: "book-1" });
+  });
+});
+
+describe("checkinBookApi", () => {
+  it("updates loan record to AVAILABLE", async () => {
+    const bookWithRecord: BookDto = {
+      ...mockBook,
+      records: [mockLoanRecord],
+    };
+
+    vi.mocked(api.put).mockResolvedValueOnce(
+      mockAxiosResponse({
+        record: {
+          ...mockLoanRecord,
+          status: "AVAILABLE",
+          item: { _id: "book-1" },
+        },
+      })
+    );
+
+    const payload: CheckinBookDto = {
+      book: bookWithRecord,
+      employee: mockEmployee,
+    };
+
+    const result = await checkinBookApi(payload);
+
+    expect(api.put).toHaveBeenCalledWith(
+      "/loan",
+      expect.objectContaining({
+        status: "AVAILABLE",
+        employeeIn: "employee-1",
+      })
+    );
+
+    expect(result.status).toBe("AVAILABLE");
+  });
+});
+
+describe("loadBookByBarcodeApi", () => {
+  it("returns book when barcode matches", async () => {
+    vi.mocked(api.get).mockResolvedValueOnce(
+      mockAxiosResponse({
+        page: {
+          items: [mockBook],
+        },
+      })
+    );
+
+    const result = await loadBookByBarcodeApi("123456");
+
+    expect(api.get).toHaveBeenCalledWith("/book/query?barcode=123456");
+    expect(result).toEqual(mockBook);
+  });
+
+  it("throws error when book not found", async () => {
+    vi.mocked(api.get).mockResolvedValueOnce(
+      mockAxiosResponse({
+        page: {
+          items: [],
+        },
+      })
+    );
+
+    await expect(loadBookByBarcodeApi("404")).rejects.toThrow("Book not found");
   });
 });

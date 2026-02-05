@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import type { LoanRecord } from "../../../../models/LoanRecord";
+import type { DomainLoanRecord as LoanRecord } from "../../../../models/domain/LoanRecord";
 
 export const useBookHistoryItem = (record: LoanRecord) => {
   const navigate = useNavigate();
 
-  const visitProfile = () => navigate(`/profile/${record.patron}`);
+  const visitProfile = () => navigate(`/profile/${record.patronId}`);
 
   const loanDate = new Date(record.loanedDate).toDateString();
   const returnedDate = record.returnedDate

@@ -1,4 +1,4 @@
-import type { Book } from "../../../../models/Book";
+import type { DomainBook as Book } from "../../../../models/domain/Book";
 
 export const useBookAdditionalInfo = (book: Book) => {
   return [

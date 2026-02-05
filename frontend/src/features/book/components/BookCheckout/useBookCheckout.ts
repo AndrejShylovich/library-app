@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
 import {
   checkoutBook,
@@ -23,7 +24,9 @@ export const useBookCheckout = () => {
 
     const libraryCard = libraryCardRef.current?.value.trim();
     if (!libraryCard) {
-      alert("Please enter a valid library card number.");
+      toast.error(
+        "Please enter a valid library card number.",
+      );
       return;
     }
 
@@ -38,11 +41,16 @@ export const useBookCheckout = () => {
 
       dispatch(setCurrentBook(undefined));
       dispatch(setDisplayLoan(false));
-      navigate(`/catalog`)
-
-    } catch (error) {
+      toast.success(`The book "${book.title}" has been successfully checked out!`);
+      navigate(`/`);
+    } catch (error: unknown) {
       console.error("Checkout failed", error);
-      alert("Failed to checkout book. Please try again.");
+
+      if (error instanceof Error) {
+        toast.error(`Error during book checkout`);
+      } else {
+        toast.error("Failed to check out the book. Please try again.");
+      }
     }
   };
 

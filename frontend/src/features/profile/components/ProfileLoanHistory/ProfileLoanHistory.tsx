@@ -4,7 +4,9 @@ import { ProfileLoanRecord } from "../ProfileLoanRecord/ProfileLoanRecord";
 import { useProfileLoanHistory } from "./useProfileLoanHistory";
 
 export const ProfileLoanHistory: React.FC = () => {
-  const user = useSelector((state: RootState) => state.authentication.profileUser);
+  const user = useSelector(
+    (state: RootState) => state.authentication.profileUser,
+  );
   const { records, loading, error } = useProfileLoanHistory(user?._id);
 
   if (!user) return null;
@@ -17,10 +19,12 @@ export const ProfileLoanHistory: React.FC = () => {
 
       {loading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
-      {!loading && !error && records.length === 0 && <p>No loan records found.</p>}
+      {!loading && !error && records.length === 0 && (
+        <p>No loan records found.</p>
+      )}
 
-      {records.map(record => (
-        <ProfileLoanRecord key={record._id} record={record} />
+      {records.map((record, index) => (
+        <ProfileLoanRecord key={record.id ?? index} record={record} />
       ))}
     </section>
   );

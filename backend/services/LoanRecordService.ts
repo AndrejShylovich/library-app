@@ -23,6 +23,7 @@ export async function generateRecord(
 export async function modifyRecord(
   record: ILoanRecordModel
 ): Promise<ILoanRecordModel> {
+
   try {
     const updatedRecord = await LoanRecordDao.findByIdAndUpdate(
       record._id,

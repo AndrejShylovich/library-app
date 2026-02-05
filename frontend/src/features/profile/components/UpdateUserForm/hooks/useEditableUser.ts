@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import type { User } from "../../../../../models/User";
+import type { DomainUser as User } from "../../../../../models/domain/User";
 
 export const useEditableUser = (initialUser?: User) => {
   const [user, setUser] = useState<User | undefined>(initialUser);

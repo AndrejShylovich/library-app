@@ -1,5 +1,5 @@
 import type React from "react";
-import type { Book } from "../../../../models/Book";
+import type { DomainBook as Book } from "../../../../models/domain/Book";
 import { BookCard } from "../BookCard/BookCard";
 import { useBookCarousel } from "./useBookCarousel";
 import "./BookCarousel.css";

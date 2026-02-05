@@ -1,67 +1,45 @@
-import axios from "axios";
 import type {
-  FetchUserPayload,
-  LoginUserPayload,
-  RegisterUserPayload,
-  User,
-} from "../models/User";
+  LoginUserDto,
+  RegisterUserDto,
+  FetchUserDto,
+  UserDto,
+} from "../models/dto/UserDto";
+import { api } from "./axios"; 
 
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+export const loginUserApi = async (payload: LoginUserDto): Promise<UserDto> => {
+  const res = await api.post("/auth/login", payload);
+  const { user, token }: { user: UserDto; token: string } = res.data;
 
-export const loginUserApi = async (
-  payload: LoginUserPayload,
-): Promise<User> => {
-  const res = await axios.post(`${VITE_API_URL}/auth/login`, payload);
-  const { user, token } = res.data;
   localStorage.setItem("token", token);
   localStorage.setItem("userId", user._id);
+
   return user;
 };
 
 export const registerUserApi = async (
-  payload: RegisterUserPayload,
-): Promise<User> => {
-  const res = await axios.post(`${VITE_API_URL}/auth/register`, payload);
+  payload: RegisterUserDto
+): Promise<UserDto> => {
+  const res = await api.post("/auth/register", payload);
   return res.data.user;
 };
 
-export const fetchUserApi = async (payload: FetchUserPayload) => {
-  const token = localStorage.getItem("token");
-
-  const res = await axios.get(`${VITE_API_URL}/users/${payload.userId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const fetchUserApi = async (
+  payload: FetchUserDto
+): Promise<{ user: UserDto; property: FetchUserDto["property"] }> => {
+  const res = await api.get(`/users/${payload.userId}`);
 
   return {
-    user: res.data.user as User,
+    user: res.data.user as UserDto,
     property: payload.property,
   };
 };
 
-export const updateUserApi = async (payload: User): Promise<User> => {
-  const token = localStorage.getItem("token");
-
-  const res = await axios.put(`${VITE_API_URL}/users/`, payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return res.data.user;
+export const updateUserApi = async (user: UserDto): Promise<UserDto> => {
+  const res = await api.put("/users/", user);
+  return res.data.user as UserDto;
 };
 
 export const getLibraryCardApi = async (userId: string): Promise<string> => {
-  const token = localStorage.getItem("token");
-
-  const res = await axios.post(
-    `${VITE_API_URL}/card/`,
-    { user: userId },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const res = await api.post("/card/", { user: userId });
   return res.data.libraryCard._id;
 };

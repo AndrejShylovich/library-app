@@ -1,4 +1,4 @@
-import type { Book } from "../../../../models/Book";
+import type { DomainBook as Book } from "../../../../models/domain/Book";
 import { BookCheckin } from "../BookCheckIn/BookCheckIn";
 import { BookCheckout } from "../BookCheckout/BookCheckout";
 

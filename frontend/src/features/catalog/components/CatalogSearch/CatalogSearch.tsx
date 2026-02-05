@@ -4,6 +4,7 @@ import { CatalogAdvancedSearch } from "../CatalogAdvancedSearch/CatalogAdvancedS
 import { CatalogSearchPageNavigation } from "../CatalogSearchPageNavigation/CatalogSearchPageNavigation";
 import "./CatalogSearch.css";
 import { useCatalogSearch } from "./useCatalogSearch";
+import { BookMapper } from "../../../../models/mapper/BookMapper";
 
 export const CatalogSearch: React.FC = () => {
   const { books, loading, pagingInformation } = useCatalogSearch();
@@ -22,9 +23,10 @@ export const CatalogSearch: React.FC = () => {
           </h2>
 
           <div className="catalog-search-item-area">
-            {books.map((book) => (
-              <BookCard key={book.barcode} book={book} />
-            ))}
+            {books.map((bookDto) => {
+              const book = BookMapper.toDomain(bookDto);
+              return <BookCard key={book.id} book={book} />;
+            })}
           </div>
 
           <div className="catalog-search-pages">

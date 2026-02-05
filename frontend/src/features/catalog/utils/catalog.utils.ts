@@ -1,5 +1,5 @@
-import type { Book } from "../../../models/Book";
-import type { PageInfo } from "../../../models/Page";
+import type { DomainBook as Book } from "../../../models/domain/Book";
+import type { PageInfo } from "../../../models/dto/PageDto";
 
 export function generateRandomGenres(): string[] {
   const choices = [
