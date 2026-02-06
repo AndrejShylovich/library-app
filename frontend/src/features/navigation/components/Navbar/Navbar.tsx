@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { Book, Search } from "@mui/icons-material";
+import { Book, Search, Person, MenuBook, AccountCircle } from "@mui/icons-material";
 import "./Navbar.css";
 import { useNavbarLogic } from "./useNavbarLogic";
 import { Input } from "../../../../shared/ui/Input/Input";
-
 export const Navbar: React.FC = () => {
   const {
     loggedInUser,
@@ -13,21 +12,24 @@ export const Navbar: React.FC = () => {
     navigateToProfile,
     toggleLogin,
   } = useNavbarLogic();
-
   return (
     <nav className="navbar">
-
       <Link to="/" className="navbar-logo-section">
-        <Book sx={{ fontSize: "1rem" }} />
-        <h3>My Library</h3>
+        <Book className="navbar-logo-icon" /> <h3>My Library</h3>
       </Link>
-
-
       <div className="navbar-right-section">
         <Link to="/catalog" className="navbar-option navbar-link">
           <h3>Catalog</h3>
+          <MenuBook
+            className="navbar-option-icon"
+            onClick={performSearch}
+            sx={{
+              display: { xs: "block", md: "none" },
+              fontSize: "1.4rem",
+              cursor: "pointer",
+            }}
+          />
         </Link>
-
         <div className="navbar-search-box">
           <Input
             className="navbar-search-input"
@@ -40,14 +42,19 @@ export const Navbar: React.FC = () => {
             sx={{ cursor: "pointer", fontSize: "2rem" }}
           />
         </div>
-
         {loggedInUser ? (
           <div className="navbar-option" onClick={navigateToProfile}>
             <h2>{loggedInUser.firstName}</h2>
+            <AccountCircle
+              sx={{ display: { xs: "block", md: "none" }, fontSize: "1.4rem" }}
+            />
           </div>
         ) : (
           <div className="navbar-option" onClick={toggleLogin}>
             <h2>Login</h2>
+            <Person
+              sx={{ display: { xs: "block", md: "none" }, fontSize: "1.4rem" }}
+            />
           </div>
         )}
       </div>
