@@ -1,8 +1,7 @@
 # 📚 Library App (MERN + TypeScript)
 
-Fullstack веб-приложение библиотеки с авторизацией, каталогом книг и расширенным поиском.  
-Проект демонстрирует работу с современным React-стеком, REST API, базовой безопасностью и тестированием.
-
+A fullstack library web application with authentication, a book catalog, and advanced search.
+The project demonstrates work with a modern React stack, REST API, basic security practices, and testing.
 ---
 
 ## 🚀 Стек технологий
@@ -13,102 +12,104 @@ Fullstack веб-приложение библиотеки с авторизац
 - **Redux Toolkit (RTK)**
 - **CSS Modules**
 - **Vitest** (unit + integration tests)
-- Работа с **cookies**
-- Адаптивная и семантическая верстка
+- Working with **cookies**
+- Responsive and semantic layout
 
 ### Backend
 - **Node.js + Express**
 - **MongoDB (локальная)**
 - **Mongoose**
-- **Joi** (валидация данных)
-- **bcrypt** (хеширование паролей)
+- **Joi** (data validation)
+- **bcrypt** (password hashing)
 - **cors**
 - **dotenv**
-- MVC-подход (роуты, контроллеры, модели)
-- Middleware и пользовательские ошибки
+- **jsonwebtoken**
+- MVC approach (routes, controllers, models)
+- Middleware and custom error handling
 
 ---
 
-## ✨ Основной функционал
+## ✨ Core Features
 
-### 🔐 Авторизация
-- Логин и регистрация через модальное окно
-- Неавторизованный пользователь может пользоваться приложением в ознакомительном режиме
-- Защищённое хранение паролей (bcrypt)
-- Доступ к пользовательским данным только после авторизации
-
----
-
-### 📖 Каталог книг
-- Каталог с **рандомно генерируемыми жанрами** из заранее заданного списка
-- Возможность:
-  - показать все доступные книги
-  - выполнить поиск
-
-#### 🔍 Поиск
-- Простой поиск по названию
-- Расширенный «умный» поиск по нескольким параметрам
-- Использование cookie-данных для улучшения поиска
+### 🔐 Authentication
+- Login and registration via modal window
+- Unauthenticated users can use the app in demo mode
+- Secure password storage using bcrypt
+- Access to user data only after authentication
+- JWT (JSON Web Token) is used for user authentication
 
 ---
 
-### 🏠 Титульная страница
-Содержит:
-- Ссылку на **читательский билет**
-  - если пользователь не авторизован — редирект на авторизацию
-- Компонент **«Книга недели»**
-  - постер подгружается по внешней ссылке
-- Таблицу с временем работы библиотеки
-- 2 информационные карточки
+### 📖 Book Catalog
+- Catalog with **randomly generated genres** from a predefined list
+- Ability to:
+  - view all available books
+  - perform searches
+
+#### 🔍 Search
+- Simple search by title
+- Advanced “smart” search using multiple parameters
+- Cookie data is used to improve search behavior
+
+---
+
+### 🏠 Home Page
+Includes:
+- A link to the **library card**
+  - redirects to authentication if the user is not logged in
+- **«Book of the Week»** component
+  - poster is loaded via an external link
+- A table with library opening hours
+- Two informational cards
 - **NavBar**:
-  - главная страница
-  - каталог с рандомными жанрами
-  - поиск (с переходом на страницу результатов)
-  - авторизация / профиль пользователя
+  - home page
+  - catalog with random genres
+  - search (redirects to results page)
+  - authentication / user profile
 - **Footer**
-  - информационный, визуальный компонент
+  - informational and visual component
 
 ---
 
-### 👤 Профиль пользователя
-- Просмотр и редактирование:
-  - имени
-  - фамилии
+### 👤 User Profile
+- View and edit:
+  - first name
+  - last name
   - email
-- Выход из аккаунта
-- Отображение информации о забронированных книгах
+- Logout
+- Display of information about loaned and returned books
 
 ---
 
-## 🧪 Тестирование
+## 🧪 Testing
 
-- Используется **Vitest**
-- Присутствуют:
+- **Vitest** is used
+- Includes:
   - mock-тесты
-  - интеграционные тесты
-- Тесты реализованы **для демонстрации навыка**, а не полного покрытия проекта
+  - integration tests
+- Tests are implemented to **demonstrate skills**, not to fully cover the entire project. Priority during testing was given to the project logic.
 
 ---
 
-## 🗂 Архитектура проекта
+## 🗂 Project Architecture
 
 ### Backend
-- Роутинг
-- Контроллеры
-- Модели БД
+- Routing
+- Controllers
+- Database models
 - Middleware
-- Валидация входных данных
-- Пользовательские ошибки
+- Input data validation
+- Custom error handling
 
 ### Frontend
-- Компонентный подход
-- Redux Toolkit для управления состоянием
-- Модульные стили
-- Разделение логики и UI
+- Component-based architecture
+- Redux Toolkit for state management
+- Modular styles
+- Separation of logic and UI
 
 ---
 
-## 🛠 Установка и запуск
+## 🛠 Installation & Running
 
 ### Backend
 cd backend
