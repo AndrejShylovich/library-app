@@ -4,42 +4,42 @@ import type {
   FetchUserDto,
   UserDto,
 } from "../models/dto/UserDto";
-import { api } from "./axios"; 
+import { api, TOKEN_KEY, USER_ID_KEY } from "./axios";
 
 export const loginUserApi = async (payload: LoginUserDto): Promise<UserDto> => {
-  const res = await api.post("/auth/login", payload);
-  const { user, token }: { user: UserDto; token: string } = res.data;
+  const { data } = await api.post<{ user: UserDto; token: string }>(
+    "/auth/login",
+    payload
+  );
 
-  localStorage.setItem("token", token);
-  localStorage.setItem("userId", user._id);
+  localStorage.setItem(TOKEN_KEY, data.token);
+  localStorage.setItem(USER_ID_KEY, data.user._id);
 
-  return user;
+  return data.user;
 };
 
 export const registerUserApi = async (
   payload: RegisterUserDto
 ): Promise<UserDto> => {
-  const res = await api.post("/auth/register", payload);
-  return res.data.user;
+  const { data } = await api.post<{ user: UserDto }>("/auth/register", payload);
+  return data.user;
 };
 
 export const fetchUserApi = async (
   payload: FetchUserDto
 ): Promise<{ user: UserDto; property: FetchUserDto["property"] }> => {
-  const res = await api.get(`/users/${payload.userId}`);
-
-  return {
-    user: res.data.user as UserDto,
-    property: payload.property,
-  };
+  const { data } = await api.get<{ user: UserDto }>(`/users/${payload.userId}`);
+  return { user: data.user, property: payload.property };
 };
 
 export const updateUserApi = async (user: UserDto): Promise<UserDto> => {
-  const res = await api.put("/users/", user);
-  return res.data.user as UserDto;
+  const { data } = await api.put<{ user: UserDto }>("/users/", user);
+  return data.user;
 };
 
 export const getLibraryCardApi = async (userId: string): Promise<string> => {
-  const res = await api.post("/card/", { user: userId });
-  return res.data.libraryCard._id;
+  const { data } = await api.post<{ libraryCard: { _id: string } }>("/card/", {
+    user: userId,
+  });
+  return data.libraryCard._id;
 };
