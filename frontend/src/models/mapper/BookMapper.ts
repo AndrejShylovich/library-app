@@ -1,4 +1,3 @@
-
 import type { DomainBook, DomainCheckinBookPayload, DomainCheckoutBookPayload } from "../domain/Book";
 import type { BookDto, CheckinBookDto, CheckoutBookDto } from "../dto/BookDto";
 import { LoanRecordMapper } from "./LoanRecordMapper";

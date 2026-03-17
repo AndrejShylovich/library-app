@@ -2,7 +2,7 @@ import type { DomainLoanRecord } from "./LoanRecord";
 import type { DomainUser } from "./User";
 
 export interface DomainBook {
-  id: string; 
+  id: string;
   barcode: string;
   cover: string;
   title: string;
@@ -13,11 +13,11 @@ export interface DomainBook {
   publisher: string;
   pages: number;
   genre: string;
-  records: DomainLoanRecord[]; 
+  records: DomainLoanRecord[];
 }
 
 export interface DomainCheckoutBookPayload {
-  book: DomainBook;  
+  book: DomainBook;
   libraryCard: string;
   employee: DomainUser;
 }
