@@ -2,14 +2,14 @@ import type { LoanRecordDto } from "./LoanRecordDto";
 import type { UserDto } from "./UserDto";
 
 export interface BookDto {
-  _id: string; 
+  _id: string;
   barcode: string;
   cover: string;
   title: string;
   authors: string[];
   description: string;
   subjects: string[];
-  publicationDate: string; 
+  publicationDate: string;
   publisher: string;
   pages: number;
   genre: string;
@@ -17,12 +17,21 @@ export interface BookDto {
 }
 
 export interface CheckoutBookDto {
-  book: BookDto;  
+  book: BookDto;
   libraryCard: string;
-  employee: UserDto;  
+  employee: UserDto;
 }
 
 export interface CheckinBookDto {
   book: BookDto;
   employee: UserDto;
+}
+
+export interface BookPageResult {
+  items: BookDto[];
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  limit: number;
+  pageCount: number;
 }
