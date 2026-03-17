@@ -10,6 +10,12 @@ interface State {
   error?: Error;
 }
 
+const fallbackStyles: React.CSSProperties = {
+  padding: "2rem",
+  textAlign: "center",
+  border: "1px solid red",
+};
+
 class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false };
 
@@ -21,28 +27,24 @@ class ErrorBoundary extends Component<Props, State> {
     console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
-  render() {
-    if (this.state.hasError) {
-      return (
-        this.props.fallback || (
-          <div
-            style={{
-              padding: "2rem",
-              textAlign: "center",
-              border: "1px solid red",
-            }}
-          >
-            <h2>Something went wrong</h2>
-            <p>Please refresh the page or try again later.</p>
-            <button onClick={() => window.location.reload()}>
-              Refresh page
-            </button>
-          </div>
-        )
-      );
-    }
+  resetError = () => this.setState({ hasError: false, error: undefined });
 
-    return this.props.children;
+  render() {
+    const { hasError } = this.state;
+    const { fallback, children } = this.props;
+
+    if (!hasError) return children;
+
+    return (
+      fallback ?? (
+        <div style={fallbackStyles} role="alert" aria-live="assertive">
+          <h2>Something went wrong</h2>
+          <p>Please refresh the page or try again later.</p>
+          <button onClick={this.resetError}>Try again</button>
+          <button onClick={() => window.location.reload()}>Refresh page</button>
+        </div>
+      )
+    );
   }
 }
 
