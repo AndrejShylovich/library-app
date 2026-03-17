@@ -12,17 +12,19 @@ export const Button: React.FC<ButtonProps> = ({
   variant,
   size,
   fullWidth = false,
-  className = "",
+  className,
   children,
   ...props
 }) => {
   const classes = [
     "btn",
-    variant ? `btn-${variant}` : "",
-    size ? `btn-${size}` : "",
-    fullWidth ? "btn-full" : "",
+    variant && `btn-${variant}`,
+    size && `btn-${size}`,
+    fullWidth && "btn-full",
     className,
-  ].join(" ");
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <button className={classes} {...props}>
