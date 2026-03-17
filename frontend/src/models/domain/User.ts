@@ -1,6 +1,8 @@
+import type { UserRole, UserProperty } from "../../shared/types";
+
 export interface DomainUser {
   id: string;
-  type: "ADMIN" | "EMPLOYEE" | "PATRON";
+  role: UserRole;
   firstName: string;
   lastName: string;
   email: string;
@@ -8,11 +10,11 @@ export interface DomainUser {
 
 export interface DomainLoginUserPayload {
   email: string;
-  password: string;  
+  password: string;
 }
 
 export interface DomainRegisterUserPayload {
-  type: 'ADMIN' | 'EMPLOYEE' | 'PATRON';
+  role: UserRole;
   firstName: string;
   lastName: string;
   email: string;
@@ -20,6 +22,6 @@ export interface DomainRegisterUserPayload {
 }
 
 export interface DomainFetchUserPayload {
-  userId: string;  
-  property: 'loggedInUser' | 'profileUser';
+  userId: string;
+  property: UserProperty;
 }

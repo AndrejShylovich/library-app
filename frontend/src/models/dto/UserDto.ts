@@ -1,27 +1,28 @@
+import type { UserRole, UserProperty } from "../../shared/types";
+
 export interface UserDto {
   _id: string;
-  type: "ADMIN" | "EMPLOYEE" | "PATRON";
+  type: UserRole;
   firstName: string;
   lastName: string;
   email: string;
-  password?: string; 
+  password?: string;
 }
 
-export interface LoginUserDto {  
+export interface LoginUserDto {
   email: string;
   password: string;
 }
 
-export interface RegisterUserDto {  
-  type: 'ADMIN' | 'EMPLOYEE' | 'PATRON';
+export interface RegisterUserDto {
+  type: UserRole;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
 }
 
-export interface FetchUserDto {  
-  userId: string;  
-  property: 'loggedInUser' | 'profileUser';
+export interface FetchUserDto {
+  userId: string;
+  property: UserProperty;
 }
-
