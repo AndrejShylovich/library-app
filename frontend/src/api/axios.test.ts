@@ -28,20 +28,33 @@ vi.mock("axios", async () => {
 });
 
 describe("api axios instance", () => {
-  beforeEach(() => {
-    vi.resetModules();          
+  let requestInterceptor: (
+    config: InternalAxiosRequestConfig
+  ) => InternalAxiosRequestConfig;
+
+  let responseSuccess: (response: AxiosResponse) => AxiosResponse;
+  let responseError: (error: AxiosError) => Promise<never>;
+
+  beforeEach(async () => {
+    vi.resetModules();
     vi.clearAllMocks();
+
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    await import("./axios");
+
+    requestInterceptor = requestUseMock.mock.calls[0][0];
+    responseSuccess = responseUseMock.mock.calls[0][0];
+    responseError = responseUseMock.mock.calls[0][1];
   });
 
   afterEach(() => {
     localStorage.clear();
+    vi.restoreAllMocks();
   });
 
-
-  it("creates axios instance with base config", async () => {
+  it("creates axios instance with correct config", async () => {
     const axios = await import("axios");
-
-    await import("./axios");
 
     expect(axios.default.create).toHaveBeenCalledWith({
       baseURL: import.meta.env.VITE_API_URL,
@@ -51,39 +64,25 @@ describe("api axios instance", () => {
     });
   });
 
-  it("adds Authorization header if token exists", async () => {
+  it("adds Authorization header if token exists", () => {
     localStorage.setItem("token", "test-token");
 
-    await import("./axios");
-
-    const onFulfilled = requestUseMock.mock.calls[0][0] as (
-      config: InternalAxiosRequestConfig
-    ) => InternalAxiosRequestConfig;
-
-    const result = onFulfilled({ headers: {} } as InternalAxiosRequestConfig);
+    const result = requestInterceptor({
+      headers: {},
+    } as InternalAxiosRequestConfig);
 
     expect(result.headers.Authorization).toBe("Bearer test-token");
   });
 
-  it("does not add Authorization header if token missing", async () => {
-    await import("./axios");
-
-    const onFulfilled = requestUseMock.mock.calls[0][0] as (
-      config: InternalAxiosRequestConfig
-    ) => InternalAxiosRequestConfig;
-
-    const result = onFulfilled({ headers: {} } as InternalAxiosRequestConfig);
+  it("does not add Authorization header if token is missing", () => {
+    const result = requestInterceptor({
+      headers: {},
+    } as InternalAxiosRequestConfig);
 
     expect(result.headers.Authorization).toBeUndefined();
   });
 
-  it("passes response through on success", async () => {
-    await import("./axios");
-
-    const onFulfilled = responseUseMock.mock.calls[0][0] as (
-      response: AxiosResponse
-    ) => AxiosResponse;
-
+  it("returns response as is on success", () => {
     const response = {
       data: { ok: true },
       status: 200,
@@ -92,18 +91,12 @@ describe("api axios instance", () => {
       config: {},
     } as AxiosResponse;
 
-    expect(onFulfilled(response)).toBe(response);
+    expect(responseSuccess(response)).toBe(response);
   });
 
   it("clears localStorage on 401 error", async () => {
     localStorage.setItem("token", "test-token");
     localStorage.setItem("userId", "user-1");
-
-    await import("./axios");
-
-    const onRejected = responseUseMock.mock.calls[0][1] as (
-      error: AxiosError
-    ) => Promise<never>;
 
     const error = {
       response: {
@@ -112,24 +105,37 @@ describe("api axios instance", () => {
       },
     } as AxiosError;
 
-    await expect(onRejected(error)).rejects.toBe(error);
+    await expect(responseError(error)).rejects.toBe(error);
 
     expect(localStorage.getItem("token")).toBeNull();
     expect(localStorage.getItem("userId")).toBeNull();
+    expect(console.error).toHaveBeenCalledWith("API Error:", {});
   });
 
-  it("handles request error without response", async () => {
-    await import("./axios");
-
-    const onRejected = responseUseMock.mock.calls[0][1] as (
-      error: AxiosError
-    ) => Promise<never>;
-
+  it("logs error when no response received", async () => {
     const error = {
       request: {},
       message: "Network error",
     } as AxiosError;
 
-    await expect(onRejected(error)).rejects.toBe(error);
+    await expect(responseError(error)).rejects.toBe(error);
+
+    expect(console.error).toHaveBeenCalledWith(
+      "No response from server:",
+      error.request
+    );
+  });
+
+  it("logs generic axios error", async () => {
+    const error = {
+      message: "Something went wrong",
+    } as AxiosError;
+
+    await expect(responseError(error)).rejects.toBe(error);
+
+    expect(console.error).toHaveBeenCalledWith(
+      "Axios error:",
+      "Something went wrong"
+    );
   });
 });
