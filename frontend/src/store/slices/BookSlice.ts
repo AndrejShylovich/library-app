@@ -12,10 +12,14 @@ import {
   loadBookByBarcodeApi,
 } from "../../api/bookApi";
 
-import type { BookDto, CheckoutBookDto, CheckinBookDto } from "../../models/dto/BookDto";
+import type {
+  BookDto,
+  CheckoutBookDto,
+  CheckinBookDto,
+  BookPageResult,
+} from "../../models/dto/BookDto";
 import type { LoanRecordDto } from "../../models/dto/LoanRecordDto";
 import type { PageInfo } from "../../models/dto/PageDto";
-
 
 export interface BookSliceState {
   loading: boolean;
@@ -33,7 +37,6 @@ const initialState: BookSliceState = {
   pagingInformation: null,
 };
 
-
 export const fetchAllBooks = createAsyncThunk<BookDto[]>(
   "book/all",
   async (_, thunkAPI) => {
@@ -42,26 +45,19 @@ export const fetchAllBooks = createAsyncThunk<BookDto[]>(
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
 
-export const queryBooks = createAsyncThunk<
-  {
-    items: BookDto[];
-    totalCount: number;
-    currentPage: number;
-    totalPages: number;
-    limit: number;
-    pageCount: number;
+export const queryBooks = createAsyncThunk<BookPageResult, string>(
+  "book/query",
+  async (query, thunkAPI) => {
+    try {
+      return await queryBooksApi(query);
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e);
+    }
   },
-  string
->("book/query", async (query, thunkAPI) => {
-  try {
-    return await queryBooksApi(query);
-  } catch (e) {
-    return thunkAPI.rejectWithValue(e);
-  }
-});
+);
 
 export const checkoutBook = createAsyncThunk<LoanRecordDto, CheckoutBookDto>(
   "book/checkout",
@@ -71,7 +67,7 @@ export const checkoutBook = createAsyncThunk<LoanRecordDto, CheckoutBookDto>(
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
 
 export const checkinBook = createAsyncThunk<LoanRecordDto, CheckinBookDto>(
@@ -82,7 +78,7 @@ export const checkinBook = createAsyncThunk<LoanRecordDto, CheckinBookDto>(
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
 
 export const loadBookByBarcode = createAsyncThunk<BookDto, string>(
@@ -93,9 +89,8 @@ export const loadBookByBarcode = createAsyncThunk<BookDto, string>(
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
-  }
+  },
 );
-
 
 export const bookSlice = createSlice({
   name: "book",
@@ -130,7 +125,7 @@ export const bookSlice = createSlice({
         state.books = state.books.map((book) =>
           book._id === itemId
             ? { ...book, records: [record, ...book.records] }
-            : book
+            : book,
         );
 
         state.loading = false;
@@ -142,7 +137,7 @@ export const bookSlice = createSlice({
         state.books = state.books.map((book) =>
           book._id === itemId
             ? { ...book, records: [updatedRecord, ...book.records.slice(1)] }
-            : book
+            : book,
         );
 
         state.loading = false;
@@ -152,21 +147,20 @@ export const bookSlice = createSlice({
         state.loading = false;
       });
 
-
     builder
       .addMatcher(
         (action) => action.type.endsWith("/pending"),
         (state) => {
           state.loading = true;
           state.error = false;
-        }
+        },
       )
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
         (state) => {
           state.loading = false;
           state.error = true;
-        }
+        },
       );
   },
 });
