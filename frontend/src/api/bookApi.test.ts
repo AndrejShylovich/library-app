@@ -99,7 +99,7 @@ describe("queryBooksApi", () => {
         page: {
           page: 1,
           limit: 10,
-          total: 1,
+          totalCount: 1,
           items: [mockBook],
         },
       })
@@ -109,7 +109,7 @@ describe("queryBooksApi", () => {
 
     expect(api.get).toHaveBeenCalledWith("/book/query?title=clean");
     expect(result.items).toEqual([mockBook]);
-    expect(result.total).toBe(1);
+    expect(result.totalCount).toBe(1);
   });
 });
 
