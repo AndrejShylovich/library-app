@@ -1,20 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Modal.css";
 import { Button } from "../Button/Button";
 
 interface ModalProps {
   toggleModal: () => void;
   children: React.ReactNode;
+  titleId?: string;
 }
 
-export const Modal: React.FC<ModalProps> = ({ toggleModal, children }) => {
-  const handleBackgroundClick = () => toggleModal();
+export const Modal: React.FC<ModalProps> = ({
+  toggleModal,
+  children,
+  titleId,
+}) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") toggleModal();
+    };
 
-  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation();
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [toggleModal]);
 
   return (
-    <div className="modal-bg" onClick={handleBackgroundClick}>
-      <div className="modal" role="dialog" aria-modal="true" onClick={handleModalClick}>
+    <div
+      className="modal-bg"
+      role="presentation"
+      onClick={toggleModal}
+    >
+      <div
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        onClick={(e) => e.stopPropagation()}
+      >
         <Button
           className="modal-exit"
           onClick={toggleModal}
