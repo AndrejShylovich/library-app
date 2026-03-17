@@ -8,7 +8,9 @@ import {
   updateUserApi,
   getLibraryCardApi,
 } from "./authApi";
-import { api } from "./axios";
+
+import { api, TOKEN_KEY, USER_ID_KEY } from "./axios";
+
 import type { UserDto } from "../models/dto/UserDto";
 
 vi.mock("./axios", () => ({
@@ -17,6 +19,8 @@ vi.mock("./axios", () => ({
     get: vi.fn(),
     put: vi.fn(),
   },
+  TOKEN_KEY: "token",
+  USER_ID_KEY: "userId",
 }));
 
 const mockedPost = api.post as MockedFunction<typeof api.post>;
@@ -73,9 +77,13 @@ describe("authApi", () => {
       password: "secret",
     });
 
-    expect(localStorage.setItem).toHaveBeenCalledWith("token", "jwt-token");
     expect(localStorage.setItem).toHaveBeenCalledWith(
-      "userId",
+      TOKEN_KEY,
+      "jwt-token"
+    );
+
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      USER_ID_KEY,
       mockUser._id
     );
 
