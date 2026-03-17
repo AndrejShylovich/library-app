@@ -1,26 +1,19 @@
 import type { DomainLoanRecord } from "../domain/LoanRecord";
 import type { BookDto } from "../dto/BookDto";
-import type { LoanRecordDto } from "../dto/LoanRecordDto";
+import type { LoanRecordDto, LoanRecordItemDto } from "../dto/LoanRecordDto";
 import { BookMapper } from "./BookMapper";
 
-function isBookDto(item: unknown): item is BookDto {
-  return (
-    typeof item === "object" &&
-    item !== null &&
-    "_id" in item &&
-    "title" in item
-  );
+function extractItemId(item: LoanRecordItemDto): string {
+  if (typeof item === "string") return item;
+  return item._id;
+}
+
+function isFullBookDto(item: LoanRecordItemDto): item is BookDto {
+  return typeof item === "object" && "title" in item;
 }
 
 export const LoanRecordMapper = {
   toDomain(dto: LoanRecordDto): DomainLoanRecord {
-    const itemId =
-      typeof dto.item === "string" ? dto.item : (dto.item as BookDto)._id;
-
-    const item = isBookDto(dto.item)
-      ? BookMapper.toDomain(dto.item)
-      : undefined;
-
     return {
       id: dto._id,
       status: dto.status,
@@ -30,8 +23,8 @@ export const LoanRecordMapper = {
       patronId: dto.patron,
       employeeOutId: dto.employeeOut,
       employeeInId: dto.employeeIn,
-      itemId,
-      item,
+      itemId: extractItemId(dto.item),
+      item: isFullBookDto(dto.item) ? BookMapper.toDomain(dto.item) : undefined,
       createdAt: new Date(dto.createdAt),
       updatedAt: new Date(dto.updatedAt),
     };

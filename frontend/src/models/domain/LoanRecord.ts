@@ -1,8 +1,9 @@
+import type { LoanStatus } from "../../shared/types";
 import type { DomainBook } from "./Book";
 
 export interface DomainLoanRecord {
   id: string;
-  status: "LOANED" | "AVAILABLE";
+  status: LoanStatus;
   loanedDate: Date;
   dueDate: Date;
   returnedDate?: Date;

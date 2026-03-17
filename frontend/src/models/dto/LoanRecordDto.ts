@@ -1,8 +1,11 @@
+import type { LoanStatus } from "../../shared/types";
 import type { BookDto } from "./BookDto";
+
+export type LoanRecordItemDto = string | { _id: string } | BookDto;
 
 export interface LoanRecordDto {
   _id: string;
-  status: "LOANED" | "AVAILABLE";
+  status: LoanStatus;
   loanedDate: string;
   dueDate: string;
   returnedDate?: string;
@@ -13,8 +16,3 @@ export interface LoanRecordDto {
   createdAt: string;
   updatedAt: string;
 }
-
-export type LoanRecordItemDto =
-  | string
-  | { _id: string }
-  | BookDto;
