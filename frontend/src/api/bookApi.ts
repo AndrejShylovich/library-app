@@ -2,85 +2,83 @@ import type {
   BookDto,
   CheckoutBookDto,
   CheckinBookDto,
+  BookPageResult,
 } from "../models/dto/BookDto";
 import type { LoanRecordDto } from "../models/dto/LoanRecordDto";
-import { api } from "./axios"; 
+import { api } from "./axios";
 
+const LOAN_PERIOD_DAYS = 14;
 
-export const fetchAllBooksApi = async (): Promise<BookDto[]> => {
-  const res = await api.get("/book/");
-  return res.data.books as BookDto[];
-};
+const normalizeLoanRecord = (record: LoanRecordDto): LoanRecordDto => {
+  const itemId =
+    typeof record.item === "string" ? record.item : record.item._id;
 
-
-export const queryBooksApi = async (query: string) => {
-  const res = await api.get(`/book/query${query}`);
   return {
-    ...res.data.page,
-    items: res.data.page.items as BookDto[],
+    ...record,
+    item: { _id: itemId },
   };
 };
 
+export const fetchAllBooksApi = async (): Promise<BookDto[]> => {
+  const { data } = await api.get<{ books: BookDto[] }>("/book/");
+  return data.books;
+};
+
+export const queryBooksApi = async (query: string): Promise<BookPageResult> => {
+  const { data } = await api.get<{ page: BookPageResult }>(
+    `/book/query${query}`
+  );
+  return data.page;
+};
 
 export const checkoutBookApi = async (
   payload: CheckoutBookDto
 ): Promise<LoanRecordDto> => {
-  const returnDate = new Date();
-  returnDate.setDate(returnDate.getDate() + 14);
+  const dueDate = new Date();
+  dueDate.setDate(dueDate.getDate() + LOAN_PERIOD_DAYS);
 
-
-  const patronRes = await api.get(`/card/${payload.libraryCard}`);
-  const patronId = patronRes.data.libraryCard.user._id;
+  const { data: cardData } = await api.get<{
+    libraryCard: { user: { _id: string } };
+  }>(`/card/${payload.libraryCard}`);
 
   const recordDto: Partial<LoanRecordDto> = {
     status: "LOANED",
     loanedDate: new Date().toISOString(),
-    dueDate: returnDate.toISOString(),
-    patron: patronId,
+    dueDate: dueDate.toISOString(),
+    patron: cardData.libraryCard.user._id,
     employeeOut: payload.employee._id,
     item: payload.book._id,
   };
 
-  const loanRes = await api.post("/loan", recordDto);
-
-  return {
-    ...loanRes.data.record,
-    item: { _id: loanRes.data.record.item._id },
-  } as LoanRecordDto;
+  const { data } = await api.post<{ record: LoanRecordDto }>("/loan", recordDto);
+  return normalizeLoanRecord(data.record);
 };
-
 
 export const checkinBookApi = async (
   payload: CheckinBookDto
 ): Promise<LoanRecordDto> => {
-  const record = payload.book.records[0];
-
-  const updatedRecordDto: LoanRecordDto = {
-    ...record,
+  const updatedRecord: LoanRecordDto = {
+    ...payload.book.records[0],
     status: "AVAILABLE",
     returnedDate: new Date().toISOString(),
     employeeIn: payload.employee._id,
     item: payload.book._id,
   };
 
-  const res = await api.put("/loan", updatedRecordDto);
-
-  return {
-    ...res.data.record,
-    item: { _id: res.data.record.item._id },
-  } as LoanRecordDto;
+  const { data } = await api.put<{ record: LoanRecordDto }>("/loan", updatedRecord);
+  return normalizeLoanRecord(data.record);
 };
 
+export const loadBookByBarcodeApi = async (barcode: string): Promise<BookDto> => {
+  const { data } = await api.get<{ page: { items: BookDto[] } }>(
+    `/book/query?barcode=${barcode}`
+  );
 
-export const loadBookByBarcodeApi = async (
-  barcode: string
-): Promise<BookDto> => {
-  const res = await api.get(`/book/query?barcode=${barcode}`);
-  const bookDto: BookDto | undefined = res.data.page.items[0];
+  const book = data.page.items[0];
 
-  if (!bookDto || bookDto.barcode !== barcode) {
-    throw new Error("Book not found");
+  if (!book || book.barcode !== barcode) {
+    throw new Error(`Book not found: barcode=${barcode}`);
   }
 
-  return bookDto;
+  return book;
 };
