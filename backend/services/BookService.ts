@@ -73,86 +73,26 @@ export async function queryBooks(
     authors?: string;
     subjects?: string;
     genre?: string;
-
-    publicationDateFrom?: Date;
-    publicationDateTo?: Date;
-
-    ratingMin?: number;
-    ratingMax?: number;
-
-    sort?: string;
   },
 ): Promise<IPagination<IBookModel>> {
+  const query: any = {};
 
-  const match: any = {};
-
-  if (filters.barcode) match.barcode = buildRegexFilter(filters.barcode);
-  if (filters.title) match.title = buildRegexFilter(filters.title);
+  if (filters.barcode) query.barcode = buildRegexFilter(filters.barcode);
+  if (filters.title) query.title = buildRegexFilter(filters.title);
   if (filters.description)
-    match.description = buildRegexFilter(filters.description);
-  if (filters.genre) match.genre = buildRegexFilter(filters.genre);
-
+    query.description = buildRegexFilter(filters.description);
+  if (filters.genre) query.genre = buildRegexFilter(filters.genre);
   if (filters.authors)
-    match.authors = { $elemMatch: buildRegexFilter(filters.authors) };
-
+    query.authors = { $elemMatch: buildRegexFilter(filters.authors) };
   if (filters.subjects)
-    match.subjects = { $elemMatch: buildRegexFilter(filters.subjects) };
-
-  if (filters.publicationDateFrom || filters.publicationDateTo) {
-    match.publicationDate = {};
-
-    if (filters.publicationDateFrom) {
-      match.publicationDate.$gte = filters.publicationDateFrom;
-    }
-
-    if (filters.publicationDateTo) {
-      match.publicationDate.$lte = filters.publicationDateTo;
-    }
-  }
-
-  if (filters.ratingMin !== undefined || filters.ratingMax !== undefined) {
-    match.rating = {};
-
-    if (filters.ratingMin !== undefined) {
-      match.rating.$gte = filters.ratingMin;
-    }
-
-    if (filters.ratingMax !== undefined) {
-      match.rating.$lte = filters.ratingMax;
-    }
-  }
-
-  const sortMap: Record<string, any> = {
-    date_asc: { publicationDate: 1 },
-    date_desc: { publicationDate: -1 },
-    rating_asc: { rating: 1 },
-    rating_desc: { rating: -1 },
-  };
-
-  const sortStage = sortMap[filters.sort || ""] || { publicationDate: -1 };
+    query.subjects = { $elemMatch: buildRegexFilter(filters.subjects) };
 
   const skip = (page - 1) * limit;
 
-  const result = await BookDao.aggregate([
-    { $match: match },
-
-    { $sort: sortStage },
-
-    {
-      $facet: {
-        items: [
-          { $skip: skip },
-          { $limit: limit },
-        ],
-        totalCount: [
-          { $count: "count" },
-        ],
-      },
-    },
+  const [items, totalCount] = await Promise.all([
+    BookDao.find(query).skip(skip).limit(limit),
+    BookDao.countDocuments(query),
   ]);
-
-  const items = result[0]?.items || [];
-  const totalCount = result[0]?.totalCount[0]?.count || 0;
 
   return {
     totalCount,
@@ -163,4 +103,3 @@ export async function queryBooks(
     items,
   };
 }
-

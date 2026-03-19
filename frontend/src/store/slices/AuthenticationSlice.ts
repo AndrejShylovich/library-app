@@ -2,6 +2,7 @@ import {
   createAsyncThunk,
   createSlice,
   type PayloadAction,
+  isAnyOf,
 } from "@reduxjs/toolkit";
 
 import type {
@@ -10,6 +11,7 @@ import type {
   RegisterUserDto,
   FetchUserDto,
 } from "../../models/dto/UserDto";
+
 import {
   loginUserApi,
   registerUserApi,
@@ -23,7 +25,7 @@ interface AuthenticationSliceState {
   profileUser?: UserDto;
   libraryCard: string;
   loading: boolean;
-  error: boolean;
+  error: string | null;
   registerSuccess: boolean;
   updateSuccess: boolean;
 }
@@ -33,64 +35,71 @@ const initialState: AuthenticationSliceState = {
   profileUser: undefined,
   libraryCard: "",
   loading: false,
-  error: false,
+  error: null,
   registerSuccess: false,
   updateSuccess: false,
 };
 
-type ResettableKeys = keyof AuthenticationSliceState;
+const handleThunkError = (e: unknown): string => {
+  if (e instanceof Error) return e.message;
+  return "Unknown error";
+};
 
-export const loginUser = createAsyncThunk<UserDto, LoginUserDto>(
+const createAppAsyncThunk = createAsyncThunk.withTypes<{
+  rejectValue: string;
+}>();
+
+export const loginUser = createAppAsyncThunk<UserDto, LoginUserDto>(
   "auth/login",
-  async (payload, thunkAPI) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      return await loginUserApi(payload); 
+      return await loginUserApi(payload);
     } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+      return rejectWithValue(handleThunkError(e));
     }
   },
 );
 
-export const registerUser = createAsyncThunk<void, RegisterUserDto>(
+export const registerUser = createAppAsyncThunk<void, RegisterUserDto>(
   "auth/register",
-  async (payload, thunkAPI) => {
+  async (payload, { rejectWithValue }) => {
     try {
       await registerUserApi(payload);
     } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+      return rejectWithValue(handleThunkError(e));
     }
   },
 );
 
-export const fetchUser = createAsyncThunk<
+export const fetchUser = createAppAsyncThunk<
   { user: UserDto; property: FetchUserDto["property"] },
   FetchUserDto
->("auth/fetch", async (payload, thunkAPI) => {
+>("auth/fetch", async (payload, { rejectWithValue }) => {
   try {
-    return await fetchUserApi(payload); 
+    return await fetchUserApi(payload);
   } catch (e) {
-    return thunkAPI.rejectWithValue(e);
+    return rejectWithValue(handleThunkError(e));
   }
 });
 
-export const updateUser = createAsyncThunk<UserDto, UserDto>(
+export const updateUser = createAppAsyncThunk<UserDto, UserDto>(
   "auth/update",
-  async (payload, thunkAPI) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      return await updateUserApi(payload); 
+      return await updateUserApi(payload);
     } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+      return rejectWithValue(handleThunkError(e));
     }
   },
 );
 
-export const getLibraryCard = createAsyncThunk<string, string>(
+export const getLibraryCard = createAppAsyncThunk<string, string>(
   "auth/librarycard",
-  async (userId, thunkAPI) => {
+  async (userId, { rejectWithValue }) => {
     try {
       return await getLibraryCardApi(userId);
     } catch (e) {
-      return thunkAPI.rejectWithValue(e);
+      return rejectWithValue(handleThunkError(e));
     }
   },
 );
@@ -102,69 +111,73 @@ export const authenticationSlice = createSlice({
     resetRegisterSuccess(state) {
       state.registerSuccess = false;
     },
-    resetUser(state, action: PayloadAction<ResettableKeys>) {
-      const key = action.payload;
-      (state[key] as AuthenticationSliceState[typeof key] | undefined) =
-        undefined;
-    },
     resetUpdateSuccess(state) {
       state.updateSuccess = false;
     },
+    resetUser(state, action: PayloadAction<"loggedInUser" | "profileUser">) {
+      state[action.payload] = undefined;
+    },
   },
   extraReducers: (builder) => {
-    const setPending = (state: AuthenticationSliceState) => {
-      state.loading = true;
-      state.error = false;
-    };
-
-    const setRejected = (state: AuthenticationSliceState) => {
+    builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
-      state.error = true;
-    };
+      state.loggedInUser = action.payload;
+      state.profileUser = action.payload;
+    });
 
-    builder
+    builder.addCase(registerUser.fulfilled, (state) => {
+      state.loading = false;
+      state.registerSuccess = true;
+    });
 
-      .addCase(loginUser.pending, setPending)
-      .addCase(registerUser.pending, setPending)
-      .addCase(fetchUser.pending, setPending)
-      .addCase(updateUser.pending, setPending)
-      .addCase(getLibraryCard.pending, setPending)
+    builder.addCase(fetchUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state[action.payload.property] = action.payload.user;
+    });
 
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.loggedInUser = action.payload;
+      state.profileUser = action.payload;
+      state.updateSuccess = true;
+    });
 
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.loggedInUser = action.payload;
-        state.profileUser = action.payload; 
-      })
-      .addCase(registerUser.fulfilled, (state) => {
-        state.loading = false;
-        state.registerSuccess = true;
-      })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.loading = false;
-        const key = action.payload.property as ResettableKeys;
-        (state[key] as AuthenticationSliceState[typeof key]) =
-          action.payload.user;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.loggedInUser = action.payload;
-        state.profileUser = action.payload;
-        state.updateSuccess = true;
-      })
-      .addCase(getLibraryCard.fulfilled, (state, action) => {
-        state.loading = false;
-        state.libraryCard = action.payload;
-      })
+    builder.addCase(getLibraryCard.fulfilled, (state, action) => {
+      state.loading = false;
+      state.libraryCard = action.payload;
+    });
 
-      .addCase(loginUser.rejected, setRejected)
-      .addCase(registerUser.rejected, setRejected)
-      .addCase(fetchUser.rejected, setRejected)
-      .addCase(updateUser.rejected, setRejected)
-      .addCase(getLibraryCard.rejected, setRejected);
+    builder.addMatcher(
+      isAnyOf(
+        loginUser.pending,
+        registerUser.pending,
+        fetchUser.pending,
+        updateUser.pending,
+        getLibraryCard.pending,
+      ),
+      (state) => {
+        state.loading = true;
+        state.error = null;
+      },
+    );
+
+    builder.addMatcher(
+      isAnyOf(
+        loginUser.rejected,
+        registerUser.rejected,
+        fetchUser.rejected,
+        updateUser.rejected,
+        getLibraryCard.rejected,
+      ),
+      (state, action) => {
+        state.loading = false;
+        state.error = action.payload ?? "Request failed";
+      },
+    );
   },
 });
 
-export const { resetRegisterSuccess, resetUser, resetUpdateSuccess } = authenticationSlice.actions;
+export const { resetRegisterSuccess, resetUser, resetUpdateSuccess } =
+  authenticationSlice.actions;
 
 export default authenticationSlice.reducer;

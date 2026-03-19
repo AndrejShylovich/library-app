@@ -80,15 +80,6 @@ export async function searchForBooksByQuery(req: Request, res: Response) {
     description,
     subjects,
     genre,
-
-    publicationDateFrom,
-    publicationDateTo,
-
-    ratingMin,
-    ratingMax,
-
-    sort,
-
     page = "1",
     limit = "25",
   } = req.query;
@@ -101,24 +92,6 @@ export async function searchForBooksByQuery(req: Request, res: Response) {
       authors: authors as string,
       subjects: subjects as string,
       genre: genre as string,
-
-      publicationDateFrom: publicationDateFrom
-        ? new Date(publicationDateFrom as string)
-        : undefined,
-
-      publicationDateTo: publicationDateTo
-        ? new Date(publicationDateTo as string)
-        : undefined,
-
-      ratingMin: ratingMin !== undefined
-        ? Number(ratingMin)
-        : undefined,
-
-      ratingMax: ratingMax !== undefined
-        ? Number(ratingMax)
-        : undefined,
-
-      sort: sort as string,
     });
 
     res.status(200).json({
