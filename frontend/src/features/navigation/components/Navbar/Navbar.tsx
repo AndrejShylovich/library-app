@@ -3,6 +3,7 @@ import { Book, Search, Person, MenuBook, AccountCircle } from "@mui/icons-materi
 import "./Navbar.css";
 import { useNavbarLogic } from "./useNavbarLogic";
 import { Input } from "../../../../shared/ui/Input/Input";
+import { ThemeToggle } from "./components/ThemeToggle";
 export const Navbar: React.FC = () => {
   const {
     loggedInUser,
@@ -17,6 +18,7 @@ export const Navbar: React.FC = () => {
       <Link to="/" className="navbar-logo-section">
         <Book className="navbar-logo-icon" /> <h3>My Library</h3>
       </Link>
+      <ThemeToggle />
       <div className="navbar-right-section">
         <Link to="/catalog" className="navbar-option navbar-link">
           <h3>Catalog</h3>

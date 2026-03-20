@@ -1,25 +1,47 @@
-
-:root{
-  --background-primary: #ffffff;  
+:root {
+  --background-primary: #ffffff;
   --background-secondary: #c0c0c0bb;
   --text: #1c120c;
   --text-secondary: #7a7978;
   --primary: #0d0de8;
   --secondary: #37d310;
-  --box-shadow: rgba(100,100,100,.1) 0px 7px 29px 0px;
+  --danger: #ff6b6b;
+  --box-shadow: rgba(100, 100, 100, 0.1) 0px 7px 29px 0px;
 }
 
-html, body, #root {
-  width: 100%;  
+[data-theme="dark"] {
+  --background-primary: #121212;
+  --background-secondary: #1e1e1e;
+
+  --text: #e6e6e6;
+  --text-secondary: #a0a0a0;
+
+  --primary: #5476b6;
+  --secondary: #326b47;
+  --danger: #915353;
+
+  --border: #2a2a2a;
+
+  --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  --row-odd: #1a1a1a;
+  --row-even: #202020;
+}
+
+html,
+body,
+#root {
+  width: 100%;
   height: 100%;
   min-height: 100vh;
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: var(--background-primary);
-  color: var(--text)
+  color: var(--text);
 }
 
-*, *::before, *::after{
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -32,16 +54,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-img, picture, video, canvas, svg{
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
-input, button, textarea, select{
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
-p, h1, h2, h3, h4, h5, h6{
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
@@ -50,56 +85,57 @@ button {
   padding: 0.6rem 1.2rem;
 }
 
-#root, #_next{
+#root,
+#_next {
   isolation: isolate;
 }
 
-h1{
+h1 {
   font-size: 3rem;
   font-weight: 900;
 }
 
-h2{
+h2 {
   font-size: 2.5rem;
   font-weight: 800;
 }
-h3{
+h3 {
   font-size: 2.25rem;
   font-weight: 700;
 }
-h4{
+h4 {
   font-size: 2rem;
-  font-weight: 600;  
+  font-weight: 600;
 }
-h5{
+h5 {
   font-size: 1.5rem;
-  font-weight: 600;  
+  font-weight: 600;
 }
-h6{
+h6 {
   font-size: 1.25rem;
-  font-weight: 500;  
+  font-weight: 500;
 }
 
 p {
   font-size: 1rem;
-  font-weight: 400;  
+  font-weight: 400;
 }
 
 .page {
-  min-height: 100vh; 
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-
 .page-container {
-  flex: 1; 
+  flex: 1;
   width: 75%;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   align-items: flex-start;
   background-color: var(--background-primary);
   box-shadow: var(--box-shadow);
 }
+

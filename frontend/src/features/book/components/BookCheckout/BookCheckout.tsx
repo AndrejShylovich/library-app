@@ -28,7 +28,7 @@ export const BookCheckout: React.FC = () => {
           <Input
             className="book-checkout-input"
             value={user._id}
-            disabled
+            readOnly
             aria-label="Employee ID"
           />
         </label>

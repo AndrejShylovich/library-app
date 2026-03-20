@@ -26,14 +26,13 @@
   border: 1px solid rgba(122, 123, 124, 0.2);
 }
 
-#hours tr:nth-child(even) {
-  background-color: #ebe9f6;
-}
-
 #hours tr:nth-child(odd) {
-  background-color: #e7f7f1;
+  background-color: var(--row-odd);
 }
 
+#hours tr:nth-child(even) {
+  background-color: var(--row-even);
+}
 #hours td {
   font-size: clamp(0.75rem, 1vw, 0.9rem);
   padding: 0.25rem 0.4rem;

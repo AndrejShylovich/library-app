@@ -31,6 +31,13 @@
     color: var(--text-secondary);
 }
 
+.book-checkin-input[readonly] {
+    background-color: var(--background-secondary);
+    color: var(--text);
+
+    cursor: default;
+}
+
 .book-checkin-input:focus {
     outline: none;
     border-color: var(--primary);

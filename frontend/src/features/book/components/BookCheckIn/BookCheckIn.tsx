@@ -19,7 +19,7 @@ export const BookCheckin: React.FC = () => {
           <Input
             className="book-checkin-input"
             value={user._id}
-            disabled
+            readOnly
             aria-label="Employee ID"
           />
         </label>
