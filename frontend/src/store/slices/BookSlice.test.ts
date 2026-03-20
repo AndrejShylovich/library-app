@@ -78,7 +78,7 @@ const fakeLoanRecord: LoanRecordDto = {
 
 const initialState: BookSliceState = {
   loading: true,
-  error: false,
+  error: "",
   books: [fakeBook],
   currentBook: undefined,
   pagingInformation: null,
@@ -237,7 +237,7 @@ describe("bookSlice reducer", () => {
     const next = reducer(initialState, fetchAllBooks.pending("", undefined));
 
     expect(next.loading).toBe(true);
-    expect(next.error).toBe(false);
+    expect(next.error).toBe(null);
   });
 
   it("rejected matcher", () => {
@@ -247,6 +247,6 @@ describe("bookSlice reducer", () => {
     );
 
     expect(next.loading).toBe(false);
-    expect(next.error).toBe(true);
+    expect(next.error).toBe("Request failed");
   });
 });
