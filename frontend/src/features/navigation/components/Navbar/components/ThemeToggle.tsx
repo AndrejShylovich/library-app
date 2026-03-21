@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { DarkMode, LightMode } from "@mui/icons-material";
 import "./ThemeToggle.css";
+import { Button } from "../../../../../shared/ui/Button/Button";
 
 export const ThemeToggle = () => {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
@@ -22,7 +23,7 @@ export const ThemeToggle = () => {
   };
 
   return (
-    <button
+    <Button
       className="theme-toggle-btn"
       onClick={toggle}
       title={`Текущая тема: ${theme}`}
@@ -33,6 +34,6 @@ export const ThemeToggle = () => {
       ) : (
         <DarkMode fontSize="medium" />
       )}
-    </button>
+    </Button>
   );
 };
