@@ -75,4 +75,12 @@
     .book-checkin-form {
         gap: 0.75rem;
     }
+
+  .book-checkin-input {
+    font-size: 0.9rem;
+  }
+
+  .book-checkin-button {
+    font-size: 0.9rem;
+  }
 }

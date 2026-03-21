@@ -1,6 +1,6 @@
 .register-library-card-container {
     width: 100%;
-    max-width: 400px; 
+    max-width: 420px; 
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -12,10 +12,21 @@
 }
 
 .register-library-card-text {
-    text-align: center;
-    font-size: 1rem;
-    line-height: 1.4;
-    margin: 0; 
+  text-align: center;
+  line-height: 1.4;
+  margin: 0;
+}
+
+h3.register-library-card-text {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+h4.register-library-card-text {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+h5.register-library-card-text {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
 }
 
 .register-library-modal-button {
@@ -26,6 +37,7 @@
     border: 2px solid var(--primary);
     border-radius: 0.75rem;
     background-color: var(--background-secondary);
+    color: var(--primary);
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;

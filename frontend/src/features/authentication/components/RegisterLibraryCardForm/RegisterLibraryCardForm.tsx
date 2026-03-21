@@ -1,6 +1,7 @@
 import type React from "react";
 import { useRegisterLibraryCardForm } from "./useRegisterLibraryCardForm";
 import { Button } from "../../../../shared/ui/Button/Button";
+import "./RegisterLibraryCardForm.css";
 
 export const RegisterLibraryCardForm: React.FC = () => {
   const { loggedInUser, libraryCard, createLibraryCard, openLogin } =
