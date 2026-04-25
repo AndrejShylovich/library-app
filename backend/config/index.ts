@@ -9,8 +9,6 @@ const {
   SERVER_ROUNDS,
 } = process.env;
 
-
-
 const mongoUrl: string = MONGO_URL || MONGO_LOCAL_URL;
 const port: number = SERVER_PORT ? Number(SERVER_PORT) : 8000;
 const rounds: number = SERVER_ROUNDS ? Number(SERVER_ROUNDS) : 10;
@@ -32,4 +30,3 @@ export const config = {
     expiresIn: "24h",
   },
 };
-

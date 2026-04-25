@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
 import { setDisplayLogin } from "../../../../store/slices/ModalSlice";
 
-
 export const useNavbarLogic = () => {
   const searchRef = useRef<HTMLInputElement>(null);
-  const { loggedInUser } = useSelector((state: RootState) => state.authentication);
+  const { loggedInUser } = useSelector(
+    (state: RootState) => state.authentication,
+  );
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 

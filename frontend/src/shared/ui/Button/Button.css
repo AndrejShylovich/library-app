@@ -1,21 +1,90 @@
 .btn {
-  border-radius: 4px;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-md);
   font-weight: 500;
-  transition: background 0.2s ease;
+  line-height: 1;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.2s ease;
+  will-change: transform, box-shadow, background-color;
 }
 
-.btn-primary { background: #1d4ed8; color: white; }
-.btn-primary:hover { background: #2563eb; }
-.btn-secondary { background: #e5e7eb; color: #111; }
-.btn-secondary:hover { background: #d1d5db; }
-.btn-danger { background: #dc2626; color: white; }
-.btn-danger:hover { background: #b91c1c; }
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
 
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
 
-.btn-sm { padding: 4px 8px; font-size: 0.875rem; }
-.btn-md { padding: 8px 16px; font-size: 1rem; }
-.btn-lg { padding: 12px 24px; font-size: 1.125rem; }
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
 
+.btn-secondary {
+  background: var(--background-secondary);
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+}
 
-.btn-full { width: 100%; }
+.btn-secondary:hover {
+  background: color-mix(in srgb, var(--background-secondary) 92%, var(--text));
+  border-color: color-mix(in srgb, var(--text) 25%, transparent);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: color-mix(in srgb, var(--danger) 85%, black);
+}
+
+.btn-sm {
+  padding: clamp(0.35rem, 0.7vw, 0.5rem) clamp(0.75rem, 1.4vw, 1.1rem);
+  font-size: clamp(0.8125rem, 0.95vw, 0.875rem);
+}
+
+.btn-md {
+  padding: clamp(0.55rem, 1vw, 0.75rem) clamp(1.25rem, 2.2vw, 1.75rem);
+  font-size: clamp(0.9375rem, 1.05vw, 1rem);
+}
+
+.btn-lg {
+  padding: clamp(0.75rem, 1.3vw, 1rem) clamp(1.75rem, 2.8vw, 2.25rem);
+  font-size: clamp(1.0625rem, 1.25vw, 1.125rem);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text-secondary);
+}
+
+.btn-outline:hover {
+  background: var(--background-secondary);
+  border-color: var(--text);
+  color: var(--text);
+}

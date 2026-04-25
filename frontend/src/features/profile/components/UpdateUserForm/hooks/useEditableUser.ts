@@ -12,7 +12,7 @@ export const useEditableUser = (initialUser?: User) => {
 
   const updateField = useCallback((name: keyof User, value: string) => {
     setIsEditing(true);
-    setUser(prev => (prev ? { ...prev, [name]: value } : prev));
+    setUser((prev) => (prev ? { ...prev, [name]: value } : prev));
   }, []);
 
   return { user, isEditing, updateField, setUser, setIsEditing };

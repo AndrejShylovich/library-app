@@ -97,7 +97,7 @@ describe("authenticationSlice async thunks", () => {
     const dispatch = vi.fn();
     const thunk = updateUser(fakeUser);
 
-    await thunk(dispatch, () => ({}), undefined); 
+    await thunk(dispatch, () => ({}), undefined);
 
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({

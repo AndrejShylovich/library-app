@@ -39,7 +39,9 @@ export const BookCarousel: React.FC<BookCarouselProps> = ({ books }) => {
       </Button>
 
       <div className="book-carousel-track">
-        {currentBook && <BookCard key={currentBook.barcode} book={currentBook} />}
+        {currentBook && (
+          <BookCard key={currentBook.barcode} book={currentBook} />
+        )}
       </div>
     </div>
   );

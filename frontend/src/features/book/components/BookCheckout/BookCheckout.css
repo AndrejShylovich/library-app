@@ -1,86 +1,128 @@
 .book-checkout {
   width: 100%;
-  padding: clamp(1rem, 3vw, 2rem);
+
+  padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
+
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+
+  margin-bottom: clamp(var(--space-lg), 3vw, var(--space-xl));
 }
 
 .book-checkout-form {
   width: min(100%, 30rem);
+
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
 
-.book-checkout-input[readonly] {
-  background-color: var(--background-secondary);
-  color: var(--text);
-  cursor: default;
+  gap: var(--space-md);
 }
 
 .book-checkout-input {
   width: 100%;
-  padding: clamp(0.65rem, 2vw, 0.9rem);
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  border: 1px solid var(--text-secondary);
-  border-radius: 0.5rem;
-  box-sizing: border-box;
+
+  padding: 0.75rem 0.9rem;
+
+  font-size: 1rem;
+
+  border-radius: var(--radius-md);
+
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+
+  background: var(--background-secondary);
+
+  color: var(--text);
+
   overflow: hidden;
   text-overflow: ellipsis;
-  background-color: var(--background-secondary);
-  color: var(--text);
+
   transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  outline-offset: 3px;
 }
 
 .book-checkout-input::placeholder {
-  color: var(--text-secondary);
+  color: var(--text-muted);
 }
 
-.book-checkout-input:focus {
+.book-checkout-input[readonly] {
+  background: color-mix(
+    in srgb,
+    var(--background-secondary) 75%,
+    var(--background-primary)
+  );
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+.book-checkout-input:hover {
+  border-color: color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.book-checkout-input:focus-visible {
   outline: none;
+
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 30%, transparent);
+
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+
+  background: var(--background-primary);
 }
 
 .book-checkout-button {
   width: 100%;
-  padding: clamp(0.7rem, 2vw, 1rem);
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
 
-  background-color: var(--secondary);
+  padding: 0.85rem 1rem;
+
+  font-size: 1rem;
+  font-weight: 600;
+
+  border-radius: var(--radius-md);
+
+  border: 1px solid transparent;
+
+  background: var(--secondary);
   color: #fff;
-  border: none;
-  border-radius: 0.5rem;
+
+  box-shadow: var(--shadow-sm);
 
   cursor: pointer;
+
   transition:
-    background-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease,
-    border 0.25s ease;
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .book-checkout-button:hover {
+  transform: translateY(-1px);
+
   background-color: var(--background-secondary);
   color: var(--primary);
-  border: 2px solid var(--primary);
-  box-shadow: var(--box-shadow);
+
+  border-color: var(--primary);
+
+  box-shadow: var(--shadow-md);
+}
+
+.book-checkout-button:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.book-checkout-button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
 }
 
 @media (max-width: 480px) {
   .book-checkout-form {
-    gap: 0.75rem;
-  }
-
-  .book-checkout-input {
-    font-size: 0.9rem;
-  }
-
-  .book-checkout-button {
-    font-size: 0.9rem;
+    gap: var(--space-sm);
   }
 }

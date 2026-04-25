@@ -1,32 +1,76 @@
 .library-card {
   width: 100%;
   max-width: 100%;
-  height: fit-content;
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: clamp(1rem, 2vw, 1.5rem);
 
-  box-shadow: var(--box-shadow);
-  background-color: var(--background-secondary);
-  margin-top: 16px;
+  margin-top: clamp(var(--space-md), 2vw, var(--space-xl));
+
+  padding: clamp(var(--space-md), 2vw, var(--space-xl));
+
   display: flex;
   flex-direction: column;
+
   justify-content: center;
   align-items: center;
+
+  gap: var(--space-lg);
+
+  background: var(--background-secondary);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-md);
+
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+
+  box-sizing: border-box;
+
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.library-card-img {
-  width: 50%;
-  margin-bottom: 16px;
-}
-
+.library-card-img,
 .get-library-card-img {
-  width: 50%;
-  margin-bottom: 16px;
+  width: min(60%, 18rem);
+
+  height: auto;
+
+  object-fit: contain;
+
+  margin-bottom: 0;
+
+  border-radius: var(--radius-md);
+
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.library-card-img:hover,
+.get-library-card-img:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+.get-library-card-link {
+  color: var(--primary);
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    text-decoration-color 0.2s ease;
 }
 
 .get-library-card-link:hover {
-  color: var(--primary);
-  cursor: pointer;
+  color: var(--primary-hover);
   text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.get-library-card-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
 }

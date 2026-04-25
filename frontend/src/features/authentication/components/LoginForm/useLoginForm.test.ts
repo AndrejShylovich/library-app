@@ -4,7 +4,7 @@ import { useLoginForm } from "./useLoginForm";
 import { loginUser } from "../../../../store/slices/AuthenticationSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { ChangeEvent, FormEvent } from "react";
-import * as Router from "react-router-dom"; 
+import * as Router from "react-router-dom";
 
 vi.mock("react-redux", () => ({
   useDispatch: vi.fn(),

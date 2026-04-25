@@ -1,25 +1,29 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: clamp(1rem, 2vw, 2rem);
-  text-align: center;
-  box-sizing: border-box;
+  max-width: min(1280px, 100%);
+  margin-inline: auto;
+  padding: clamp(1.25rem, 3vw, 3rem);
 }
 
 .logo {
-  height: clamp(4rem, 10vw, 6em);
-  padding: clamp(1rem, 3vw, 1.5em);
-  will-change: filter, transform;
-  transition: filter 300ms ease, transform 300ms ease;
+  height: clamp(3.75rem, 7.5vw, 5.5rem);
+  padding: clamp(0.75rem, 1.5vw, 1.25rem);
+
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.3s cubic-bezier(0.4, 0.2, 0.1, 1);
+
+  will-change: transform, filter;
 }
 
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-  transform: scale(1.05); 
+  transform: scale(1.08);
+  filter: drop-shadow(
+    0 0 2rem color-mix(in srgb, var(--primary) 50%, transparent)
+  );
 }
 
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2.25rem #61dafb99);
 }
 
 @keyframes logo-spin {
@@ -38,27 +42,37 @@
 }
 
 .card {
-  padding: clamp(1rem, 2vw, 2em);
-  --radius: 1rem;
-  border-radius: var(--radius);
-  box-shadow: var(--box-shadow);
-  background-color: var(--background-secondary);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+
+  border-radius: var(--radius-lg);
+  background: var(--background-secondary);
+  box-shadow: var(--shadow-md);
+
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  will-change: transform, box-shadow;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
 }
 
 .read-the-docs {
-  color: #888;
-  font-size: clamp(0.85rem, 1vw, 1rem);
-  transition: color 0.2s ease;
+  color: var(--text-secondary);
+  font-size: clamp(0.875rem, 1.1vw, 1rem);
+  font-weight: 450;
+
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
 }
 
 .read-the-docs:hover {
   color: var(--primary);
   text-decoration: underline;
+  text-underline-offset: 4px;
   cursor: pointer;
 }

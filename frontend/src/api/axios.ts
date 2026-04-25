@@ -1,7 +1,4 @@
-import axios, {
-  type AxiosError,
-  type InternalAxiosRequestConfig,
-} from "axios";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = "token";
@@ -36,7 +33,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export { TOKEN_KEY, USER_ID_KEY };

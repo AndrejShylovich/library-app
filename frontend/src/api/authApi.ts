@@ -9,7 +9,7 @@ import { api, TOKEN_KEY, USER_ID_KEY } from "./axios";
 export const loginUserApi = async (payload: LoginUserDto): Promise<UserDto> => {
   const { data } = await api.post<{ user: UserDto; token: string }>(
     "/auth/login",
-    payload
+    payload,
   );
 
   localStorage.setItem(TOKEN_KEY, data.token);
@@ -19,14 +19,14 @@ export const loginUserApi = async (payload: LoginUserDto): Promise<UserDto> => {
 };
 
 export const registerUserApi = async (
-  payload: RegisterUserDto
+  payload: RegisterUserDto,
 ): Promise<UserDto> => {
   const { data } = await api.post<{ user: UserDto }>("/auth/register", payload);
   return data.user;
 };
 
 export const fetchUserApi = async (
-  payload: FetchUserDto
+  payload: FetchUserDto,
 ): Promise<{ user: UserDto; property: FetchUserDto["property"] }> => {
   const { data } = await api.get<{ user: UserDto }>(`/users/${payload.userId}`);
   return { user: data.user, property: payload.property };

@@ -2,6 +2,7 @@ import React from "react";
 import type { DomainBook as Book } from "../../../../models/domain/Book";
 import { BookCarousel } from "../../../book/components";
 import { useCatalogOverviewSection } from "./useCatalogOverviewSection";
+import "./CatalogOverviewSection.css";
 
 interface CatalogOverviewSectionProps {
   books: Book[];

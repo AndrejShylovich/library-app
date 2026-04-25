@@ -5,7 +5,11 @@ import { IUserModel } from "../daos/UserDao";
 import { InvalidUsernameOrPasswordError } from "../utils/LibraryErrors";
 import { generateToken } from "../utils/Jwt";
 
-function handleError(res: Response, error: any, options?: { conflict?: boolean }) {
+function handleError(
+  res: Response,
+  error: any,
+  options?: { conflict?: boolean },
+) {
   if (options?.conflict) {
     return res.status(409).json({
       message: "A user with this email already exists",
@@ -79,7 +83,10 @@ export async function handleLogin(req: Request, res: Response) {
   }
 }
 
-export const handleCheckEmail: RequestHandler = async (req: Request, res: Response) => {
+export const handleCheckEmail: RequestHandler = async (
+  req: Request,
+  res: Response,
+) => {
   const { email } = req.body;
 
   if (!email) {

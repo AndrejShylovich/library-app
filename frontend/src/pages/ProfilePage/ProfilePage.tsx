@@ -13,10 +13,11 @@ export default function ProfilePage(): JSX.Element {
   const { userId } = useParams();
 
   const { loggedInUser, profileUser } = useSelector(
-    (state: RootState) => state.authentication
+    (state: RootState) => state.authentication,
   );
 
-  const canAccess = loggedInUser?._id === userId || loggedInUser?.type === "EMPLOYEE";
+  const canAccess =
+    loggedInUser?._id === userId || loggedInUser?.type === "EMPLOYEE";
 
   useEffect(() => {
     if (!userId || !canAccess) {
@@ -28,7 +29,7 @@ export default function ProfilePage(): JSX.Element {
       fetchUser({
         userId,
         property: "profileUser",
-      })
+      }),
     );
   }, [userId, canAccess, dispatch, navigate]);
 
@@ -42,10 +43,10 @@ export default function ProfilePage(): JSX.Element {
         </h1>
 
         <div className="profile-page-cols">
-          <div className="profile-page-left-column">
+          <div className="profile-page-left-column profile-panel">
             <UpdateUserForm />
           </div>
-          <div className="profile-page-right-column">
+          <div className="profile-page-right-column profile-panel">
             {profileUser && <ProfileLoanHistory />}
           </div>
         </div>

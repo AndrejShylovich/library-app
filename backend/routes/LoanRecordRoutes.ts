@@ -1,27 +1,27 @@
-import { Router } from 'express';
-import LoanRecordController from '../controllers/LoanRecordController';
-import { ValidateSchema, Schemas } from '../middlewares/Validation';
+import { Router } from "express";
+import LoanRecordController from "../controllers/LoanRecordController";
+import { ValidateSchema, Schemas } from "../middlewares/Validation";
 
 const router = Router();
 
-router.get('/', LoanRecordController.getAllRecords);
+router.get("/", LoanRecordController.getAllRecords);
 
 router.post(
-  '/',
-  ValidateSchema(Schemas.loan.create, 'body'),
-  LoanRecordController.createRecord
+  "/",
+  ValidateSchema(Schemas.loan.create, "body"),
+  LoanRecordController.createRecord,
 );
 
 router.put(
-  '/',
-  ValidateSchema(Schemas.loan.update, 'body'),
-  LoanRecordController.updateRecord
+  "/",
+  ValidateSchema(Schemas.loan.update, "body"),
+  LoanRecordController.updateRecord,
 );
 
 router.post(
-  '/query',
-  ValidateSchema(Schemas.loan.query, 'body'),
-  LoanRecordController.getRecordsByProperty
+  "/query",
+  ValidateSchema(Schemas.loan.query, "body"),
+  LoanRecordController.getRecordsByProperty,
 );
 
 export default router;

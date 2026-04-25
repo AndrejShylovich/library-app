@@ -77,14 +77,11 @@ describe("authApi", () => {
       password: "secret",
     });
 
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      TOKEN_KEY,
-      "jwt-token"
-    );
+    expect(localStorage.setItem).toHaveBeenCalledWith(TOKEN_KEY, "jwt-token");
 
     expect(localStorage.setItem).toHaveBeenCalledWith(
       USER_ID_KEY,
-      mockUser._id
+      mockUser._id,
     );
 
     expect(result).toEqual(mockUser);

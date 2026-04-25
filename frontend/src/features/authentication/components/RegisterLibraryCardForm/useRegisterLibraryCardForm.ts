@@ -1,13 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
 import { getLibraryCard } from "../../../../store/slices/AuthenticationSlice";
-import { setDisplayLibraryCard, setDisplayLogin } from "../../../../store/slices/ModalSlice";
-
+import {
+  setDisplayLibraryCard,
+  setDisplayLogin,
+} from "../../../../store/slices/ModalSlice";
 
 export const useRegisterLibraryCardForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loggedInUser, libraryCard } = useSelector(
-    (state: RootState) => state.authentication
+    (state: RootState) => state.authentication,
   );
 
   const createLibraryCard = () => {

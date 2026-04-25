@@ -11,7 +11,9 @@ import { BookMapper } from "../../../../models/mapper/BookMapper";
 
 export const useCatalogOverview = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { books: bookDtos, loading } = useSelector((state: RootState) => state.book);
+  const { books: bookDtos, loading } = useSelector(
+    (state: RootState) => state.book,
+  );
 
   useEffect(() => {
     dispatch(fetchAllBooks());
@@ -19,9 +21,9 @@ export const useCatalogOverview = () => {
 
   const books = useMemo<DomainBook[]>(
     () => bookDtos.map(BookMapper.toDomain),
-    [bookDtos]
+    [bookDtos],
   );
-  
+
   const genres = useMemo(() => generateRandomGenres(), []);
 
   const booksByGenre = useMemo(

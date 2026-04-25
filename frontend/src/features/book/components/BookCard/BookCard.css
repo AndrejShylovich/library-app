@@ -1,167 +1,150 @@
 .book-card {
   width: 100%;
   max-width: 22rem;
-  aspect-ratio: 3 / 4.2;
-  background-color: var(--background-secondary);
-  border-radius: 0.75rem;
-  padding: 1rem;
 
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 
-  box-shadow: var(--box-shadow);
+  gap: var(--space-md);
+  padding: var(--space-md);
+
+  border-radius: var(--radius-lg);
+
+  background: var(--background-secondary);
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+
+  box-shadow: var(--shadow-md);
+
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-sizing: border-box;
+
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .book-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--box-shadow-hover);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
 }
 
 .book-card-cover {
   width: 100%;
-  height: 60%; 
-  flex: none;
+  aspect-ratio: 3 / 4;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  overflow: hidden;
+  border-radius: var(--radius-md);
 }
 
 .book-card-cover img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
-  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
 }
 
+.book-card:hover .book-card-cover img {
+  transform: scale(1.04);
+}
 
 .book-card-info {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem;
-  flex: none; 
-  height: 15rem; 
+  gap: var(--space-sm);
+  flex: 1;
 }
-
-
 
 .book-card-title {
   font-size: clamp(1rem, 1.2vw, 1.25rem);
   font-weight: 600;
-  overflow: hidden;
+  line-height: 1.4;
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
-
-  height: 2.8rem; 
-  line-height: 1.4rem;
+  overflow: hidden;
 }
 
-
-
 .book-card-author {
-  font-size: clamp(0.9rem, 1vw, 1.1rem);
-  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  height: 1.3rem; 
-  line-height: 1.3rem;
-
-  color: var(--text-secondary);
+  transition: color 0.2s ease;
 }
 
-
-
 .book-card-description {
-  font-size: clamp(0.8rem, 1vw, 0.95rem);
-  overflow: hidden;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+
+  flex: 1;
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 5;
-  line-clamp: 5;
-
-  flex-grow: 1;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
 }
 
 .book-card-loan-button {
   width: 100%;
-  padding: 0 1rem;
+  height: 2.75rem;
 
-  height: 3rem;
-  line-height: 3rem;
+  border-radius: var(--radius-md);
 
-  font-size: clamp(0.9rem, 1.1vw, 1rem);
-  border: none;
-  border-radius: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
 
-  color: var(--text-on-primary);
-  transition: background-color 0.2s ease, border 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    border 0.2s ease;
 }
 
-
-.available {
-  background-color: var(--secondary);
+.book-card-loan-button.checkout {
+  background: var(--secondary);
+  color: white;
 }
 
-.unavailable {
-  background-color: #cb4c4e;
+.book-card-loan-button.checkin {
+  background: var(--danger);
+  color: white;
 }
 
-.checkout:hover {
-  background-color: var(--background-secondary);
+.book-card-loan-button.checkout:hover {
+  background: var(--background-secondary);
   border: 2px solid var(--secondary);
   color: var(--secondary);
 }
 
-.checkin:hover {
-  background-color: var(--background-secondary);
-  border: 2px solid #cb4c4e;
-  color: #cb4c4e;
+.book-card-loan-button.checkin:hover {
+  background: var(--background-secondary);
+  border: 2px solid var(--danger);
+  color: var(--danger);
 }
 
+.book-card-loan-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
 
 @media (max-width: 480px) {
   .book-card {
-    padding: 0.75rem;
-    max-width: 90vw;
-    aspect-ratio: 3 / 5;
-  }
-
-  .book-card-info {
-    gap: 0.35rem;
-  }
-
-
-
-  .book-card-title {
-    height: 2.4rem;
-    line-height: 1.2rem;
-  }
-
-  .book-card-author {
-    height: 1.2rem;
-    line-height: 1.2rem;
-  }
-
-  .book-card-loan-button {
-    height: 2.6rem;
-    line-height: 2.6rem;
+    padding: var(--space-sm);
   }
 
   .book-card-description {
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
 }

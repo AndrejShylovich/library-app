@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
-import { Book, Search, Person, MenuBook, AccountCircle } from "@mui/icons-material";
+import {
+  Book,
+  Search,
+  Person,
+  MenuBook,
+  AccountCircle,
+} from "@mui/icons-material";
 import "./Navbar.css";
 import { useNavbarLogic } from "./useNavbarLogic";
 import { Input } from "../../../../shared/ui/Input/Input";
@@ -20,7 +26,7 @@ export const Navbar: React.FC = () => {
       </Link>
       <ThemeToggle />
       <div className="navbar-right-section">
-        <Link to="/catalog" className="navbar-option navbar-link">
+        <Link to="/catalog" className="navbar-option">
           <h3>Catalog</h3>
           <MenuBook
             className="navbar-option-icon"

@@ -1,6 +1,9 @@
-import './ContactUs.css';
+import "./ContactUs.css";
 
-const ContactItem: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+const ContactItem: React.FC<{ title: string; children: React.ReactNode }> = ({
+  title,
+  children,
+}) => (
   <div className="contact-item">
     <h4>{title}</h4>
     {children}

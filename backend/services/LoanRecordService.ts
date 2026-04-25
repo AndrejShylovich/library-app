@@ -4,7 +4,7 @@ import { ILoanRecord } from "../models/LoanRecord";
 import { LoanRecordDoesNotExistError } from "../utils/LibraryErrors";
 
 export async function generateRecord(
-  record: ILoanRecord
+  record: ILoanRecord,
 ): Promise<ILoanRecordModel> {
   try {
     const createdRecord = await LoanRecordDao.create(record);
@@ -21,14 +21,13 @@ export async function generateRecord(
 }
 
 export async function modifyRecord(
-  record: ILoanRecordModel
+  record: ILoanRecordModel,
 ): Promise<ILoanRecordModel> {
-
   try {
     const updatedRecord = await LoanRecordDao.findByIdAndUpdate(
       record._id,
       record,
-      { new: true }
+      { new: true },
     );
 
     if (!updatedRecord) {
@@ -38,7 +37,7 @@ export async function modifyRecord(
     const book = await findBookById(String(record.item));
 
     const index = book.records.findIndex(
-      (r: any) => String(r._id) === String(updatedRecord._id)
+      (r: any) => String(r._id) === String(updatedRecord._id),
     );
 
     if (index !== -1) {

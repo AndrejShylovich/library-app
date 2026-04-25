@@ -1,12 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { BookMapper, CheckoutBookMapper, CheckinBookMapper } from "./BookMapper";
+import {
+  BookMapper,
+  CheckoutBookMapper,
+  CheckinBookMapper,
+} from "./BookMapper";
 import { LoanRecordMapper } from "./LoanRecordMapper";
 import { UserMapper } from "./UserMapper";
 import type { LoanRecordDto } from "../dto/LoanRecordDto";
 
 const mockLoanRecordDto: LoanRecordDto = {
   _id: "record1",
-  status: "LOANED", 
+  status: "LOANED",
   loanedDate: "2026-02-05T12:00:00.000Z",
   dueDate: "2026-02-15T12:00:00.000Z",
   returnedDate: undefined,

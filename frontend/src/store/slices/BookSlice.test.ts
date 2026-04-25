@@ -17,7 +17,6 @@ import type { BookDto } from "../../models/dto/BookDto";
 import type { LoanRecordDto } from "../../models/dto/LoanRecordDto";
 import type { UserDto } from "../../models/dto/UserDto";
 
-
 vi.mock("../../api/bookApi");
 
 const mockedFetchAllBooksApi = api.fetchAllBooksApi as MockedFunction<
@@ -47,7 +46,6 @@ const fakeEmployee: UserDto = {
   lastName: "Smith",
   email: "john@test.com",
 };
-
 
 const fakeBook: BookDto = {
   _id: "book-1",
@@ -83,7 +81,6 @@ const initialState: BookSliceState = {
   currentBook: undefined,
   pagingInformation: null,
 };
-
 
 beforeEach(() => {
   vi.clearAllMocks();

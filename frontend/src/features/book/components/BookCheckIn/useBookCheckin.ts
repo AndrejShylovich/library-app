@@ -1,16 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import type { AppDispatch, RootState } from "../../../../store/ReduxStore";
-import { checkinBook, setCurrentBook } from "../../../../store/slices/BookSlice";
+import {
+  checkinBook,
+  setCurrentBook,
+} from "../../../../store/slices/BookSlice";
 import { setDisplayLoan } from "../../../../store/slices/ModalSlice";
 import { useNavigate } from "react-router-dom";
 
 export const useBookCheckin = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.authentication.loggedInUser);
+  const user = useSelector(
+    (state: RootState) => state.authentication.loggedInUser,
+  );
   const book = useSelector((state: RootState) => state.book.currentBook);
   const navigate = useNavigate();
-  
+
   const handleCheckin = async () => {
     if (!book || !user) {
       toast.error("Cannot check in the book: no selected book or user.");

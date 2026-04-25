@@ -48,31 +48,30 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ toggleLogin }) => {
             onChange={handleChange}
           />
         </div>
-      </div>
+        <div className="register-form-input-group">
+          <h6>Email</h6>
+          <Input
+            className="register-form-input-name"
+            placeholder="email"
+            name="email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
 
-      <div className="register-form-input-group">
-        <h6>Email</h6>
-        <Input
-          className="register-form-input"
-          placeholder="email"
-          name="email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div className="register-form-input-group">
-        <h6>Password</h6>
-        <Input
-          className="register-form-input"
-          placeholder="password"
-          name="password"
-          type="password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-        />
+        <div className="register-form-input-group">
+          <h6>Password</h6>
+          <Input
+            className="register-form-input-name"
+            placeholder="password"
+            name="password"
+            type="password"
+            required
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </div>
       </div>
 
       <Button className="register-form-submit" type="submit" disabled={loading}>

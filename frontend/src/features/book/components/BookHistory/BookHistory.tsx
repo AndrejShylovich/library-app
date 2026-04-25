@@ -1,6 +1,7 @@
 import type React from "react";
 import type { DomainBook as Book } from "../../../../models/domain/Book";
 import { BookHistoryItem } from "../BookHistoryItem/BookHistoryItem";
+import "./BookHistory.css";
 
 interface BookHistoryProps {
   book: Book;

@@ -1,4 +1,4 @@
-import './LibraryHours.css';
+import "./LibraryHours.css";
 
 const HOURS = [
   { day: "Monday", hours: "10:00-18:00" },

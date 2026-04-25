@@ -14,7 +14,10 @@ app.use(
     origin:
       process.env.NODE_ENV === "production"
         ? `${process.env.FRONTEND_URL}`
-        : [`${process.env.FRONTEND_LOCAL_REACT_APP_URL}`, `${process.env.FRONTEND_LOCAL_VITE_URL}`],
+        : [
+            `${process.env.FRONTEND_LOCAL_REACT_APP_URL}`,
+            `${process.env.FRONTEND_LOCAL_VITE_URL}`,
+          ],
     credentials: true,
   }),
 );
@@ -24,7 +27,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/health", async (req: Request, res: Response) => {
-  const mongoState = mongoose.connection.readyState; 
+  const mongoState = mongoose.connection.readyState;
 
   if (mongoState === 1) {
     res.status(200).json({
@@ -56,20 +59,15 @@ async function startServer() {
       console.log(`🚀 Server running on port ${PORT}`);
     });
 
-    app.use(
-      (err: any, req: Request, res: Response, next: Function) => {
-        console.error("Error occurred:", err);
-        res.status(500).json({
-          message: "Internal server error",
-          error: err.message,
-        });
-      },
-    );
+    app.use((err: any, req: Request, res: Response, next: Function) => {
+      console.error("Error occurred:", err);
+      res.status(500).json({
+        message: "Internal server error",
+        error: err.message,
+      });
+    });
   } catch (error) {
-    console.error(
-      "❌ Failed to connect to the server or database",
-      error,
-    );
+    console.error("❌ Failed to connect to the server or database", error);
     process.exit(1);
   }
 }

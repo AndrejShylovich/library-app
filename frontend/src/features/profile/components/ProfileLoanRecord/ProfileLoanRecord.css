@@ -1,22 +1,59 @@
 .profile-record {
   width: 100%;
-  height: auto; 
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding: clamp(0.25rem, 0.5vw, 0.5rem) 0;
-  box-sizing: border-box;
+
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  padding: 2rem;
+  flex-direction: column;
+
+  gap: var(--space-sm);
+
+  padding: var(--space-md);
+
+  border-radius: 0.6rem;
+
+  background: var(--background-secondary);
+
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+
+  transition:
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.profile-record:hover {
+  background: color-mix(in srgb, var(--background-secondary) 80%, transparent);
+  transform: translateY(-2px);
+}
 
-@media (max-width: 480px) {
-  .profile-record {
-    padding: 0.25rem 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
-  }
+.profile-record-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.profile-record-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.profile-record-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-weight: 500;
+}
+
+.record-icon {
+  font-size: 18px !important;
+}
+
+.record-icon.loaned {
+  color: var(--accent);
+}
+
+.record-icon.returned {
+  color: #22c55e;
 }

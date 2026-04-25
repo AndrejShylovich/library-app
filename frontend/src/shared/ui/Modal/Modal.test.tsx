@@ -8,7 +8,7 @@ describe("Modal component", () => {
     render(
       <Modal toggleModal={vi.fn()}>
         <div>Modal Content</div>
-      </Modal>
+      </Modal>,
     );
 
     expect(screen.getByText("Modal Content")).toBeInTheDocument();
@@ -19,7 +19,7 @@ describe("Modal component", () => {
     render(
       <Modal toggleModal={toggleModal}>
         <div>Content</div>
-      </Modal>
+      </Modal>,
     );
 
     const bg = screen.getByRole("dialog").parentElement!;
@@ -32,7 +32,7 @@ describe("Modal component", () => {
     render(
       <Modal toggleModal={toggleModal}>
         <div>Content</div>
-      </Modal>
+      </Modal>,
     );
 
     const modal = screen.getByRole("dialog");
@@ -45,7 +45,7 @@ describe("Modal component", () => {
     render(
       <Modal toggleModal={toggleModal}>
         <div>Content</div>
-      </Modal>
+      </Modal>,
     );
 
     const button = screen.getByRole("button", { name: /close modal/i });
@@ -57,7 +57,7 @@ describe("Modal component", () => {
     render(
       <Modal toggleModal={vi.fn()}>
         <div>Content</div>
-      </Modal>
+      </Modal>,
     );
 
     const modal = screen.getByRole("dialog");

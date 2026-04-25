@@ -13,27 +13,27 @@ import ResourcePage from "./pages/ResourcePage/ResourcePage";
 
 function App() {
   const loggedInUser = useSelector(
-    (state: RootState) => state.authentication.loggedInUser
+    (state: RootState) => state.authentication.loggedInUser,
   );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
 
-  if (token && userId && !loggedInUser) {
-    dispatch(fetchUser({ userId, property: 'loggedInUser' }));
-  }
-}, [loggedInUser, dispatch]);
+    if (token && userId && !loggedInUser) {
+      dispatch(fetchUser({ userId, property: "loggedInUser" }));
+    }
+  }, [loggedInUser, dispatch]);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LayoutPage/>}>
-          <Route path="" element={<HomePage/>} />
-          <Route path="/catalog" element={<CatalogPage/>} />
-          <Route path="/resource/:barcode" element={<ResourcePage/>} />
-          <Route path="/profile/:userId" element={<ProfilePage/>} />
+        <Route path="/" element={<LayoutPage />}>
+          <Route path="" element={<HomePage />} />
+          <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/resource/:barcode" element={<ResourcePage />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

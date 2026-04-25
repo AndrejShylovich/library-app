@@ -4,7 +4,8 @@ import { config } from "../config";
 const JWT_SECRET = config.jwt.secret;
 if (!JWT_SECRET) throw new Error("JWT secret is not defined");
 
-const expiresIn: SignOptions["expiresIn"] = config.jwt.expiresIn as SignOptions["expiresIn"];
+const expiresIn: SignOptions["expiresIn"] = config.jwt
+  .expiresIn as SignOptions["expiresIn"];
 
 export function generateToken(payload: object): string {
   return jwt.sign(payload, JWT_SECRET, { expiresIn });

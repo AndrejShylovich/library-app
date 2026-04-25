@@ -1,5 +1,5 @@
-import mongoose, { Document, Schema } from 'mongoose';
-import { ILoanRecord } from '../models/LoanRecord';
+import mongoose, { Document, Schema } from "mongoose";
+import { ILoanRecord } from "../models/LoanRecord";
 
 export interface ILoanRecordModel extends ILoanRecord, Document {}
 
@@ -8,7 +8,7 @@ export const LoanRecordSchema = new Schema(
     status: {
       type: String,
       required: true,
-      enum: ['AVAILABLE', 'LOANED', 'RETURNED'],
+      enum: ["AVAILABLE", "LOANED", "RETURNED"],
       trim: true,
     },
     loanedDate: {
@@ -39,13 +39,13 @@ export const LoanRecordSchema = new Schema(
     item: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref:'Book'
+      ref: "Book",
     },
   },
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 
-export default mongoose.model<ILoanRecordModel>('LoanRecord', LoanRecordSchema);
+export default mongoose.model<ILoanRecordModel>("LoanRecord", LoanRecordSchema);

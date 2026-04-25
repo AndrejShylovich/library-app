@@ -1,6 +1,6 @@
 import type { DomainBook as Book } from "../../../../models/domain/Book";
 import { BookInformation } from "../../../book/components/BookInformation/BookInformation";
-import './BookOfTheWeek.css';
+import "./BookOfTheWeek.css";
 
 const WEEKLY_BOOK: Book = {
   id: "0316379379",

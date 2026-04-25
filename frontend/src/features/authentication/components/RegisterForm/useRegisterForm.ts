@@ -12,7 +12,7 @@ export const useRegisterForm = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { error, loading, registerSuccess } = useSelector(
-    (state: RootState) => state.authentication
+    (state: RootState) => state.authentication,
   );
 
   const [formData, setFormData] = useState({

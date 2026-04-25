@@ -7,8 +7,12 @@ import { BookMapper } from "../../../../models/mapper/BookMapper";
 export const useLoanBookModal = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const currentBookDto = useSelector((state: RootState) => state.book.currentBook);
-  const currentBook = currentBookDto ? BookMapper.toDomain(currentBookDto) : undefined;
+  const currentBookDto = useSelector(
+    (state: RootState) => state.book.currentBook,
+  );
+  const currentBook = currentBookDto
+    ? BookMapper.toDomain(currentBookDto)
+    : undefined;
 
   const closeModal = useCallback(() => {
     dispatch(setDisplayLoan(false));

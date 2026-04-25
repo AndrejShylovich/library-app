@@ -45,11 +45,8 @@ const getItemId = (item: LoanRecordDto["item"]): string =>
 const updateBook = (
   books: BookDto[],
   itemId: string,
-  updater: (book: BookDto) => BookDto
-) =>
-  books.map((book) =>
-    book._id === itemId ? updater(book) : book
-  );
+  updater: (book: BookDto) => BookDto,
+) => books.map((book) => (book._id === itemId ? updater(book) : book));
 
 const handleThunkError = (e: unknown): string => {
   if (e instanceof Error) return e.message;
@@ -68,7 +65,7 @@ export const fetchAllBooks = createAppAsyncThunk<BookDto[]>(
     } catch (e) {
       return rejectWithValue(handleThunkError(e));
     }
-  }
+  },
 );
 
 export const queryBooks = createAppAsyncThunk<BookPageResult, string>(
@@ -79,30 +76,30 @@ export const queryBooks = createAppAsyncThunk<BookPageResult, string>(
     } catch (e) {
       return rejectWithValue(handleThunkError(e));
     }
-  }
+  },
 );
 
-export const checkoutBook = createAppAsyncThunk<
-  LoanRecordDto,
-  CheckoutBookDto
->("book/checkout", async (payload, { rejectWithValue }) => {
-  try {
-    return await checkoutBookApi(payload);
-  } catch (e) {
-    return rejectWithValue(handleThunkError(e));
-  }
-});
+export const checkoutBook = createAppAsyncThunk<LoanRecordDto, CheckoutBookDto>(
+  "book/checkout",
+  async (payload, { rejectWithValue }) => {
+    try {
+      return await checkoutBookApi(payload);
+    } catch (e) {
+      return rejectWithValue(handleThunkError(e));
+    }
+  },
+);
 
-export const checkinBook = createAppAsyncThunk<
-  LoanRecordDto,
-  CheckinBookDto
->("book/checkin", async (payload, { rejectWithValue }) => {
-  try {
-    return await checkinBookApi(payload);
-  } catch (e) {
-    return rejectWithValue(handleThunkError(e));
-  }
-});
+export const checkinBook = createAppAsyncThunk<LoanRecordDto, CheckinBookDto>(
+  "book/checkin",
+  async (payload, { rejectWithValue }) => {
+    try {
+      return await checkinBookApi(payload);
+    } catch (e) {
+      return rejectWithValue(handleThunkError(e));
+    }
+  },
+);
 
 export const loadBookByBarcode = createAppAsyncThunk<BookDto, string>(
   "book/barcode",
@@ -112,7 +109,7 @@ export const loadBookByBarcode = createAppAsyncThunk<BookDto, string>(
     } catch (e) {
       return rejectWithValue(handleThunkError(e));
     }
-  }
+  },
 );
 
 export const bookSlice = createSlice({
@@ -124,7 +121,6 @@ export const bookSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-
     builder.addCase(fetchAllBooks.fulfilled, (state, action) => {
       state.books = action.payload;
       state.loading = false;
@@ -176,12 +172,12 @@ export const bookSlice = createSlice({
         queryBooks.pending,
         checkoutBook.pending,
         checkinBook.pending,
-        loadBookByBarcode.pending
+        loadBookByBarcode.pending,
       ),
       (state) => {
         state.loading = true;
         state.error = null;
-      }
+      },
     );
 
     builder.addMatcher(
@@ -190,12 +186,12 @@ export const bookSlice = createSlice({
         queryBooks.rejected,
         checkoutBook.rejected,
         checkinBook.rejected,
-        loadBookByBarcode.rejected
+        loadBookByBarcode.rejected,
       ),
       (state, action) => {
         state.loading = false;
         state.error = action.payload ?? "Request failed";
-      }
+      },
     );
   },
 });

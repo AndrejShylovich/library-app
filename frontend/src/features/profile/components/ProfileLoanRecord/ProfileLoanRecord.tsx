@@ -1,4 +1,8 @@
+import { Bookmark } from "@mui/icons-material";
 import type { DomainLoanRecord as LoanRecord } from "../../../../models/domain/LoanRecord";
+
+import "./ProfileLoanRecord.css";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 
 interface ProfileLoanRecordProps {
   record: LoanRecord;
@@ -7,15 +11,35 @@ interface ProfileLoanRecordProps {
 export const ProfileLoanRecord: React.FC<ProfileLoanRecordProps> = ({
   record,
 }) => {
+  const returned = record.status === "AVAILABLE";
+
   return (
     <div className="profile-record">
-      <h4>Title: {record.item?.title}</h4>
-      <h4>Status: {record.status === "AVAILABLE" ? "RETURNED" : "LOANED"}</h4>
-      <p>Loan Date: {new Date(record.loanedDate).toDateString()}</p>
-      <p>Return by Date: {new Date(record.dueDate).toDateString()}</p>
-      {record.returnedDate && (
-        <p>Date Returned: {new Date(record.returnedDate).toDateString()}</p>
-      )}
+      <h4 className="profile-record-title">{record.item?.title}</h4>
+
+      <div className="profile-record-meta">
+        <span className="profile-record-status">
+          {returned ? (
+            <>
+              <AssignmentTurnedInIcon className="record-icon returned" />
+              Returned
+            </>
+          ) : (
+            <>
+              <Bookmark className="record-icon loaned" />
+              Loaned
+            </>
+          )}
+        </span>
+
+        <span>Loan Date: {new Date(record.loanedDate).toDateString()}</span>
+
+        <span>Return by: {new Date(record.dueDate).toDateString()}</span>
+
+        {record.returnedDate && (
+          <span>Returned: {new Date(record.returnedDate).toDateString()}</span>
+        )}
+      </div>
     </div>
   );
 };

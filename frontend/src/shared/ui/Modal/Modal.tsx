@@ -23,11 +23,7 @@ export const Modal: React.FC<ModalProps> = ({
   }, [toggleModal]);
 
   return (
-    <div
-      className="modal-bg"
-      role="presentation"
-      onClick={toggleModal}
-    >
+    <div className="modal-bg" role="presentation" onClick={toggleModal}>
       <div
         className="modal"
         role="dialog"

@@ -30,7 +30,7 @@ describe("Input component", () => {
         type="email"
         value="test@example.com"
         onChange={handleChange}
-      />
+      />,
     );
     const input = screen.getByRole("textbox") as HTMLInputElement;
     expect(input.type).toBe("email");
@@ -51,6 +51,6 @@ describe("Input component", () => {
     render(<Input />);
     const input = screen.getByRole("textbox");
     expect(input).toBeInTheDocument();
-    expect(screen.queryByText(/.+/)).toBeNull(); 
+    expect(screen.queryByText(/.+/)).toBeNull();
   });
 });

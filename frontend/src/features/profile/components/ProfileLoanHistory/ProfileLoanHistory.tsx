@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../../store/ReduxStore";
 import { ProfileLoanRecord } from "../ProfileLoanRecord/ProfileLoanRecord";
 import { useProfileLoanHistory } from "./useProfileLoanHistory";
+import "./ProfileLoanHistory.css";
 
 export const ProfileLoanHistory: React.FC = () => {
   const user = useSelector(

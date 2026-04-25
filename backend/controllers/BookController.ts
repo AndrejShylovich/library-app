@@ -43,7 +43,11 @@ export async function createBook(req: Request, res: Response) {
       book: savedBook,
     });
   } catch (error) {
-    handleError(res, error, "Unable to add a new book to the database at this time");
+    handleError(
+      res,
+      error,
+      "Unable to add a new book to the database at this time",
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-export type UserType = 'ADMIN' | 'EMPLOYEE' | 'PATRON';
+export type UserType = "ADMIN" | "EMPLOYEE" | "PATRON";
 
 export interface IUser {
   type: UserType;

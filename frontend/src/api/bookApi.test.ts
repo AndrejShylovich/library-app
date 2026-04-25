@@ -1,8 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import type {
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from "axios";
+import type { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
 import {
   fetchAllBooksApi,
@@ -30,7 +27,7 @@ vi.mock("./axios", () => ({
   },
 }));
 
-const mockAxiosResponse = <T,>(data: T): AxiosResponse<T> => ({
+const mockAxiosResponse = <T>(data: T): AxiosResponse<T> => ({
   data,
   status: 200,
   statusText: "OK",
@@ -82,7 +79,7 @@ const mockLoanRecord: LoanRecordDto = {
 describe("fetchAllBooksApi", () => {
   it("returns list of books", async () => {
     vi.mocked(api.get).mockResolvedValueOnce(
-      mockAxiosResponse({ books: [mockBook] })
+      mockAxiosResponse({ books: [mockBook] }),
     );
 
     const result = await fetchAllBooksApi();
@@ -102,7 +99,7 @@ describe("queryBooksApi", () => {
           totalCount: 1,
           items: [mockBook],
         },
-      })
+      }),
     );
 
     const result = await queryBooksApi("?title=clean");
@@ -120,7 +117,7 @@ describe("checkoutBookApi", () => {
         libraryCard: {
           user: { _id: "user-1" },
         },
-      })
+      }),
     );
 
     vi.mocked(api.post).mockResolvedValueOnce(
@@ -129,7 +126,7 @@ describe("checkoutBookApi", () => {
           ...mockLoanRecord,
           item: { _id: "book-1" },
         },
-      })
+      }),
     );
 
     const payload: CheckoutBookDto = {
@@ -148,7 +145,7 @@ describe("checkoutBookApi", () => {
         patron: "user-1",
         employeeOut: "employee-1",
         item: "book-1",
-      })
+      }),
     );
 
     expect(result.item).toEqual({ _id: "book-1" });
@@ -169,7 +166,7 @@ describe("checkinBookApi", () => {
           status: "AVAILABLE",
           item: { _id: "book-1" },
         },
-      })
+      }),
     );
 
     const payload: CheckinBookDto = {
@@ -184,7 +181,7 @@ describe("checkinBookApi", () => {
       expect.objectContaining({
         status: "AVAILABLE",
         employeeIn: "employee-1",
-      })
+      }),
     );
 
     expect(result.status).toBe("AVAILABLE");
@@ -198,7 +195,7 @@ describe("loadBookByBarcodeApi", () => {
         page: {
           items: [mockBook],
         },
-      })
+      }),
     );
 
     const result = await loadBookByBarcodeApi("123456");
@@ -213,7 +210,7 @@ describe("loadBookByBarcodeApi", () => {
         page: {
           items: [],
         },
-      })
+      }),
     );
 
     await expect(loadBookByBarcodeApi("404")).rejects.toThrow("Book not found");

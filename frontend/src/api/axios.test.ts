@@ -29,7 +29,7 @@ vi.mock("axios", async () => {
 
 describe("api axios instance", () => {
   let requestInterceptor: (
-    config: InternalAxiosRequestConfig
+    config: InternalAxiosRequestConfig,
   ) => InternalAxiosRequestConfig;
 
   let responseSuccess: (response: AxiosResponse) => AxiosResponse;
@@ -122,7 +122,7 @@ describe("api axios instance", () => {
 
     expect(console.error).toHaveBeenCalledWith(
       "No response from server:",
-      error.request
+      error.request,
     );
   });
 
@@ -135,7 +135,7 @@ describe("api axios instance", () => {
 
     expect(console.error).toHaveBeenCalledWith(
       "Axios error:",
-      "Something went wrong"
+      "Something went wrong",
     );
   });
 });

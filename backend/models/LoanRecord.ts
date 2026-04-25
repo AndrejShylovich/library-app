@@ -1,5 +1,5 @@
 export interface ILoanRecord {
-  status: 'AVAILABLE' | 'LOANED';
+  status: "AVAILABLE" | "LOANED";
 
   loanedDate: Date;
 

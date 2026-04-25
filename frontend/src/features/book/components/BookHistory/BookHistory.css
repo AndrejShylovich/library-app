@@ -1,31 +1,41 @@
 .book-history {
   width: 100%;
-  padding: clamp(1rem, 2vw, 1.5rem);
-  margin-top: clamp(1rem, 2vw, 1.5rem);
 
-  background-color: var(--background-secondary);
-  border-radius: 0.75rem;
-  box-shadow: var(--box-shadow);
+  margin-top: clamp(var(--space-md), 2vw, var(--space-lg));
+  padding: clamp(var(--space-md), 2vw, var(--space-lg));
 
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  overflow: hidden;
+  gap: var(--space-md);
+
+  background: var(--background-secondary);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-md);
+
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+
   box-sizing: border-box;
 }
 
 .book-history-box {
   width: 100%;
-  max-height: clamp(12rem, 25vh, 18rem); 
-  overflow-y: auto;
-  padding-top: 1rem;
+
+  max-height: clamp(12rem, 25vh, 18rem);
+
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
 
+  gap: var(--space-sm);
 
-  scrollbar-width: thin; 
-  scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
+  padding-right: var(--space-xs);
+
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--text) 25%, transparent) transparent;
+
+  scroll-behavior: smooth;
 }
 
 .book-history-box::-webkit-scrollbar {
@@ -33,25 +43,32 @@
 }
 
 .book-history-box::-webkit-scrollbar-thumb {
-  background-color: rgba(100, 100, 100, 0.5);
-  border-radius: 3px;
+  background: color-mix(in srgb, var(--text) 25%, transparent);
+  border-radius: var(--radius-full);
 }
 
 .book-history-box::-webkit-scrollbar-track {
   background: transparent;
 }
 
+.book-history-box {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
 
 @media (max-width: 480px) {
   .book-history {
-    padding: 1rem;
-    margin-top: 1rem;
+    padding: var(--space-md);
+    margin-top: var(--space-md);
   }
 
   .book-history-box {
     max-height: 12rem;
-    padding-top: 0.75rem;
-    gap: 1.5rem;
-    padding: 2rem;
+    gap: var(--space-md);
   }
 }

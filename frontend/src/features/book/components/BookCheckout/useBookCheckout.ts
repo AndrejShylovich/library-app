@@ -24,9 +24,7 @@ export const useBookCheckout = () => {
 
     const libraryCard = libraryCardRef.current?.value.trim();
     if (!libraryCard) {
-      toast.error(
-        "Please enter a valid library card number.",
-      );
+      toast.error("Please enter a valid library card number.");
       return;
     }
 
@@ -41,7 +39,9 @@ export const useBookCheckout = () => {
 
       dispatch(setCurrentBook(undefined));
       dispatch(setDisplayLoan(false));
-      toast.success(`The book "${book.title}" has been successfully checked out!`);
+      toast.success(
+        `The book "${book.title}" has been successfully checked out!`,
+      );
       navigate(`/`);
     } catch (error: unknown) {
       console.error("Checkout failed", error);
