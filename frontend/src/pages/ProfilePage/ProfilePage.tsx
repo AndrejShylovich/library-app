@@ -1,11 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/ReduxStore";
-import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, type JSX } from "react";
-import { fetchUser } from "../../store/slices/AuthenticationSlice";
-
+import type { AppDispatch, RootState } from "../../shared/store/ReduxStore";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchUser } from "../../entities/user/model/userSlice";
+import { UpdateUserForm } from "../../widgets/update-user-form/UpdateUserForm/UpdateUserForm";
+import { ProfileLoanHistory } from "../../widgets/profile-loan-history/ProfileLoanHistory/ProfileLoanHistory";
 import "./ProfilePage.css";
-import { ProfileLoanHistory, UpdateUserForm } from "../../features/profile";
 
 export default function ProfilePage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,7 +13,7 @@ export default function ProfilePage(): JSX.Element {
   const { userId } = useParams();
 
   const { loggedInUser, profileUser } = useSelector(
-    (state: RootState) => state.authentication,
+    (state: RootState) => state.user,
   );
 
   const canAccess =

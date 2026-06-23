@@ -1,14 +1,14 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../store/ReduxStore";
-import {
-  LibraryCardModal,
-  LoginRegisterModal,
-} from "../../features/authentication/components";
-import { Outlet } from "react-router-dom";
-import { Footer, Navbar } from "../../features/navigation";
-import { LoanBookModal } from "../../features/book/components";
 import type { JSX } from "react";
+import type { RootState } from "../../shared/store/ReduxStore";
+import { useSelector } from "react-redux";
+import { LoginRegisterModal } from "../../features/auth/LoginRegisterModal/LoginRegisterModal";
+import { LibraryCardModal } from "../../features/auth/LibraryCardModal/LibraryCardModal";
+import { LoanBookModal } from "../../features/book/LoanBookModal/LoanBookModal";
+import { Navbar } from "../../widgets/navbar/Navbar/Navbar";
 import ErrorBoundary from "../../shared/ui/ErrorBoundary/ErrorBoundary";
+import { Outlet } from "react-router-dom";
+import { Footer } from "../../widgets/footer/Footer/Footer";
+import "./LayoutPage.css";
 
 export default function LayoutPage(): JSX.Element {
   const { displayLogin, displayLibraryCard, displayLoan } = useSelector(

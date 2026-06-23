@@ -1,9 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/ReduxStore";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, type JSX } from "react";
-import { loadBookByBarcode } from "../../store/slices/BookSlice";
-import { BookOverview } from "../../features/book/components";
+import { useEffect, type JSX } from 'react';
+import { loadBookByBarcode } from '../../entities/book/model/bookSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import type { AppDispatch, RootState } from '../../shared/store/ReduxStore';
+import { BookOverview } from '../../widgets/book-overview/BookOverview';
+import "./ResourcePage.css";
 
 export default function ResourcePage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,7 +28,7 @@ export default function ResourcePage(): JSX.Element {
   return (
     <main className="page">
       <div className="page-container">
-        <BookOverview />
+        <BookOverview/>
       </div>
     </main>
   );

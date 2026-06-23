@@ -1,62 +1,90 @@
+/* ==================== Input Group ==================== */
+
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: var(--space-xs);
 }
+
+/* ==================== Label ==================== */
 
 .input-label {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-secondary);
-  margin-bottom: 0.25rem;
 }
+
+/* ==================== Input ==================== */
 
 .input {
   width: 100%;
 
-  padding: clamp(0.65rem, 1vw, 0.85rem) 1rem;
+  padding: 0.75rem 1rem;
 
-  font-size: clamp(0.925rem, 1.05vw, 1rem);
-  font-weight: 450;
+  font-size: 1rem;
+  font-weight: 400;
 
   color: var(--text);
   background: var(--background-primary);
 
-  border: 1.5px solid var(--border, #d1d5db);
+  border: 1.5px solid var(--border);
   border-radius: var(--radius-md);
 
   transition:
-    border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.2s ease;
-
-  will-change: border-color, box-shadow;
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.input:focus {
+/* placeholder */
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+/* hover */
+
+.input:hover:not(:disabled):not(.input-error-state) {
+  border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
+}
+
+/* focus — только для клавиатуры */
+
+.input:focus-visible {
   outline: none;
   border-color: var(--primary);
-  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+  background: var(--background-secondary);
 }
 
-.input-error {
-  font-size: 0.82rem;
-  font-weight: 450;
-  color: var(--danger);
-  margin-top: 0.2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+/* error state — сам инпут подсвечивается красным */
+
+.input.input-error-state {
+  border-color: var(--danger);
 }
+
+.input.input-error-state:focus-visible {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
+}
+
+/* disabled */
 
 .input:disabled {
   background: var(--background-secondary);
   color: var(--text-muted);
-  cursor: not-allowed;
   border-color: var(--border);
+  cursor: not-allowed;
 }
 
-.input::placeholder {
-  color: var(--text-muted);
-  opacity: 0.75;
+/* ==================== Error message ==================== */
+
+.input-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--danger);
 }

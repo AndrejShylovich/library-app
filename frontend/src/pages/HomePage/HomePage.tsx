@@ -1,12 +1,5 @@
 import type { JSX } from "react";
-import {
-  BookOfTheWeek,
-  LibraryCard,
-  LibraryHours,
-  UpcomingEvents,
-  ContactUs,
-} from "../../features/landing/components";
-
+import { BookOfTheWeek, ContactUs, LibraryCard, LibraryHours, UpcomingEvents } from "../../widgets/landing";
 import "./HomePage.css";
 
 export default function HomePage(): JSX.Element {

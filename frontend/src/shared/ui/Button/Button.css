@@ -1,25 +1,41 @@
+/* ==================== Buttons ==================== */
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   border: none;
   border-radius: var(--radius-md);
+
   font-weight: 500;
-  line-height: 1;
-  cursor: pointer;
   font-family: inherit;
+  line-height: 1;
+
+  cursor: pointer;
+
   transition:
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.2s ease;
-  will-change: transform, box-shadow, background-color;
 }
+
+/* ==================== Hover (базовый) ==================== */
 
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
+
+/* ==================== Focus (доступность) ==================== */
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* ==================== Variants ==================== */
 
 .btn-primary {
   background: var(--primary);
@@ -50,6 +66,19 @@
   background: color-mix(in srgb, var(--danger) 85%, black);
 }
 
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text-secondary);
+}
+
+.btn-outline:hover {
+  background: var(--background-secondary);
+  border-color: var(--text);
+}
+
+/* ==================== Sizes ==================== */
+
 .btn-sm {
   padding: clamp(0.35rem, 0.7vw, 0.5rem) clamp(0.75rem, 1.4vw, 1.1rem);
   font-size: clamp(0.8125rem, 0.95vw, 0.875rem);
@@ -65,26 +94,28 @@
   font-size: clamp(1.0625rem, 1.25vw, 1.125rem);
 }
 
+/* ==================== Full width ==================== */
+
 .btn-full {
   width: 100%;
 }
 
+/* ==================== Disabled ==================== */
+/* 
+  Явно переопределяем :hover — иначе hover-правила 
+  вариантов (primary/danger/secondary) перекрашивают 
+  задизейбленную кнопку при наведении.
+*/
+
 .btn:disabled,
-.btn[disabled] {
+.btn:disabled:hover,
+.btn[disabled],
+.btn[disabled]:hover {
   opacity: 0.6;
   cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--text-secondary);
-}
-
-.btn-outline:hover {
-  background: var(--background-secondary);
-  border-color: var(--text);
-  color: var(--text);
+  transform: none;
+  box-shadow: none;
+  background: revert;
+  color: revert;
+  border-color: revert;
 }

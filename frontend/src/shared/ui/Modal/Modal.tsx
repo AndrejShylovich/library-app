@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import "./Modal.css";
+import { useEffect } from "react";
 import { Button } from "../Button/Button";
+import "./Modal.css";
 
 interface ModalProps {
   toggleModal: () => void;
