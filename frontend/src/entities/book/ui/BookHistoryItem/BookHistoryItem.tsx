@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import type { DomainLoanRecord } from "../../../loan-record/model/domain/LoanRecord";
 
 import "./BookHistoryItem.css";
-import { formatDate } from "../../../../shared/lib/utils/book.utils";
+import { formatDate } from "../../../../shared/lib/utils/date.utils";
 
 interface BookHistoryItemProps {
   record: DomainLoanRecord;

@@ -1,8 +1,10 @@
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Bookmark } from "@mui/icons-material";
 
-import "./ProfileLoanRecord.css";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import type { DomainLoanRecord } from "../../model/domain/LoanRecord";
+
+import "./ProfileLoanRecord.css";
+import { formatDate } from "../../../../shared/lib/utils/date.utils";
 
 interface ProfileLoanRecordProps {
   record: DomainLoanRecord;
@@ -11,33 +13,33 @@ interface ProfileLoanRecordProps {
 export const ProfileLoanRecord: React.FC<ProfileLoanRecordProps> = ({
   record,
 }) => {
-  const returned = record.status === "AVAILABLE";
+  const isReturned = record.status === "AVAILABLE";
+
+  const status = isReturned ? (
+    <>
+      <AssignmentTurnedInIcon className="record-icon returned" />
+      Returned
+    </>
+  ) : (
+    <>
+      <Bookmark className="record-icon loaned" />
+      Loaned
+    </>
+  );
 
   return (
     <div className="profile-record">
       <h4 className="profile-record-title">{record.item?.title}</h4>
 
       <div className="profile-record-meta">
-        <span className="profile-record-status">
-          {returned ? (
-            <>
-              <AssignmentTurnedInIcon className="record-icon returned" />
-              Returned
-            </>
-          ) : (
-            <>
-              <Bookmark className="record-icon loaned" />
-              Loaned
-            </>
-          )}
-        </span>
+        <span className="profile-record-status">{status}</span>
 
-        <span>Loan Date: {new Date(record.loanedDate).toDateString()}</span>
+        <span>Loan Date: {formatDate(record.loanedDate)}</span>
 
-        <span>Return by: {new Date(record.dueDate).toDateString()}</span>
+        <span>Return by: {formatDate(record.dueDate)}</span>
 
         {record.returnedDate && (
-          <span>Returned: {new Date(record.returnedDate).toDateString()}</span>
+          <span>Returned: {formatDate(record.returnedDate)}</span>
         )}
       </div>
     </div>
