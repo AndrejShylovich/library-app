@@ -9,16 +9,31 @@ interface BookCardProps {
 }
 
 export const BookCard: React.FC<BookCardProps> = ({ book }) => {
-  const { available, buttonClass, handleLoan, displayBook } = useBookCard(book);
+  const { available, buttonClass, handleLoan, displayBook } =
+    useBookCard(book);
 
   return (
-    <div id="book-card" className="book-card" onClick={displayBook}>
-      <img className="book-card-cover" src={book.cover} alt={book.title} />
+    <div
+      className="book-card"
+      onClick={displayBook}
+    >
+      <img
+        className="book-card-cover"
+        src={book.cover}
+        alt={book.title}
+      />
+
       <div className="book-card-info">
         <h1 className="book-card-title">{book.title}</h1>
-        <h3 className="book-card-author">{mapAuthorsToString(book)}</h3>
+        <h3 className="book-card-author">
+          {mapAuthorsToString(book)}
+        </h3>
       </div>
-      <Button className={buttonClass} onClick={handleLoan}>
+
+      <Button
+        className={buttonClass}
+        onClick={handleLoan}
+      >
         Status: {available ? "AVAILABLE" : "UNAVAILABLE"}
       </Button>
     </div>

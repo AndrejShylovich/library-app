@@ -1,23 +1,32 @@
 import { mapAuthorsToString } from "../../../../shared/lib/utils/book.utils";
 import type { DomainBook } from "../../model/domain/Book";
+
 import "./BookInformation.css";
 
-interface BookInfoProps {
+interface BookInformationProps {
   book: DomainBook;
 }
 
-export const BookInformation: React.FC<BookInfoProps> = ({ book }) => {
-  const { title, cover, description } = book;
-
+export const BookInformation: React.FC<BookInformationProps> = ({
+  book,
+}) => {
   return (
     <section className="book-info">
       <div className="book-info-container">
-        <img className="book-info-cover" src={cover} alt={title} />
+        <img
+          className="book-info-cover"
+          src={book.cover}
+          alt={`Cover of ${book.title}`}
+        />
 
         <div className="book-info-details">
-          <h2>{title}</h2>
+          <h2>{book.title}</h2>
           <h3>{mapAuthorsToString(book)}</h3>
-          <p>{description || "No description available."}</p>
+
+          <p>
+            {book.description?.trim() ||
+              "No description available."}
+          </p>
         </div>
       </div>
     </section>

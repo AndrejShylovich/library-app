@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
 import type { DomainBook } from "../../model/domain/Book";
 
 export const useBookCarousel = (books: DomainBook[]) => {
@@ -8,19 +9,24 @@ export const useBookCarousel = (books: DomainBook[]) => {
     setIndex(0);
   }, [books]);
 
-  const hasBooks = books.length > 0;
+  const currentBook = books[index];
 
-  const shift = (delta: number) => {
-    if (!hasBooks) return;
-    setIndex((prev) => (prev + delta + books.length) % books.length);
-  };
+  const showPrevious = useCallback(() => {
+    if (!books.length) return;
 
-  const currentBook = hasBooks ? books[index] : null;
+    setIndex((prev) => (prev + 1) % books.length);
+  }, [books.length]);
+
+  const showNext = useCallback(() => {
+    if (!books.length) return;
+
+    setIndex((prev) => (prev - 1 + books.length) % books.length);
+  }, [books.length]);
 
   return {
-    index,
     currentBook,
-    shift,
-    hasBooks,
+    hasBooks: books.length > 0,
+    showPrevious,
+    showNext,
   };
 };

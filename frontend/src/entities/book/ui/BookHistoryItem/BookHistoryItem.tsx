@@ -1,40 +1,42 @@
+import { Link } from "react-router-dom";
+
 import type { DomainLoanRecord } from "../../../loan-record/model/domain/LoanRecord";
-import { useBookHistoryItem } from "./useBookHistoryItem";
+
 import "./BookHistoryItem.css";
+import { formatDate } from "../../../../shared/lib/utils/book.utils";
 
 interface BookHistoryItemProps {
   record: DomainLoanRecord;
 }
 
 export const BookHistoryItem: React.FC<BookHistoryItemProps> = ({ record }) => {
-  const { loanDate, returnedDate, dueDate, isAvailable, visitProfile } =
-    useBookHistoryItem(record);
+  const isReturned = record.status === "AVAILABLE";
 
   return (
     <div className="book-history-item">
       <h4>
         Status:{" "}
-        <span className={isAvailable ? "green" : "red"}>{record.status}</span>
+        <span className={isReturned ? "green" : "red"}>{record.status}</span>
       </h4>
 
       <div className="book-history-item-group">
-        <p
-          className="book-history-link"
-          onClick={visitProfile}
-          role="button"
-          tabIndex={0}
-        >
+        <Link to={`/profile/${record.patronId}`} className="book-history-link">
           Patron: {record.patronId}
-        </p>
+        </Link>
 
-        <p>Loan Date: {loanDate}</p>
-        {isAvailable && returnedDate && <p>Return Date: {returnedDate}</p>}
+        <p>Loan Date: {formatDate(record.loanedDate)}</p>
+
+        {isReturned && record.returnedDate && (
+          <p>Return Date: {formatDate(record.returnedDate)}</p>
+        )}
       </div>
 
       <div className="book-history-item-group">
         <p>Loaner: {record.employeeOutId}</p>
-        <p>Return By Date: {dueDate}</p>
-        {isAvailable && record.employeeInId && (
+
+        <p>Return By Date: {formatDate(record.dueDate)}</p>
+
+        {isReturned && record.employeeInId && (
           <p>Returner: {record.employeeInId}</p>
         )}
       </div>

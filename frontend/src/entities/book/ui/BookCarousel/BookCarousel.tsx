@@ -1,14 +1,23 @@
 import type { DomainBook } from "../../model/domain/Book";
+
 import { Button } from "../../../../shared/ui/Button/Button";
-import { useBookCarousel } from "./useBookCarousel";
 import { BookCard } from "../BookCard/BookCard";
+
+import { useBookCarousel } from "./useBookCarousel";
+
 import "./BookCarousel.css";
+
 interface BookCarouselProps {
   books: DomainBook[];
 }
 
 export const BookCarousel: React.FC<BookCarouselProps> = ({ books }) => {
-  const { currentBook, shift, hasBooks } = useBookCarousel(books);
+  const {
+    currentBook,
+    hasBooks,
+    showPrevious,
+    showNext,
+  } = useBookCarousel(books);
 
   if (!hasBooks) {
     return (
@@ -19,27 +28,29 @@ export const BookCarousel: React.FC<BookCarouselProps> = ({ books }) => {
   }
 
   return (
-    <div className="book-carousel" role="region" aria-label="Book Carousel">
+    <div
+      className="book-carousel"
+      role="region"
+      aria-label="Book Carousel"
+    >
       <Button
         className="book-carousel-button left"
-        onClick={() => shift(1)}
-        aria-label="Scroll Left"
+        onClick={showPrevious}
+        aria-label="Previous book"
       >
         &lt;
       </Button>
 
       <Button
         className="book-carousel-button right"
-        onClick={() => shift(-1)}
-        aria-label="Scroll Right"
+        onClick={showNext}
+        aria-label="Next book"
       >
         &gt;
       </Button>
 
       <div className="book-carousel-track">
-        {currentBook && (
-          <BookCard key={currentBook.barcode} book={currentBook} />
-        )}
+        <BookCard book={currentBook} />
       </div>
     </div>
   );
