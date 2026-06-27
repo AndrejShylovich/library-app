@@ -1,4 +1,7 @@
-import { TOKEN_KEY, USER_ID_KEY } from "../../../../shared/api/axios";
+import { TOKEN_KEY, USER_ID_KEY } from "../../api/axios";
+
+export const getToken = (): string | null =>
+  localStorage.getItem(TOKEN_KEY);
 
 export const saveAuthData = (
   userId: string,

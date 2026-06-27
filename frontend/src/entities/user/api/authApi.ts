@@ -6,7 +6,7 @@ import type {
   RegisterUserDto,
   UserDto,
 } from "../model/dto/UserDto";
-import { saveAuthData } from "../model/lib/authStorage";
+import { saveAuthData } from "../../../shared/lib/auth/authStorage";
 
 type LoginResponse = {
   user: UserDto;

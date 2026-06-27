@@ -1,9 +1,6 @@
-import { TOKEN_KEY, USER_ID_KEY } from "../../../../shared/api/axios";
+import { TOKEN_KEY, USER_ID_KEY } from "../../api/axios";
+import { clearAuthData, saveAuthData } from "./authStorage";
 
-import {
-  clearAuthData,
-  saveAuthData,
-} from "./authStorage";
 
 describe("authStorage", () => {
   beforeEach(() => {
