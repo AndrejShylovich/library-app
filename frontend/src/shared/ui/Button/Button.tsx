@@ -1,33 +1,37 @@
-import "./Button.css";
+import type {
+  ButtonHTMLAttributes,
+  PropsWithChildren,
+} from "react";
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+
+import "./Button.css";
+import { classNames } from "../../lib/classNames";
+
+interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "danger";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
-  children: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = ({
   variant,
   size,
   fullWidth = false,
   className,
   children,
   ...props
-}) => {
-  const classes = [
-    "btn",
-    variant && `btn-${variant}`,
-    size && `btn-${size}`,
-    fullWidth && "btn-full",
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  return (
-    <button className={classes} {...props}>
-      {children}
-    </button>
-  );
-};
+}: PropsWithChildren<ButtonProps>) => (
+  <button
+    className={classNames(
+      "btn",
+      variant && `btn-${variant}`,
+      size && `btn-${size}`,
+      fullWidth && "btn-full",
+      className,
+    )}
+    {...props}
+  >
+    {children}
+  </button>
+);

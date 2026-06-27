@@ -6,11 +6,13 @@ import "./BookCheckIn.css";
 export const BookCheckin: React.FC = () => {
   const { user, book, handleCheckin } = useBookCheckin();
 
-  if (!book || !user) return <div className="book-checkin" />;
+  if (!book || !user) {
+    return null;
+  }
 
   return (
     <div className="book-checkin">
-      <form className="book-checkin-form" onSubmit={(e) => e.preventDefault()}>
+      <div className="book-checkin-form">
         <h3>Check In Book: {book.title}</h3>
 
         <label className="book-checkin-label">
@@ -26,11 +28,10 @@ export const BookCheckin: React.FC = () => {
         <Button
           className="book-checkin-button"
           onClick={handleCheckin}
-          type="button"
         >
           Check In Book
         </Button>
-      </form>
+      </div>
     </div>
   );
 };

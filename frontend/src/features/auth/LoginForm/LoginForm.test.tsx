@@ -27,32 +27,36 @@ describe("LoginForm", () => {
   const toggleRegister = vi.fn();
   const handleSubmit = vi.fn((e) => e.preventDefault());
 
+  const baseState = {
+    email: "",
+    password: "",
+    error: false,
+    loading: false,
+    handleEmailChange: vi.fn(),
+    handlePasswordChange: vi.fn(),
+    handleSubmit,
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mockUseLoginForm.mockReturnValue({
-      email: "",
-      password: "",
-      error: false,
-      loading: false,
-      handleEmailChange: vi.fn(),
-      handlePasswordChange: vi.fn(),
-      handleSubmit,
-    });
+    mockUseLoginForm.mockReturnValue(baseState);
   });
 
   it("renders login form", () => {
-    render(<LoginForm toggleRegister={toggleRegister} />);
+    render(<LoginForm toggleRegister={vi.fn()} />);
 
     expect(screen.getByText("Please Login")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Email")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
+
+    expect(screen.getByLabelText("Email")).toBeInTheDocument();
+    expect(screen.getByLabelText("Password")).toBeInTheDocument();
+
     expect(screen.getByRole("button", { name: "Login" })).toBeInTheDocument();
   });
 
   it("shows error message when error is true", () => {
-    mockUseLoginForm.mockReturnValueOnce({
-      ...mockUseLoginForm(),
+    mockUseLoginForm.mockReturnValue({
+      ...baseState,
       error: true,
     });
 
@@ -64,14 +68,15 @@ describe("LoginForm", () => {
   });
 
   it("disables submit button when loading", () => {
-    mockUseLoginForm.mockReturnValueOnce({
-      ...mockUseLoginForm(),
+    mockUseLoginForm.mockReturnValue({
+      ...baseState,
       loading: true,
     });
 
     render(<LoginForm toggleRegister={toggleRegister} />);
 
-    const button = screen.getByRole("button");
+    const button = screen.getByRole("button", { name: "Logging in..." });
+
     expect(button).toBeDisabled();
     expect(button).toHaveTextContent("Logging in...");
   });
@@ -79,7 +84,8 @@ describe("LoginForm", () => {
   it("calls handleSubmit on form submit", () => {
     render(<LoginForm toggleRegister={toggleRegister} />);
 
-    fireEvent.submit(screen.getByRole("button"));
+    const form = document.querySelector("form")!;
+    fireEvent.submit(form);
 
     expect(handleSubmit).toHaveBeenCalled();
   });
@@ -87,7 +93,7 @@ describe("LoginForm", () => {
   it("calls toggleRegister on click", () => {
     render(<LoginForm toggleRegister={toggleRegister} />);
 
-    fireEvent.click(screen.getByText("Create one here."));
+    fireEvent.click(screen.getByText("Create one here"));
 
     expect(toggleRegister).toHaveBeenCalled();
   });

@@ -1,25 +1,68 @@
+import {
+  forwardRef,
+  useId,
+  type InputHTMLAttributes,
+} from "react";
+
+import { classNames } from "../../lib/classNames";
+
 import "./Input.css";
 
-import { forwardRef, type InputHTMLAttributes } from "react";
-
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+  extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string | null;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className, id, ...rest }, ref) => {
-    const inputClass = ["input", className].filter(Boolean).join(" ");
+  (
+    {
+      label,
+      error,
+      className,
+      id,
+      ...props
+    },
+    ref,
+  ) => {
+    const generatedId = useId(); 
+    const inputId = id || generatedId; 
 
     return (
       <div className="input-group">
         {label && (
-          <label htmlFor={id} className="input-label">
+          <label
+            htmlFor={inputId}
+            className="input-label"
+          >
             {label}
           </label>
         )}
-        <input ref={ref} id={id} className={inputClass} {...rest} />
-        {error && <span className="input-error">{error}</span>}
+
+        <input
+          ref={ref}
+          id={inputId}
+          aria-invalid={Boolean(error)}
+          aria-describedby={
+            error
+              ? `${inputId}-error`
+              : undefined
+          }
+          className={classNames(
+            "input",
+            className,
+          )}
+          {...props}
+        />
+
+        {error && (
+          <span
+            id={`${inputId}-error`}
+            className="input-error"
+          >
+            {error}
+          </span>
+        )}
       </div>
     );
   },

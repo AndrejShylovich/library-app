@@ -4,13 +4,20 @@ import { Button } from "../../../shared/ui/Button/Button";
 import "./BookCheckout.css";
 
 export const BookCheckout: React.FC = () => {
-  const { user, book, libraryCardRef, handleCheckout } = useBookCheckout();
+  const {
+    user,
+    book,
+    libraryCardRef,
+    handleCheckout,
+  } = useBookCheckout();
 
-  if (!book || !user) return <div className="book-checkout" />;
+  if (!book || !user) {
+    return null;
+  }
 
   return (
     <div className="book-checkout">
-      <form className="book-checkout-form" onSubmit={(e) => e.preventDefault()}>
+      <div className="book-checkout-form">
         <h3>Loan Book: {book.title}</h3>
 
         <label className="book-checkout-label">
@@ -34,12 +41,11 @@ export const BookCheckout: React.FC = () => {
 
         <Button
           className="book-checkout-button"
-          type="button"
           onClick={handleCheckout}
         >
           Loan Book
         </Button>
-      </form>
+      </div>
     </div>
   );
 };

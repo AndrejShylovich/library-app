@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+
 import { Button } from "../Button/Button";
+
 import "./Modal.css";
 
 interface ModalProps {
@@ -14,22 +16,47 @@ export const Modal: React.FC<ModalProps> = ({
   titleId,
 }) => {
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") toggleModal();
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        toggleModal();
+      }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleEscape,
+      );
+    };
   }, [toggleModal]);
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   return (
-    <div className="modal-bg" role="presentation" onClick={toggleModal}>
+    <div
+      className="modal-bg"
+      role="presentation"
+      onClick={toggleModal}
+    >
       <div
         className="modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        onClick={(e) => e.stopPropagation()}
+        aria-label={
+          titleId ? undefined : "Modal window"
+        }
+        onClick={(event) =>
+          event.stopPropagation()
+        }
       >
         <Button
           className="modal-exit"
@@ -38,6 +65,7 @@ export const Modal: React.FC<ModalProps> = ({
         >
           ×
         </Button>
+
         {children}
       </div>
     </div>

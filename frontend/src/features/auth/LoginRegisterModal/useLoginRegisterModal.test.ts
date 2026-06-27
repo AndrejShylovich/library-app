@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useLoginRegisterModal } from "./useLoginRegisterModal";
+import { waitFor } from "@testing-library/react";
 
 const dispatchMock = vi.fn();
 
@@ -58,15 +59,18 @@ describe("useLoginRegisterModal", () => {
     expect(dispatchMock).toHaveBeenCalledWith(setDisplayLogin(false));
   });
 
-  it("closes modal and stores userId when loggedInUser appears", () => {
-    const user = { _id: "user-123" };
-    mockUseSelector.mockReturnValueOnce({
-      loggedInUser: user,
-    });
+  it("closes modal and stores userId when loggedInUser appears", async () => {
+  const user = { _id: "user-123" };
 
-    renderHook(() => useLoginRegisterModal());
+  mockUseSelector.mockReturnValue({
+    loggedInUser: user,
+  });
 
+  renderHook(() => useLoginRegisterModal());
+
+  await waitFor(() => {
     expect(setItemSpy).toHaveBeenCalledWith("userId", "user-123");
     expect(dispatchMock).toHaveBeenCalledWith(setDisplayLogin(false));
   });
+});
 });

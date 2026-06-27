@@ -1,10 +1,13 @@
 import { useCatalogSearchPagination } from "./useCatalogSearchPagination";
 import "./CatalogSearchPageNavigation.css";
+import { Button } from "../../../shared/ui/Button/Button";
 
 export const CatalogSearchPageNavigation: React.FC = () => {
   const pagination = useCatalogSearchPagination();
 
-  if (!pagination) return null;
+  if (!pagination) {
+    return null;
+  }
 
   const {
     currentPage,
@@ -15,43 +18,52 @@ export const CatalogSearchPageNavigation: React.FC = () => {
     navigateToNumber,
   } = pagination;
 
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
+
   return (
     <div className="catalog-search-page-navigator">
-      <p
+      <Button
         className={`catalog-search-page-navigator-navigate ${
-          currentPage === 1 ? "disabled" : ""
+          isFirstPage ? "disabled" : ""
         }`}
         onClick={navigatePrevious}
       >
         Prev
-      </p>
+      </Button>
 
       <div className="catalog-search-page-numbers">
         {pageNumbers.map((num) => {
-          const pageNum = parseInt(num, 10);
+          const pageNum = Number(num);
           const isActive = pageNum === currentPage;
 
           return (
-            <p
+            <Button
               key={num}
               id={num}
-              className={`catalog-search-page-number ${isActive ? "number-active" : ""}`}
-              onClick={!isActive ? () => navigateToNumber(pageNum) : undefined}
+              className={`catalog-search-page-number ${
+                isActive ? "number-active" : ""
+              }`}
+              onClick={
+                isActive
+                  ? undefined
+                  : () => navigateToNumber(pageNum)
+              }
             >
               {num}
-            </p>
+            </Button>
           );
         })}
       </div>
 
-      <p
+      <Button
         className={`catalog-search-page-navigator-navigate ${
-          currentPage === totalPages ? "disabled" : ""
+          isLastPage ? "disabled" : ""
         }`}
         onClick={navigateNext}
       >
         Next
-      </p>
+      </Button>
     </div>
   );
 };

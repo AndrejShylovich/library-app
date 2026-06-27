@@ -99,10 +99,13 @@ describe("RegisterForm", () => {
 
     render(<RegisterForm toggleLogin={toggleLogin} />);
 
-    const loginLink = screen.getByText("Login here.");
-    expect(screen.getByText("Registered Successfully.")).toBeInTheDocument();
+    expect(screen.getByText(/registered successfully/i)).toBeInTheDocument();
 
-    fireEvent.click(loginLink);
+    const loginButton = screen.getByRole("button", {
+      name: /login here/i,
+    });
+
+    fireEvent.click(loginButton);
     expect(toggleLogin).toHaveBeenCalled();
   });
 });

@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { LibraryCardModal } from "./LibraryCardModal";
-import { useLibraryCardModal } from "./useLibraryCardModal";
+import { useDispatch } from "react-redux";
+import { setDisplayLibraryCard } from "../../../shared/store/slices/ModalSlice";
 
-vi.mock("./useLibraryCardModal", () => ({
-  useLibraryCardModal: vi.fn(),
+vi.mock("react-redux", () => ({
+  useDispatch: vi.fn(),
 }));
 
 vi.mock("../../../shared/ui/Modal/Modal", () => ({
@@ -29,23 +30,23 @@ vi.mock("../RegisterLibraryCardForm/RegisterLibraryCardForm", () => ({
 }));
 
 describe("LibraryCardModal", () => {
-  const closeModalMock = vi.fn();
+  const dispatchMock = vi.fn();
 
   beforeEach(() => {
-    closeModalMock.mockClear();
-    vi.mocked(useLibraryCardModal).mockReturnValue({
-      closeModal: closeModalMock,
-    });
+    dispatchMock.mockClear();
+    (useDispatch as unknown as Mock).mockReturnValue(dispatchMock);
   });
 
-  it("should render Modal with RegisterLibraryCardForm", () => {
+  it("should render form and dispatch close action", () => {
     render(<LibraryCardModal />);
+
     expect(screen.getByTestId("register-form")).toBeInTheDocument();
-  });
 
-  it("should call closeModal when Modal toggles", () => {
-    render(<LibraryCardModal />);
     fireEvent.click(screen.getByTestId("close-modal"));
-    expect(closeModalMock).toHaveBeenCalledTimes(1);
+
+    expect(dispatchMock).toHaveBeenCalledTimes(1);
+    expect(dispatchMock).toHaveBeenCalledWith(
+      setDisplayLibraryCard(false),
+    );
   });
 });

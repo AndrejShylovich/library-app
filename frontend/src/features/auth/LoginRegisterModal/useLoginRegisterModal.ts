@@ -4,11 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { setDisplayLogin } from "../../../shared/store/slices/ModalSlice";
 
 export const useLoginRegisterModal = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { loggedInUser } = useSelector(
-    (state: RootState) => state.user,
-  );
 
+  const dispatch = useDispatch<AppDispatch>();
+  const { loggedInUser } = useSelector((state: RootState) => state.user);
   const [isLogin, setIsLogin] = useState(true);
 
   const closeModal = useCallback(() => {
@@ -25,10 +23,6 @@ export const useLoginRegisterModal = () => {
       dispatch(setDisplayLogin(false));
     }
   }, [loggedInUser, dispatch]);
-
-  return {
-    isLogin,
-    closeModal,
-    toggleForm,
-  };
+  
+  return { isLogin, closeModal, toggleForm };
 };

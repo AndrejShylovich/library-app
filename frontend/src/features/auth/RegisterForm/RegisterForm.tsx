@@ -7,7 +7,16 @@ interface RegisterFormProps {
   toggleLogin(): void;
 }
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({ toggleLogin }) => {
+const fields = [
+  { name: "firstName", label: "First Name", placeholder: "first", type: "text" },
+  { name: "lastName", label: "Last Name", placeholder: "last", type: "text" },
+  { name: "email", label: "Email", placeholder: "email", type: "email" },
+  { name: "password", label: "Password", placeholder: "password", type: "password" },
+] as const;
+
+export const RegisterForm: React.FC<RegisterFormProps> = ({
+  toggleLogin,
+}) => {
   const {
     formData,
     error,
@@ -24,65 +33,43 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ toggleLogin }) => {
       {error && <p className="register-form-error">There was an error</p>}
 
       <div className="register-form-name-group">
-        <div className="register-form-name-input-group">
-          <h6>First Name</h6>
-          <Input
-            className="register-form-input-name"
-            placeholder="first"
-            name="firstName"
-            required
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="register-form-name-input-group">
-          <h6>Last Name</h6>
-          <Input
-            className="register-form-input-name"
-            placeholder="last"
-            name="lastName"
-            required
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="register-form-input-group">
-          <h6>Email</h6>
-          <Input
-            className="register-form-input-name"
-            placeholder="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="register-form-input-group">
-          <h6>Password</h6>
-          <Input
-            className="register-form-input-name"
-            placeholder="password"
-            name="password"
-            type="password"
-            required
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
+        {fields.map((field) => (
+          <div
+            key={field.name}
+            className="register-form-input-group"
+          >
+            <h6>{field.label}</h6>
+            <Input
+              className="register-form-input-name"
+              placeholder={field.placeholder}
+              name={field.name}
+              type={field.type}
+              required
+              value={formData[field.name]}
+              onChange={handleChange}
+            />
+          </div>
+        ))}
       </div>
 
-      <Button className="register-form-submit" type="submit" disabled={loading}>
+      <Button
+        className="register-form-submit"
+        type="submit"
+        disabled={loading}
+      >
         Register
       </Button>
 
       {registerSuccess && (
-        <p>
-          Registered Successfully.
-          <span className="register-form-login" onClick={toggleLogin}>
-            Login here.
-          </span>
+        <p className="register-form-success">
+          Registered successfully.{" "}
+          <button
+            type="button"
+            className="register-form-login"
+            onClick={toggleLogin}
+          >
+            Login here
+          </button>
         </p>
       )}
     </form>

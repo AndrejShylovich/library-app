@@ -7,6 +7,11 @@ interface LoginFormProps {
   toggleRegister(): void;
 }
 
+const FIELD_LABELS = {
+  email: "Email",
+  password: "Password",
+} as const;
+
 export const LoginForm: React.FC<LoginFormProps> = ({ toggleRegister }) => {
   const {
     email,
@@ -21,31 +26,34 @@ export const LoginForm: React.FC<LoginFormProps> = ({ toggleRegister }) => {
   return (
     <form className="login-form" onSubmit={handleSubmit}>
       <h2>Please Login</h2>
+
       {error && (
         <p className="login-form-error">Username or password incorrect</p>
       )}
 
       <div className="login-form-input-group">
-        <h6>Email</h6>
+        <h6>{FIELD_LABELS.email}</h6>
         <Input
           className="login-form-input"
           type="email"
-          placeholder="Email"
+          placeholder={FIELD_LABELS.email}
           value={email}
           onChange={handleEmailChange}
-          required
+          required // Возвращаем нативную валидацию браузера
+          aria-label={FIELD_LABELS.email}
         />
       </div>
 
       <div className="login-form-input-group">
-        <h6>Password</h6>
+        <h6>{FIELD_LABELS.password}</h6>
         <Input
           className="login-form-input"
           type="password"
-          placeholder="Password"
+          placeholder={FIELD_LABELS.password}
           value={password}
           onChange={handlePasswordChange}
           required
+          aria-label={FIELD_LABELS.password}
         />
       </div>
 
@@ -53,11 +61,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ toggleRegister }) => {
         {loading ? "Logging in..." : "Login"}
       </Button>
 
-      <p>
+      <p className="login-form-switch">
         Don't have an account?{" "}
-        <span className="login-form-register" onClick={toggleRegister}>
-          Create one here.
-        </span>
+        <button
+          type="button"
+          className="login-form-register"
+          onClick={toggleRegister}
+        >
+          Create one here
+        </button>
       </p>
     </form>
   );

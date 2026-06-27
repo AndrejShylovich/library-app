@@ -1,6 +1,10 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+const queryKeys = {
+  isbn: "barcode",
+} as const;
+
 export const useCatalogAdvancedSearch = () => {
   const navigate = useNavigate();
 
@@ -18,14 +22,24 @@ export const useCatalogAdvancedSearch = () => {
 
     for (const [key, ref] of Object.entries(fields)) {
       const value = ref.current?.value.trim();
-      if (value) {
-        const queryKey = key === "isbn" ? "barcode" : key;
-        params.append(queryKey, value);
+
+      if (!value) {
+        continue;
       }
+
+      const queryKey =
+        queryKeys[key as keyof typeof queryKeys] ?? key;
+
+      params.append(queryKey, value);
     }
 
-    navigate(`/catalog${params.toString() ? `?${params}` : ""}`);
+    navigate(
+      `/catalog${params.toString() ? `?${params}` : ""}`,
+    );
   };
 
-  return { fields, search };
+  return {
+    fields,
+    search,
+  };
 };

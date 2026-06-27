@@ -1,30 +1,38 @@
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../shared/store/ReduxStore";
+
+import type {
+  AppDispatch,
+  RootState,
+} from "../../../shared/store/ReduxStore";
+
 import {
   setDisplayLibraryCard,
   setDisplayLogin,
 } from "../../../shared/store/slices/ModalSlice";
+
 import { getLibraryCard } from "../../../entities/library-card/model/libraryCardSlice";
 
 export const useRegisterLibraryCardForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loggedInUser } = useSelector(
-    (state: RootState) => state.user,
+
+  const { loggedInUser, libraryCard } = useSelector(
+    (state: RootState) => ({
+      loggedInUser: state.user.loggedInUser,
+      libraryCard: state.libraryCard.libraryCard,
+    }),
   );
-  const libraryCard = useSelector(
-  (state: RootState) => state.libraryCard.libraryCard,
-);
 
-  const createLibraryCard = () => {
-    if (loggedInUser) {
-      dispatch(getLibraryCard(loggedInUser._id));
-    }
-  };
+  const createLibraryCard = useCallback(() => {
+    if (!loggedInUser) return;
 
-  const openLogin = () => {
+    dispatch(getLibraryCard(loggedInUser._id));
+  }, [dispatch, loggedInUser]);
+
+  const openLogin = useCallback(() => {
     dispatch(setDisplayLibraryCard(false));
     dispatch(setDisplayLogin(true));
-  };
+  }, [dispatch]);
 
   return {
     loggedInUser,
