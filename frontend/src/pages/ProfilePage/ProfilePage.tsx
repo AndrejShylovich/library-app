@@ -19,6 +19,10 @@ export default function ProfilePage(): JSX.Element {
   const canAccess =
     loggedInUser?._id === userId || loggedInUser?.type === "EMPLOYEE";
 
+  const profileTitle = profileUser
+    ? `${profileUser.firstName} ${profileUser.lastName}'s Profile`
+    : "Profile";
+
   useEffect(() => {
     if (!userId || !canAccess) {
       navigate("/");
@@ -36,11 +40,7 @@ export default function ProfilePage(): JSX.Element {
   return (
     <main className="page">
       <div className="page-container">
-        <h1>
-          {profileUser
-            ? `${profileUser.firstName} ${profileUser.lastName}'s Profile`
-            : "Profile"}
-        </h1>
+        <h1>{profileTitle}</h1>
 
         <div className="profile-page-cols">
           <div className="profile-page-left-column profile-panel">

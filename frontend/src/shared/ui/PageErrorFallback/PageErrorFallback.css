@@ -1,0 +1,9 @@
+.page-error-fallback {
+  padding: 2rem;
+  text-align: center;
+}
+
+.page-error-fallback-link {
+  display: inline-block;
+  margin-top: 1rem;
+}

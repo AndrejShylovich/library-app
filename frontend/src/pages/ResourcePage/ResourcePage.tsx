@@ -1,17 +1,19 @@
-import { useEffect, type JSX } from 'react';
-import { loadBookByBarcode } from '../../entities/book/model/bookSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import type { AppDispatch, RootState } from '../../shared/store/ReduxStore';
-import { BookOverview } from '../../widgets/book-overview/BookOverview';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useParams } from "react-router-dom";
+
+import { loadBookByBarcode } from "../../entities/book/model/bookSlice";
+import { BookOverview } from "../../widgets/book-overview/BookOverview";
+
+import type { AppDispatch, RootState } from "../../shared/store/ReduxStore";
+
 import "./ResourcePage.css";
 
-export default function ResourcePage(): JSX.Element {
+export default function ResourcePage() {
   const dispatch = useDispatch<AppDispatch>();
   const { barcode } = useParams();
-  const navigate = useNavigate();
 
-  const { error } = useSelector((state: RootState) => state.book);
+  const error = useSelector((state: RootState) => state.book.error);
 
   useEffect(() => {
     if (barcode) {
@@ -19,16 +21,14 @@ export default function ResourcePage(): JSX.Element {
     }
   }, [barcode, dispatch]);
 
-  useEffect(() => {
-    if (error) {
-      navigate("/catalog");
-    }
-  }, [error, navigate]);
+  if (!barcode || error) {
+    return <Navigate to="/catalog" replace />;
+  }
 
   return (
     <main className="page">
       <div className="page-container">
-        <BookOverview/>
+        <BookOverview />
       </div>
     </main>
   );
