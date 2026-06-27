@@ -10,10 +10,13 @@ export const useEditableUser = (initialUser?: DomainUser) => {
     setIsEditing(false);
   }, [initialUser]);
 
-  const updateField = useCallback((name: keyof DomainUser, value: string) => {
-    setIsEditing(true);
-    setUser((prev) => (prev ? { ...prev, [name]: value } : prev));
-  }, []);
+  const updateField = useCallback(
+    (name: keyof DomainUser, value: string) => {
+      setIsEditing(true);
+      setUser((prev) => (prev ? { ...prev, [name]: value } : prev));
+    },
+    [],
+  );
 
   return { user, isEditing, updateField, setUser, setIsEditing };
 };

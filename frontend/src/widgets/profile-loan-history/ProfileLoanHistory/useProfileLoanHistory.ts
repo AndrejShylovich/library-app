@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import type { DomainLoanRecord } from "../../../entities/loan-record/model/domain/LoanRecord";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
+
+import type { DomainLoanRecord } from "../../../entities/loan-record/model/domain/LoanRecord";
 
 interface UseProfileLoanHistoryResult {
   records: DomainLoanRecord[];
@@ -18,41 +19,56 @@ export const useProfileLoanHistory = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchRecords = useCallback(
-    async (controller: AbortController) => {
-      if (!userId) return;
+  const controllerRef = useRef<AbortController | null>(null);
 
-      try {
-        setLoading(true);
-        setError(null);
+  const fetchRecords = useCallback(async () => {
+    if (!userId) return;
 
-        const res = await axios.post<{ records: DomainLoanRecord[] }>(
-          `${VITE_API_URL}/loan/query`,
-          { property: "patron", value: userId },
-          { signal: controller.signal },
-        );
-        setRecords(res.data.records ?? []);
-      } catch (err) {
-        if (!axios.isCancel(err)) setError("Failed to load loan history");
-      } finally {
-        setLoading(false);
-      }
-    },
-    [userId],
-  );
-
-  const refetch = () => {
+    controllerRef.current?.abort();
     const controller = new AbortController();
-    fetchRecords(controller);
-    return () => controller.abort();
-  };
+    controllerRef.current = controller;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await axios.post<{ records: DomainLoanRecord[] }>(
+        `${VITE_API_URL}/loan/query`,
+        {
+          property: "patron",
+          value: userId,
+        },
+        {
+          signal: controller.signal,
+        },
+      );
+
+      setRecords(res.data.records ?? []);
+    } catch (err) {
+      if (!axios.isCancel(err)) {
+        setError("Failed to load loan history");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+
+  const refetch = useCallback(() => {
+    fetchRecords();
+  }, [fetchRecords]);
 
   useEffect(() => {
-    if (!userId) return;
-    const controller = new AbortController();
-    fetchRecords(controller);
-    return () => controller.abort();
-  }, [userId, fetchRecords]);
+    fetchRecords();
 
-  return { records, loading, error, refetch };
+    return () => {
+      controllerRef.current?.abort();
+    };
+  }, [fetchRecords]);
+
+  return {
+    records,
+    loading,
+    error,
+    refetch,
+  };
 };

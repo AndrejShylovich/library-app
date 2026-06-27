@@ -1,17 +1,21 @@
+import type { PropsWithChildren } from "react";
+
 import "./ContactUs.css";
 
-const ContactItem: React.FC<{ title: string; children: React.ReactNode }> = ({
+const ContactItem = ({
   title,
   children,
-}) => (
-  <div className="contact-item">
-    <h4>{title}</h4>
-    {children}
-    <div className="contact-us-divider"></div>
-  </div>
-);
+}: PropsWithChildren<{ title: string }>) => {
+  return (
+    <div className="contact-item">
+      <h4>{title}</h4>
+      {children}
+      <div className="contact-us-divider"></div>
+    </div>
+  );
+};
 
-export const ContactUs: React.FC = () => {
+export const ContactUs = () => {
   return (
     <section className="contact-us">
       <h3>Contact Us</h3>

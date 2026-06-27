@@ -1,20 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../shared/store/ReduxStore";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+
+import type {
+  AppDispatch,
+  RootState,
+} from "../../../shared/store/ReduxStore";
+
 import { queryBooks } from "../../../entities/book/model/bookSlice";
 
 export const useCatalogSearch = () => {
   const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
 
+  const search = useMemo(
+    () => location.search,
+    [location.search],
+  );
+
   const { books, loading, pagingInformation } = useSelector(
     (state: RootState) => state.book,
   );
 
   useEffect(() => {
-    dispatch(queryBooks(location.search));
-  }, [location.search, dispatch]);
+    if (!search) return;
+    dispatch(queryBooks(search));
+  }, [search, dispatch]);
 
   return {
     books,

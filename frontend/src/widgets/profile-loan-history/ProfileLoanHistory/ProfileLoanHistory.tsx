@@ -1,16 +1,24 @@
 import { useSelector } from "react-redux";
+
 import type { RootState } from "../../../shared/store/ReduxStore";
+
 import { useProfileLoanHistory } from "./useProfileLoanHistory";
 import { ProfileLoanRecord } from "../../../entities/loan-record/ui/ProfileLoanRecord/ProfileLoanRecord";
+
 import "./ProfileLoanHistory.css";
 
-export const ProfileLoanHistory: React.FC = () => {
+export const ProfileLoanHistory = () => {
   const user = useSelector(
     (state: RootState) => state.user.profileUser,
   );
-  const { records, loading, error } = useProfileLoanHistory(user?._id);
+
+  const { records, loading, error } = useProfileLoanHistory(
+    user?._id,
+  );
 
   if (!user) return null;
+
+  const isEmpty = !loading && !error && records.length === 0;
 
   return (
     <section className="profile-loan-history">
@@ -19,13 +27,18 @@ export const ProfileLoanHistory: React.FC = () => {
       </h3>
 
       {loading && <p>Loading...</p>}
-      {error && <p className="error">{error}</p>}
-      {!loading && !error && records.length === 0 && (
-        <p>No loan records found.</p>
+
+      {!loading && error && (
+        <p className="error">{error}</p>
       )}
 
-      {records.map((record, index) => (
-        <ProfileLoanRecord key={record.id ?? index} record={record} />
+      {isEmpty && <p>No loan records found.</p>}
+
+      {records.map((record) => (
+        <ProfileLoanRecord
+          key={record.id}
+          record={record}
+        />
       ))}
     </section>
   );

@@ -1,12 +1,14 @@
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const useCatalogOverviewSection = (label: string) => {
+export const useCatalogOverviewSection = (genre: string) => {
   const navigate = useNavigate();
 
-  const viewMore = () => {
-    const params = new URLSearchParams({ genre: label, subject: label });
+  const viewMore = useCallback(() => {
+    const params = new URLSearchParams({ genre });
+
     navigate(`/catalog?${params.toString()}`);
-  };
+  }, [navigate, genre]);
 
   return { viewMore };
 };

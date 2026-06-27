@@ -28,14 +28,14 @@ const EVENTS: Event[] = [
   },
 ];
 
-export const UpcomingEvents: React.FC = () => {
+export const UpcomingEvents = () => {
   return (
     <section className="upcoming-events">
-      <div className="upcoming-events-header-group">
+      <header className="upcoming-events-header-group">
         <AutoAwesome sx={{ fontSize: "2.25rem", color: "#3626A8" }} />
         <h2>Upcoming Events</h2>
         <AutoAwesome sx={{ fontSize: "2.25rem", color: "#3626A8" }} />
-      </div>
+      </header>
 
       <h3>This Summer</h3>
 
