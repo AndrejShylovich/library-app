@@ -4,14 +4,14 @@ import { useLoginForm } from "./useLoginForm";
 import { useDispatch, useSelector } from "react-redux";
 import type { ChangeEvent, FormEvent } from "react";
 import * as Router from "react-router-dom";
-import { loginUser } from "../../../entities/user/model/userSlice";
+import { loginUser } from "@/entities/user/model/userSlice";
 
 vi.mock("react-redux", () => ({
   useDispatch: vi.fn(),
   useSelector: vi.fn(),
 }));
 
-vi.mock("../../../entities/user/model/UserSlice", () => ({
+vi.mock("@/entities/user/model/UserSlice", () => ({
   loginUser: vi.fn(),
 }));
 

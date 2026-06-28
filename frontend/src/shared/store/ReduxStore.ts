@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userSlice from "../../entities/user/model/userSlice";
+import userSlice from "@/entities/user/model/userSlice";
 import modalReducer from "./slices/ModalSlice";
-import bookReducer from "../../entities/book/model/bookSlice";
-import libraryCardReducer from "../../entities/library-card/model/libraryCardSlice";
+import bookReducer from "@/entities/book/model/bookSlice";
+import libraryCardReducer from "@/entities/library-card/model/libraryCardSlice";
 
 
 export const store = configureStore({

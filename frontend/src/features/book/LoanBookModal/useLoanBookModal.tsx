@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import type {
   AppDispatch,
   RootState,
-} from "../../../shared/store/ReduxStore";
+} from "@/shared/store/ReduxStore";
 
-import { BookMapper } from "../../../entities/book/model/mapper/BookMapper";
-import { setDisplayLoan } from "../../../shared/store/slices/ModalSlice";
+import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
+import { setDisplayLoan } from "@/shared/store/slices/ModalSlice";
 
 export const useLoanBookModal = () => {
   const dispatch = useDispatch<AppDispatch>();

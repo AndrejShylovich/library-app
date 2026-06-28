@@ -25,7 +25,7 @@ vi.mock("../RegisterForm/RegisterForm", () => ({
   ),
 }));
 
-vi.mock("../../../shared/ui/Modal/Modal", () => ({
+vi.mock("@/shared/ui/Modal/Modal", () => ({
   Modal: ({
     children,
     toggleModal,

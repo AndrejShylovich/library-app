@@ -1,6 +1,6 @@
 import { useCatalogSearchPagination } from "./useCatalogSearchPagination";
 import "./CatalogSearchPageNavigation.css";
-import { Button } from "../../../shared/ui/Button/Button";
+import { Button } from "@/shared/ui/Button/Button";
 
 export const CatalogSearchPageNavigation: React.FC = () => {
   const pagination = useCatalogSearchPagination();

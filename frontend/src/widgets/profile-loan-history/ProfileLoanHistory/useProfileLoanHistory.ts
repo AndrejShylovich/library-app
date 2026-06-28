@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-import type { DomainLoanRecord } from "../../../entities/loan-record/model/domain/LoanRecord";
+import type { DomainLoanRecord } from "@/entities/loan-record/model/domain/LoanRecord";
 
 interface UseProfileLoanHistoryResult {
   records: DomainLoanRecord[];

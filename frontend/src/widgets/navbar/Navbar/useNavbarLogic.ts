@@ -3,9 +3,9 @@ import { useCallback, useRef, type KeyboardEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import type { AppDispatch, RootState } from "../../../shared/store/ReduxStore";
+import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
 
-import { setDisplayLogin } from "../../../shared/store/slices/ModalSlice";
+import { setDisplayLogin } from "@/shared/store/slices/ModalSlice";
 
 export const useNavbarLogic = () => {
   const searchRef = useRef<HTMLInputElement>(null);

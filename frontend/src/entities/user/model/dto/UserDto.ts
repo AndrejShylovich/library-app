@@ -1,4 +1,4 @@
-import type { UserProperty, UserRole } from "../../../../shared/types/types";
+import type { UserProperty, UserRole } from "@/shared/types/types";
 
 export interface UserDto {
   _id: string;

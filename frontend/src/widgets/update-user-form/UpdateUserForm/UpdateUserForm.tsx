@@ -1,5 +1,5 @@
-import { Button } from "../../../shared/ui/Button/Button";
-import { Input } from "../../../shared/ui/Input/Input";
+import { Button } from "@/shared/ui/Button/Button";
+import { Input } from "@/shared/ui/Input/Input";
 import { useUpdateUserForm } from "./hooks/useUpdateUserForm";
 import "./UpdateUserForm.css";
 

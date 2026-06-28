@@ -1,8 +1,8 @@
-import { mapAuthorsToString } from "../../../../shared/lib/utils/book.utils";
-import { Button } from "../../../../shared/ui/Button/Button";
+import { mapAuthorsToString } from "@/shared/lib/utils/book.utils";
+import { Button } from "@/shared/ui/Button/Button";
 import "./BookCard.css";
-import type { DomainBook } from "../../model/domain/Book";
 import { useBookCard } from "./useBookCard";
+import type { DomainBook } from "../../model/domain/Book";
 
 interface BookCardProps {
   book: DomainBook;

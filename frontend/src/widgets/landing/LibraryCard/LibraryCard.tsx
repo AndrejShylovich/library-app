@@ -1,7 +1,7 @@
 import "./LibraryCard.css";
 
 import { useLibraryCard } from "./useLibraryCard";
-import libraryCard from "../../../shared/assets/librarycard.png";
+import libraryCard from "@/shared/assets/librarycard.png";
 
 export const LibraryCard = () => {
   const { openLibraryCardModal } = useLibraryCard();

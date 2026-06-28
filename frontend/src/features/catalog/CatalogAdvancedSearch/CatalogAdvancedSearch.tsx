@@ -1,5 +1,5 @@
-import { Input } from "../../../shared/ui/Input/Input";
-import { Button } from "../../../shared/ui/Button/Button";
+import { Input } from "@/shared/ui/Input/Input";
+import { Button } from "@/shared/ui/Button/Button";
 import { useCatalogAdvancedSearch } from "./useCatalogAdvancedSearch";
 import "./CatalogAdvancedSearch.css";
 

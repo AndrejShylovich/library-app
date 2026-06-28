@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import type {
   AppDispatch,
   RootState,
-} from "../../../../shared/store/ReduxStore";
+} from "@/shared/store/ReduxStore";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useCallback } from "react";
-import { UserMapper } from "../../../../entities/user/model/mapper/UserMapper";
+import { UserMapper } from "@/entities/user/model/mapper/UserMapper";
 import { useEditableUser } from "./useEditableUser";
 import { useEmailAvailability } from "./useEmailAvailability";
 import { toast } from "react-toastify";
@@ -13,8 +13,8 @@ import {
   resetUpdateSuccess,
   resetUser,
   updateUser,
-} from "../../../../entities/user/model/userSlice";
-import { clearAuthData } from "../../../../shared/lib/auth/authStorage";
+} from "@/entities/user/model/userSlice";
+import { clearAuthData } from "@/shared/lib/auth/authStorage";
 
 export const useUpdateUserForm = () => {
   const { loggedInUser, profileUser, updateSuccess, error } = useSelector(

@@ -5,9 +5,9 @@ import { useEffect, useMemo } from "react";
 import type {
   AppDispatch,
   RootState,
-} from "../../../shared/store/ReduxStore";
+} from "@/shared/store/ReduxStore";
 
-import { queryBooks } from "../../../entities/book/model/bookSlice";
+import { queryBooks } from "@/entities/book/model/bookSlice";
 
 export const useCatalogSearch = () => {
   const dispatch = useDispatch<AppDispatch>();

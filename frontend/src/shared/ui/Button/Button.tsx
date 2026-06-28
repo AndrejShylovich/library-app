@@ -5,7 +5,7 @@ import type {
 
 
 import "./Button.css";
-import { classNames } from "../../lib/classNames";
+import { classNames } from "@/shared/lib/classNames";
 
 interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {

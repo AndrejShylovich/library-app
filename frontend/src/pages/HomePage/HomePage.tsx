@@ -5,7 +5,7 @@ import {
   LibraryCard,
   LibraryHours,
   UpcomingEvents,
-} from "../../widgets/landing";
+} from "@/widgets/landing";
 import "./HomePage.css";
 
 export default function HomePage(): JSX.Element {

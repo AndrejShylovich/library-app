@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
-import type { RootState } from "../../shared/store/ReduxStore";
-import { BookMapper } from "../../entities/book/model/mapper/BookMapper";
+import type { RootState } from "@/shared/store/ReduxStore";
+import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
 
 export const useBookOverview = () => {
   const currentBookDto = useSelector(

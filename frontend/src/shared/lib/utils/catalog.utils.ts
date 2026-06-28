@@ -1,5 +1,5 @@
-import type { DomainBook } from "../../../entities/book/model/domain/Book";
-import type { PageInfo } from "../../types/PageDto";
+import type { DomainBook } from "@/entities/book/model/domain/Book";
+import type { PageInfo } from "@/shared/types/PageDto";
 
 const GENRES = [
   "Non-Fiction",

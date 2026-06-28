@@ -1,5 +1,5 @@
-import type { LoanStatus } from "../../../../shared/types/types";
-import type { BookDto } from "../../../book/model/dto/BookDto";
+import type { BookDto } from "@/entities/book/model/dto/BookDto";
+import type { LoanStatus } from "@/shared/types/types";
 
 export type LoanRecordItemDto = string | { _id: string } | BookDto;
 

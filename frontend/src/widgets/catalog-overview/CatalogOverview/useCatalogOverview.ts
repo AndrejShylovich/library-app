@@ -4,15 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import type {
   AppDispatch,
   RootState,
-} from "../../../shared/store/ReduxStore";
+} from "@/shared/store/ReduxStore";
 
-import { fetchAllBooks } from "../../../entities/book/model/bookSlice";
-import { BookMapper } from "../../../entities/book/model/mapper/BookMapper";
+import { fetchAllBooks } from "@/entities/book/model/bookSlice";
+import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
 
 import {
   generateRandomGenres,
   getRandomBooksByGenre,
-} from "../../../shared/lib/utils/catalog.utils";
+} from "@/shared/lib/utils/catalog.utils";
 
 export const useCatalogOverview = () => {
   const dispatch = useDispatch<AppDispatch>();

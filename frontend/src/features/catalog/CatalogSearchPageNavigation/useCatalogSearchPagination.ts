@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import type { RootState } from "../../../shared/store/ReduxStore";
+import type { RootState } from "@/shared/store/ReduxStore";
 
-import { calculatePaging } from "../../../shared/lib/utils/catalog.utils";
+import { calculatePaging } from "@/shared/lib/utils/catalog.utils";
 
 export const useCatalogSearchPagination = () => {
   const { pagingInformation } = useSelector(

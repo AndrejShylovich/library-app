@@ -1,10 +1,10 @@
 import type { MockedFunction } from "vitest";
 
-import { api } from "../../../shared/api/axios";
+import { api } from "@/shared/api/axios";
 
 import { createLibraryCardApi } from "./libraryCardApi";
 
-vi.mock("../../../shared/api/axios", () => ({
+vi.mock("@/shared/api/axios", () => ({
   api: {
     post: vi.fn(),
   },

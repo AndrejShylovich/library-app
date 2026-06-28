@@ -1,6 +1,6 @@
 import { DarkMode, LightMode } from "@mui/icons-material";
 
-import { Button } from "../../shared/ui/Button/Button";
+import { Button } from "@/shared/ui/Button/Button";
 import { useThemeToggle } from "./useThemeToggle";
 
 export const ThemeToggle: React.FC = () => {

@@ -1,6 +1,6 @@
 import type { MockedFunction } from "vitest";
 
-import { api } from "../../../shared/api/axios";
+import { api } from "@/shared/api/axios";
 
 import type { UserDto } from "../model/dto/UserDto";
 
@@ -11,7 +11,7 @@ import {
   updateUserApi,
 } from "./authApi";
 
-vi.mock("../../../shared/api/axios", () => ({
+vi.mock("@/shared/api/axios", () => ({
   api: {
     post: vi.fn(),
     get: vi.fn(),

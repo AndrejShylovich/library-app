@@ -5,14 +5,14 @@ import { toast } from "react-toastify";
 import type {
   AppDispatch,
   RootState,
-} from "../../../shared/store/ReduxStore";
+} from "@/shared/store/ReduxStore";
 
 import {
   checkinBook,
   setCurrentBook,
-} from "../../../entities/book/model/bookSlice";
+} from "@/entities/book/model/bookSlice";
 
-import { setDisplayLoan } from "../../../shared/store/slices/ModalSlice";
+import { setDisplayLoan } from "@/shared/store/slices/ModalSlice";
 
 export const useBookCheckin = () => {
   const dispatch = useDispatch<AppDispatch>();

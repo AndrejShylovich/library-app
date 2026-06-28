@@ -1,11 +1,12 @@
-import type { LoanRecordDto } from "../../../loan-record/model/dto/LoanRecordDto";
-import { LoanRecordMapper } from "../../../loan-record/model/mapper/LoanRecordMapper";
-import { UserMapper } from "../../../user/model/mapper/UserMapper";
+
+import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
 import {
   BookMapper,
   CheckinBookMapper,
   CheckoutBookMapper,
 } from "./BookMapper";
+import { LoanRecordMapper } from "@/entities/loan-record/model/mapper/LoanRecordMapper";
+import { UserMapper } from "@/entities/user/model/mapper/UserMapper";
 
 const mockLoanRecordDto: LoanRecordDto = {
   _id: "record1",

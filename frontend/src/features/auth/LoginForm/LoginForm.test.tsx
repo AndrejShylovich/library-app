@@ -7,13 +7,13 @@ vi.mock("./useLoginForm", () => ({
   useLoginForm: vi.fn(),
 }));
 
-vi.mock("../../../shared/ui/Input/Input", () => ({
+vi.mock("@/shared/ui/Input/Input", () => ({
   Input: (props: React.InputHTMLAttributes<HTMLInputElement>) => (
     <input {...props} />
   ),
 }));
 
-vi.mock("../../../shared/ui/Button/Button", () => ({
+vi.mock("@/shared/ui/Button/Button", () => ({
   Button: (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
     <button {...props} />
   ),

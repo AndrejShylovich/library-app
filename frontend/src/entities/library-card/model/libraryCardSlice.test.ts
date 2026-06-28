@@ -5,7 +5,7 @@ import * as libraryCardApi from "../api/libraryCardApi";
 
 import { getLibraryCard } from "./libraryCardSlice";
 
-vi.mock("../../../entities/library-card/api/libraryCardApi");
+vi.mock("@/entities/library-card/api/libraryCardApi");
 
 const mockedCreateLibraryCardApi =
   libraryCardApi.createLibraryCardApi as MockedFunction<

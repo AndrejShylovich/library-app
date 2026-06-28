@@ -17,7 +17,7 @@ vi.mock("react-redux", async () => {
 });
 
 import { useSelector } from "react-redux";
-import { setDisplayLogin } from "../../../shared/store/slices/ModalSlice";
+import { setDisplayLogin } from "@/shared/store/slices/ModalSlice";
 const mockUseSelector = useSelector as unknown as Mock;
 
 const setItemSpy = vi.spyOn(Storage.prototype, "setItem");

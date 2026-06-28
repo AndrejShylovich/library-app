@@ -1,4 +1,4 @@
-import { BookInformation } from "../../../entities/book/ui/BookInformation/BookInformation";
+import { BookInformation } from "@/entities/book/ui/BookInformation/BookInformation";
 import { BOOK_OF_THE_WEEK } from "./bookOfTheWeek.model";
 
 import "./BookOfTheWeek.css";

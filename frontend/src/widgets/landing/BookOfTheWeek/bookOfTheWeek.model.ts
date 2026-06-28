@@ -1,4 +1,4 @@
-import type { DomainBook } from "../../../entities/book/model/domain/Book";
+import type { DomainBook } from "@/entities/book/model/domain/Book";
 
 export const BOOK_OF_THE_WEEK: DomainBook = {
   id: "0316379379",

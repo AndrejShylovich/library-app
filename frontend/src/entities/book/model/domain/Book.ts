@@ -1,5 +1,6 @@
-import type { DomainLoanRecord } from "../../../loan-record/model/domain/LoanRecord";
-import type { DomainUser } from "../../../user/model/domain/User";
+import type { DomainLoanRecord } from "@/entities/loan-record/model/domain/LoanRecord";
+import type { DomainUser } from "@/entities/user/model/domain/User";
+
 
 export interface DomainBook {
   id: string;

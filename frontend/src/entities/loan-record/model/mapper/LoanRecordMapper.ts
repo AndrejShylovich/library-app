@@ -1,7 +1,8 @@
-import type { BookDto } from "../../../book/model/dto/BookDto";
-import { BookMapper } from "../../../book/model/mapper/BookMapper";
+
+import type { BookDto } from "@/entities/book/model/dto/BookDto";
 import type { DomainLoanRecord } from "../domain/LoanRecord";
 import type { LoanRecordDto, LoanRecordItemDto } from "../dto/LoanRecordDto";
+import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
 
 function extractItemId(item: LoanRecordItemDto): string {
   if (typeof item === "string") return item;

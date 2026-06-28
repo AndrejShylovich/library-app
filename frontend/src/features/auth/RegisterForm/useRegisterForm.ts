@@ -11,12 +11,12 @@ import { toast } from "react-toastify";
 import type {
   AppDispatch,
   RootState,
-} from "../../../shared/store/ReduxStore";
+} from "@/shared/store/ReduxStore";
 
 import {
   registerUser,
   resetRegisterSuccess,
-} from "../../../entities/user/model/userSlice";
+} from "@/entities/user/model/userSlice";
 
 interface RegisterFormData {
   firstName: string;

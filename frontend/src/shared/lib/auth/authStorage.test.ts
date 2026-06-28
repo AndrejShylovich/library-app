@@ -1,4 +1,4 @@
-import { TOKEN_KEY, USER_ID_KEY } from "../../api/axios";
+import { TOKEN_KEY, USER_ID_KEY } from "@/shared/api/axios";
 import { clearAuthData, saveAuthData } from "./authStorage";
 
 

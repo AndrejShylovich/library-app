@@ -4,7 +4,7 @@ import { useRegisterForm } from "./useRegisterForm";
 
 const dispatchMock = vi.fn();
 
-vi.mock("../../../entities/user/model/UserSlice", () => ({
+vi.mock("@/entities/user/model/UserSlice", () => ({
   registerUser: vi.fn((payload) => payload),
   resetRegisterSuccess: vi.fn(),
 }));
@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 import {
   registerUser,
   resetRegisterSuccess,
-} from "../../../entities/user/model/userSlice";
+} from "@/entities/user/model/userSlice";
 const mockUseSelector = useSelector as unknown as Mock;
 
 const createChangeEvent = (

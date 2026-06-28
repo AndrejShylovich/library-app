@@ -1,4 +1,4 @@
-import { api } from "../../../shared/api/axios";
+import { api } from "@/shared/api/axios";
 
 import type {
   FetchUserDto,
@@ -6,7 +6,7 @@ import type {
   RegisterUserDto,
   UserDto,
 } from "../model/dto/UserDto";
-import { saveAuthData } from "../../../shared/lib/auth/authStorage";
+import { saveAuthData } from "@/shared/lib/auth/authStorage";
 
 type LoginResponse = {
   user: UserDto;

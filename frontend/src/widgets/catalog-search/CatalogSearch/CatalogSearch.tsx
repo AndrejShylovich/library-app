@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 
-import { CatalogAdvancedSearch } from "../../../features/catalog/CatalogAdvancedSearch/CatalogAdvancedSearch";
-import { CatalogSearchPageNavigation } from "../../../features/catalog/CatalogSearchPageNavigation/CatalogSearchPageNavigation";
+import { CatalogAdvancedSearch } from "@/features/catalog/CatalogAdvancedSearch/CatalogAdvancedSearch";
+import { CatalogSearchPageNavigation } from "@/features/catalog/CatalogSearchPageNavigation/CatalogSearchPageNavigation";
 
 import { useCatalogSearch } from "./useCatalogSearch";
 
-import { BookMapper } from "../../../entities/book/model/mapper/BookMapper";
-import { BookCard } from "../../../entities/book/ui/BookCard/BookCard";
+import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
+import { BookCard } from "@/entities/book/ui/BookCard/BookCard";
 
 import "./CatalogSearch.css";
 

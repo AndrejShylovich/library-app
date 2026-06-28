@@ -1,5 +1,5 @@
-import type { DomainBook } from "../../../entities/book/model/domain/Book";
-import { BookCarousel } from "../../../entities/book/ui/BookCarousel/BookCarousel";
+import type { DomainBook } from "@/entities/book/model/domain/Book";
+import { BookCarousel } from "@/entities/book/ui/BookCarousel/BookCarousel";
 import { useCatalogOverviewSection } from "./useCatalogOverviewSection";
 
 import "./CatalogOverviewSection.css";

@@ -4,7 +4,7 @@ import { Bookmark } from "@mui/icons-material";
 import type { DomainLoanRecord } from "../../model/domain/LoanRecord";
 
 import "./ProfileLoanRecord.css";
-import { formatDate } from "../../../../shared/lib/utils/date.utils";
+import { formatDate } from "@/shared/lib/utils/date.utils";
 
 interface ProfileLoanRecordProps {
   record: DomainLoanRecord;

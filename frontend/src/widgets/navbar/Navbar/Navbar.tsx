@@ -8,8 +8,8 @@ import {
   Search,
 } from "@mui/icons-material";
 
-import { ThemeToggle } from "../../../features/theme-toggle/ThemeToggle";
-import { Input } from "../../../shared/ui/Input/Input";
+import { ThemeToggle } from "@/features/theme-toggle/ThemeToggle";
+import { Input } from "@/shared/ui/Input/Input";
 
 import { useNavbarLogic } from "./useNavbarLogic";
 import "./Navbar.css";

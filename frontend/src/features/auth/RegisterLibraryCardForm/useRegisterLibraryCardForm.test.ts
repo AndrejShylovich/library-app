@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setDisplayLibraryCard,
   setDisplayLogin,
-} from "../../../shared/store/slices/ModalSlice";
+} from "@/shared/store/slices/ModalSlice";
 
 vi.mock("react-redux", () => ({
   useDispatch: vi.fn(),

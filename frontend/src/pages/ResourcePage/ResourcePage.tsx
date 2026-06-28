@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 
-import { loadBookByBarcode } from "../../entities/book/model/bookSlice";
-import { BookOverview } from "../../widgets/book-overview/BookOverview";
+import { loadBookByBarcode } from "@/entities/book/model/bookSlice";
+import { BookOverview } from "@/widgets/book-overview/BookOverview";
 
-import type { AppDispatch, RootState } from "../../shared/store/ReduxStore";
+import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
 
 import "./ResourcePage.css";
 

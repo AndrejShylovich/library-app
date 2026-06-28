@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../shared/store/ReduxStore";
+import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
 import { useCallback, useEffect, useState } from "react";
-import { setDisplayLogin } from "../../../shared/store/slices/ModalSlice";
+import { setDisplayLogin } from "@/shared/store/slices/ModalSlice";
 
 export const useLoginRegisterModal = () => {
 

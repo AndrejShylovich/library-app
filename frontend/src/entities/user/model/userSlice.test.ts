@@ -16,7 +16,7 @@ import type {
   UserDto,
 } from "./dto/UserDto";
 
-vi.mock("../../../entities/user/api/authApi");
+vi.mock("@/entities/user/api/authApi");
 
 const mockedLoginUserApi = userApi.loginUserApi as MockedFunction<
   typeof userApi.loginUserApi

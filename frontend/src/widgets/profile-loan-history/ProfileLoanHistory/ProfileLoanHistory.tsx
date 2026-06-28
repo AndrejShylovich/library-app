@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 
-import type { RootState } from "../../../shared/store/ReduxStore";
+import type { RootState } from "@/shared/store/ReduxStore";
 
 import { useProfileLoanHistory } from "./useProfileLoanHistory";
-import { ProfileLoanRecord } from "../../../entities/loan-record/ui/ProfileLoanRecord/ProfileLoanRecord";
+import { ProfileLoanRecord } from "@/entities/loan-record/ui/ProfileLoanRecord/ProfileLoanRecord";
 
 import "./ProfileLoanHistory.css";
 

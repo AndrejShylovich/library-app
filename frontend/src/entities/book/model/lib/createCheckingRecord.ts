@@ -1,4 +1,4 @@
-import type { LoanRecordDto } from "../../../loan-record/model/dto/LoanRecordDto";
+import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
 import type { CheckinBookDto } from "../dto/BookDto";
 
 export const createCheckinRecord = (

@@ -2,13 +2,13 @@ import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { LibraryCardModal } from "./LibraryCardModal";
 import { useDispatch } from "react-redux";
-import { setDisplayLibraryCard } from "../../../shared/store/slices/ModalSlice";
+import { setDisplayLibraryCard } from "@/shared/store/slices/ModalSlice";
 
 vi.mock("react-redux", () => ({
   useDispatch: vi.fn(),
 }));
 
-vi.mock("../../../shared/ui/Modal/Modal", () => ({
+vi.mock("@/shared/ui/Modal/Modal", () => ({
   Modal: ({
     toggleModal,
     children,

@@ -1,5 +1,5 @@
-import type { LoanStatus } from "../../../../shared/types/types";
-import type { DomainBook } from "../../../book/model/domain/Book";
+import type { DomainBook } from "@/entities/book/model/domain/Book";
+import type { LoanStatus } from "@/shared/types/types";
 
 export interface DomainLoanRecord {
   id: string;

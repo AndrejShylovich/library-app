@@ -2,36 +2,24 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { BookMapper } from "../../model/mapper/BookMapper";
-import { setCurrentBook } from "../../model/bookSlice";
-import { setDisplayLoan } from "../../../../shared/store/slices/ModalSlice";
+import { setDisplayLoan } from "@/shared/store/slices/ModalSlice";
 
+import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
 import type { DomainBook } from "../../model/domain/Book";
-import type {
-  AppDispatch,
-  RootState,
-} from "../../../../shared/store/ReduxStore";
 import { isBookAvailable } from "../../model/lib/isBookAvailable";
-
-
+import { setCurrentBook } from "../../model/bookSlice";
+import { BookMapper } from "../../model/mapper/BookMapper";
 
 export const useBookCard = (book: DomainBook) => {
-  const user = useSelector(
-    (state: RootState) => state.user.loggedInUser,
-  );
+  const user = useSelector((state: RootState) => state.user.loggedInUser);
   const available = isBookAvailable(book);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-
   const buttonClass = [
     "book-card-loan-button",
     available ? "available" : "unavailable",
-    user?.type === "EMPLOYEE"
-      ? available
-        ? "checkout"
-        : "checkin"
-      : "",
+    user?.type === "EMPLOYEE" ? (available ? "checkout" : "checkin") : "",
   ]
     .filter(Boolean)
     .join(" ");

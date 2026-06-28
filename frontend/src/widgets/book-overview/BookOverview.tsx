@@ -2,10 +2,10 @@ import type React from "react";
 
 import { useBookOverview } from "./useBookOverview";
 import "./BookOverview.css";
-import { BookInformation } from "../../entities/book/ui/BookInformation/BookInformation";
-import { BookSubjects } from "../../entities/book/ui/BookSubjects/BookSubjects";
-import { BookAdditionalInfo } from "../../entities/book/ui/BookAdditionalInfo/BookAdditionalInfo";
-import { BookHistory } from "../../entities/book/ui/BookHistory/BookHistory";
+import { BookInformation } from "@/entities/book/ui/BookInformation/BookInformation";
+import { BookSubjects } from "@/entities/book/ui/BookSubjects/BookSubjects";
+import { BookAdditionalInfo } from "@/entities/book/ui/BookAdditionalInfo/BookAdditionalInfo";
+import { BookHistory } from "@/entities/book/ui/BookHistory/BookHistory";
 
 export const BookOverview: React.FC = () => {
   const { currentBook, loading, user } = useBookOverview();

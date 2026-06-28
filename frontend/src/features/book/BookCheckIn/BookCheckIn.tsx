@@ -1,6 +1,6 @@
 import { useBookCheckin } from "./useBookCheckin";
-import { Input } from "../../../shared/ui/Input/Input";
-import { Button } from "../../../shared/ui/Button/Button";
+import { Input } from "@/shared/ui/Input/Input";
+import { Button } from "@/shared/ui/Button/Button";
 import "./BookCheckIn.css";
 
 export const BookCheckin: React.FC = () => {

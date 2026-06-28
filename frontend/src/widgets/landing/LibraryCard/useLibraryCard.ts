@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
-import type { AppDispatch } from "../../../shared/store/ReduxStore";
-import { setDisplayLibraryCard } from "../../../shared/store/slices/ModalSlice";
+import type { AppDispatch } from "@/shared/store/ReduxStore";
+import { setDisplayLibraryCard } from "@/shared/store/slices/ModalSlice";
 
 export const useLibraryCard = () => {
   const dispatch = useDispatch<AppDispatch>();

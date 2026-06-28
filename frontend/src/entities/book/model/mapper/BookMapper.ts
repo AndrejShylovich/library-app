@@ -1,11 +1,12 @@
-import { LoanRecordMapper } from "../../../loan-record/model/mapper/LoanRecordMapper";
-import { UserMapper } from "../../../user/model/mapper/UserMapper";
+
+import { LoanRecordMapper } from "@/entities/loan-record/model/mapper/LoanRecordMapper";
 import type {
   DomainBook,
   DomainCheckinBookPayload,
   DomainCheckoutBookPayload,
 } from "../domain/Book";
 import type { BookDto, CheckinBookDto, CheckoutBookDto } from "../dto/BookDto";
+import { UserMapper } from "@/entities/user/model/mapper/UserMapper";
 
 export const BookMapper = {
   toDomain(dto: BookDto): DomainBook {

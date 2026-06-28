@@ -1,10 +1,10 @@
 import { useEffect, type JSX } from "react";
-import type { AppDispatch, RootState } from "../../shared/store/ReduxStore";
+import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchUser } from "../../entities/user/model/userSlice";
-import { UpdateUserForm } from "../../widgets/update-user-form/UpdateUserForm/UpdateUserForm";
-import { ProfileLoanHistory } from "../../widgets/profile-loan-history/ProfileLoanHistory/ProfileLoanHistory";
+import { fetchUser } from "@/entities/user/model/userSlice";
+import { UpdateUserForm } from "@/widgets/update-user-form/UpdateUserForm/UpdateUserForm";
+import { ProfileLoanHistory } from "@/widgets/profile-loan-history/ProfileLoanHistory/ProfileLoanHistory";
 import "./ProfilePage.css";
 
 export default function ProfilePage(): JSX.Element {

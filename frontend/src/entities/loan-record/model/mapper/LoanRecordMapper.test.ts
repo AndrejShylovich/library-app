@@ -1,11 +1,12 @@
-import type { DomainBook } from "../../../book/model/domain/Book";
-import type { BookDto } from "../../../book/model/dto/BookDto";
-import { BookMapper } from "../../../book/model/mapper/BookMapper";
+
+import type { BookDto } from "@/entities/book/model/dto/BookDto";
 import type { DomainLoanRecord } from "../domain/LoanRecord";
 import type { LoanRecordDto } from "../dto/LoanRecordDto";
 import { LoanRecordMapper } from "./LoanRecordMapper";
+import type { DomainBook } from "@/entities/book/model/domain/Book";
+import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
 
-vi.mock("../../../book/model/mapper/BookMapper", () => ({
+vi.mock("@/entities/book/model/mapper/BookMapper", () => ({
   BookMapper: {
     toDomain: vi.fn(),
   },

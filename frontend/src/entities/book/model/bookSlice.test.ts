@@ -12,11 +12,11 @@ import reducer, {
   setCurrentBook,
   type BookSliceState,
 } from "./bookSlice";
-import type { UserDto } from "../../user/model/dto/UserDto";
 import type { BookDto } from "./dto/BookDto";
-import type { LoanRecordDto } from "../../loan-record/model/dto/LoanRecordDto";
+import type { UserDto } from "@/entities/user/model/dto/UserDto";
+import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
 
-vi.mock("../../../entities/book/api/bookApi");
+vi.mock("@/entities/book/api/bookApi");
 
 const mockedFetchAllBooksApi = api.fetchAllBooksApi as MockedFunction<
   typeof api.fetchAllBooksApi

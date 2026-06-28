@@ -1,7 +1,7 @@
 import { LoginForm } from "../LoginForm/LoginForm";
 import { RegisterForm } from "../RegisterForm/RegisterForm";
 import { useLoginRegisterModal } from "./useLoginRegisterModal";
-import { Modal } from "../../../shared/ui/Modal/Modal";
+import { Modal } from "@/shared/ui/Modal/Modal";
 
 export const LoginRegisterModal: React.FC = () => {
   const { isLogin, closeModal, toggleForm } = useLoginRegisterModal();

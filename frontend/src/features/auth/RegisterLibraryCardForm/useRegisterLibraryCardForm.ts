@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import type {
   AppDispatch,
   RootState,
-} from "../../../shared/store/ReduxStore";
+} from "@/shared/store/ReduxStore";
 
 import {
   setDisplayLibraryCard,
   setDisplayLogin,
-} from "../../../shared/store/slices/ModalSlice";
+} from "@/shared/store/slices/ModalSlice";
 
-import { getLibraryCard } from "../../../entities/library-card/model/libraryCardSlice";
+import { getLibraryCard } from "@/entities/library-card/model/libraryCardSlice";
 
 export const useRegisterLibraryCardForm = () => {
   const dispatch = useDispatch<AppDispatch>();

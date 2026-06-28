@@ -8,16 +8,17 @@ import {
   checkinBookApi,
   loadBookByBarcodeApi,
 } from "./bookApi";
-import type { UserDto } from "../../user/model/dto/UserDto";
 import type {
   BookDto,
   CheckinBookDto,
   CheckoutBookDto,
 } from "../model/dto/BookDto";
-import type { LoanRecordDto } from "../../loan-record/model/dto/LoanRecordDto";
-import { api } from "../../../shared/api/axios";
 
-vi.mock("../../../shared/api/axios", () => ({
+import { api } from "@/shared/api/axios";
+import type { UserDto } from "@/entities/user/model/dto/UserDto";
+import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
+
+vi.mock("@/shared/api/axios", () => ({
   api: {
     get: vi.fn(),
     post: vi.fn(),

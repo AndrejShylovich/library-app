@@ -10,8 +10,7 @@ import type {
   CheckinBookDto,
   CheckoutBookDto,
 } from "./dto/BookDto";
-import type { LoanRecordDto } from "../../loan-record/model/dto/LoanRecordDto";
-import type { PageInfo } from "../../../shared/types/PageDto";
+import type { PageInfo } from "@/shared/types/PageDto";
 import {
   checkinBookApi,
   checkoutBookApi,
@@ -19,6 +18,7 @@ import {
   loadBookByBarcodeApi,
   queryBooksApi,
 } from "../api/bookApi";
+import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
 
 export interface BookSliceState {
   loading: boolean;

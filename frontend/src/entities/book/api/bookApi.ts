@@ -1,5 +1,4 @@
-import { api } from "../../../shared/api/axios";
-import type { LoanRecordDto } from "../../loan-record/model/dto/LoanRecordDto";
+import { api } from "@/shared/api/axios";
 
 import type {
   BookDto,
@@ -10,6 +9,7 @@ import type {
 
 import { createCheckinRecord } from "../model/lib/createCheckingRecord";
 import { createCheckoutRecord } from "../model/lib/createCheckoutRecord";
+import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
 import { normalizeLoanRecord } from "../model/lib/normalizeLoanRecord";
 
 const BOOK_ENDPOINT = "/book";

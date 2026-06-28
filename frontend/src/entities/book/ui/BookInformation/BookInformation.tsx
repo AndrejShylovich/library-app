@@ -1,4 +1,4 @@
-import { mapAuthorsToString } from "../../../../shared/lib/utils/book.utils";
+import { mapAuthorsToString } from "@/shared/lib/utils/book.utils";
 import type { DomainBook } from "../../model/domain/Book";
 
 import "./BookInformation.css";

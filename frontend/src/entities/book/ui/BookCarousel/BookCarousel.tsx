@@ -1,6 +1,6 @@
 import type { DomainBook } from "../../model/domain/Book";
 
-import { Button } from "../../../../shared/ui/Button/Button";
+import { Button } from "@/shared/ui/Button/Button";
 import { BookCard } from "../BookCard/BookCard";
 
 import { useBookCarousel } from "./useBookCarousel";

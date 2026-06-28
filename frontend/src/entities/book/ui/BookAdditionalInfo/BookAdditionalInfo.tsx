@@ -1,7 +1,7 @@
 import type React from "react";
-import type { DomainBook } from "../../model/domain/Book";
 import "./BookAdditionalInfo.css";
 import { getBookAdditionalInfo } from "./getBookAdditionalInfo";
+import type { DomainBook } from "../../model/domain/Book";
 
 interface BookAdditionalInfoProps {
   book: DomainBook;
