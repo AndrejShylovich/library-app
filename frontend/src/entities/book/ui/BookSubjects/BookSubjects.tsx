@@ -4,9 +4,7 @@ interface BookSubjectsProps {
   subjects: string[];
 }
 
-export const BookSubjects: React.FC<BookSubjectsProps> = ({
-  subjects,
-}) => {
+export const BookSubjects: React.FC<BookSubjectsProps> = ({ subjects }) => {
   if (!subjects.length) {
     return null;
   }
@@ -16,9 +14,7 @@ export const BookSubjects: React.FC<BookSubjectsProps> = ({
       <h3>Book Subjects</h3>
 
       <div className="book-info-subjects-box">
-        <p className="book-info-subject">
-          {subjects.join(", ")}
-        </p>
+        <p className="book-info-subject">{subjects.join(", ")}</p>
       </div>
     </section>
   );

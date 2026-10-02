@@ -1,9 +1,4 @@
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  YouTube,
-} from "@mui/icons-material";
+import { Facebook, Instagram, Twitter, YouTube } from "@mui/icons-material";
 
 import "./Footer.css";
 

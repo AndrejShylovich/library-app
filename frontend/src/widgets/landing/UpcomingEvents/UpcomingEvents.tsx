@@ -1,4 +1,3 @@
-import { AutoAwesome } from "@mui/icons-material";
 import "./UpcomingEvents.css";
 
 interface Event {
@@ -32,26 +31,29 @@ export const UpcomingEvents = () => {
   return (
     <section className="upcoming-events">
       <header className="upcoming-events-header-group">
-        <AutoAwesome sx={{ fontSize: "2.25rem", color: "#3626A8" }} />
-        <h2>Upcoming Events</h2>
-        <AutoAwesome sx={{ fontSize: "2.25rem", color: "#3626A8" }} />
+        <div>
+          <span className="upcoming-events-label">This Summer</span>
+          <h2>Upcoming Events</h2>
+        </div>
       </header>
 
-      <h3>This Summer</h3>
+      <div className="upcoming-events-list">
+        {EVENTS.map(({ dayTime, audience, description }) => (
+          <article key={dayTime} className="upcoming-events-item">
+            <div className="upcoming-events-time">
+              {dayTime}
+            </div>
 
-      {EVENTS.map(({ dayTime, audience, description }) => (
-        <div key={dayTime} className="upcoming-events-item">
-          <h4>{dayTime}</h4>
-          <ul className="upcoming-events-event">
-            <li>
-              <b>{audience}</b>
-            </li>
-            <li>
+            <div className="upcoming-events-content">
+              <span className="upcoming-events-audience">
+                {audience}
+              </span>
+
               <p>{description}</p>
-            </li>
-          </ul>
-        </div>
-      ))}
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
   );
 };

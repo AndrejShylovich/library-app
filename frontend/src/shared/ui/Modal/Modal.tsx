@@ -25,10 +25,7 @@ export const Modal: React.FC<ModalProps> = ({
     document.addEventListener("keydown", handleEscape);
 
     return () => {
-      document.removeEventListener(
-        "keydown",
-        handleEscape,
-      );
+      document.removeEventListener("keydown", handleEscape);
     };
   }, [toggleModal]);
 
@@ -41,22 +38,14 @@ export const Modal: React.FC<ModalProps> = ({
   }, []);
 
   return (
-    <div
-      className="modal-bg"
-      role="presentation"
-      onClick={toggleModal}
-    >
+    <div className="modal-bg" role="presentation" onClick={toggleModal}>
       <div
         className="modal"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        aria-label={
-          titleId ? undefined : "Modal window"
-        }
-        onClick={(event) =>
-          event.stopPropagation()
-        }
+        aria-label={titleId ? undefined : "Modal window"}
+        onClick={(event) => event.stopPropagation()}
       >
         <Button
           className="modal-exit"

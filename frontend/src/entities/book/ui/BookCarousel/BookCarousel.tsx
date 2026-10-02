@@ -12,12 +12,8 @@ interface BookCarouselProps {
 }
 
 export const BookCarousel: React.FC<BookCarouselProps> = ({ books }) => {
-  const {
-    currentBook,
-    hasBooks,
-    showPrevious,
-    showNext,
-  } = useBookCarousel(books);
+  const { currentBook, hasBooks, showPrevious, showNext } =
+    useBookCarousel(books);
 
   if (!hasBooks) {
     return (
@@ -28,11 +24,7 @@ export const BookCarousel: React.FC<BookCarouselProps> = ({ books }) => {
   }
 
   return (
-    <div
-      className="book-carousel"
-      role="region"
-      aria-label="Book Carousel"
-    >
+    <div className="book-carousel" role="region" aria-label="Book Carousel">
       <Button
         className="book-carousel-button left"
         onClick={showPrevious}

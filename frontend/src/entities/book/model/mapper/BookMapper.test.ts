@@ -3,7 +3,6 @@ import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordD
 import {
   BookMapper,
   CheckinBookMapper,
-  CheckoutBookMapper,
 } from "./BookMapper";
 import { LoanRecordMapper } from "@/entities/loan-record/model/mapper/LoanRecordMapper";
 import { UserMapper } from "@/entities/user/model/mapper/UserMapper";
@@ -68,22 +67,6 @@ describe("BookMapper", () => {
     expect(dto._id).toBe(mockBookDomain.id);
     expect(dto.records[0]._id).toBe(mockLoanRecordDomain.id);
     expect(typeof dto.publicationDate).toBe("string");
-  });
-});
-
-describe("CheckoutBookMapper", () => {
-  it("should map DomainCheckoutBookPayload to CheckoutBookDto", () => {
-    const payload = {
-      book: mockBookDomain,
-      libraryCard: "LC123",
-      employee: mockUserDomain,
-    };
-
-    const dto = CheckoutBookMapper.toDto(payload);
-
-    expect(dto.book._id).toBe(payload.book.id);
-    expect(dto.libraryCard).toBe("LC123");
-    expect(dto.employee._id).toBe(mockUserDto._id);
   });
 });
 

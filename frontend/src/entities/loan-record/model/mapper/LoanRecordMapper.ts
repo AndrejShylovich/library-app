@@ -1,8 +1,8 @@
-
 import type { BookDto } from "@/entities/book/model/dto/BookDto";
 import type { DomainLoanRecord } from "../domain/LoanRecord";
 import type { LoanRecordDto, LoanRecordItemDto } from "../dto/LoanRecordDto";
 import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
+import { parseDate } from "@/shared/lib/utils/date.utils";
 
 function extractItemId(item: LoanRecordItemDto): string {
   if (typeof item === "string") return item;
@@ -18,16 +18,16 @@ export const LoanRecordMapper = {
     return {
       id: dto._id,
       status: dto.status,
-      loanedDate: new Date(dto.loanedDate),
-      dueDate: new Date(dto.dueDate),
-      returnedDate: dto.returnedDate ? new Date(dto.returnedDate) : undefined,
+      loanedDate: parseDate(dto.loanedDate),
+      dueDate: parseDate(dto.dueDate),
+      returnedDate: dto.returnedDate ? parseDate(dto.returnedDate) : undefined,
       patronId: dto.patron,
       employeeOutId: dto.employeeOut,
       employeeInId: dto.employeeIn,
       itemId: extractItemId(dto.item),
       item: isFullBookDto(dto.item) ? BookMapper.toDomain(dto.item) : undefined,
-      createdAt: new Date(dto.createdAt),
-      updatedAt: new Date(dto.updatedAt),
+      createdAt: parseDate(dto.createdAt),
+      updatedAt: parseDate(dto.updatedAt),
     };
   },
 

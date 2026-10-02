@@ -1,35 +1,27 @@
 import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
-import type {
-  AppDispatch,
-  RootState,
-} from "@/shared/store/ReduxStore";
-
-import {
-  checkoutBook,
-  setCurrentBook,
-} from "@/entities/book/model/bookSlice";
+import { useCheckoutBook } from "@/entities/book/model/hooks/useCheckoutBook";
+import { useMe } from "@/entities/user/model/hooks/useMe";
 
 import { setDisplayLoan } from "@/shared/store/slices/ModalSlice";
 
-export const useBookCheckout = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+import type { DomainBook } from "@/entities/book/model/domain/Book";
 
-  const { user, book } = useSelector((state: RootState) => ({
-    user: state.user.loggedInUser,
-    book: state.book.currentBook,
-  }));
+export const useBookCheckout = (book?: DomainBook) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user } = useMe();
+
+  const [checkoutBook, { isLoading }] = useCheckoutBook();
 
   const libraryCardRef = useRef<HTMLInputElement>(null);
 
   const handleCheckout = async () => {
-    if (!book || !user) {
-      return;
-    }
+    if (!book || !user) return;
 
     const libraryCard = libraryCardRef.current?.value?.trim();
 
@@ -39,15 +31,12 @@ export const useBookCheckout = () => {
     }
 
     try {
-      await dispatch(
-        checkoutBook({
-          book,
-          employee: user,
-          libraryCard,
-        }),
-      ).unwrap();
+      await checkoutBook({
+        bookId: book.id,
+        employeeId: user.id,
+        libraryCard,
+      });
 
-      dispatch(setCurrentBook(undefined));
       dispatch(setDisplayLoan(false));
 
       toast.success(
@@ -58,9 +47,7 @@ export const useBookCheckout = () => {
     } catch (error) {
       console.error("Checkout failed", error);
 
-      toast.error(
-        "Failed to check out the book. Please try again.",
-      );
+      toast.error("Failed to check out the book. Please try again.");
     }
   };
 
@@ -69,5 +56,6 @@ export const useBookCheckout = () => {
     book,
     libraryCardRef,
     handleCheckout,
+    isLoading,
   };
 };

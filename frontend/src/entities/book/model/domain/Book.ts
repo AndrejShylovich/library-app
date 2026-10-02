@@ -1,7 +1,6 @@
 import type { DomainLoanRecord } from "@/entities/loan-record/model/domain/LoanRecord";
 import type { DomainUser } from "@/entities/user/model/domain/User";
 
-
 export interface DomainBook {
   id: string;
   barcode: string;

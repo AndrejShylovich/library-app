@@ -15,9 +15,7 @@ export const CatalogOverview: React.FC = () => {
   return (
     <div className="catalog-overview">
       <h2>Welcome to our library, we have {books.length} books</h2>
-      <h4>
-        Choose a book from the suggestions below or use the search bar
-      </h4>
+      <h4>Choose a book from the suggestions below or use the search bar</h4>
 
       {genres.map((genre) => (
         <CatalogOverviewSection

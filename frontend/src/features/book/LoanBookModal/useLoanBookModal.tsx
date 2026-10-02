@@ -1,24 +1,13 @@
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import type {
-  AppDispatch,
-  RootState,
-} from "@/shared/store/ReduxStore";
-
-import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
 import { setDisplayLoan } from "@/shared/store/slices/ModalSlice";
+import { useBookByBarcode } from "@/entities/book/model/hooks/useBookByBarcode";
 
-export const useLoanBookModal = () => {
-  const dispatch = useDispatch<AppDispatch>();
+export const useLoanBookModal = (barcode?: string) => {
+  const dispatch = useDispatch();
 
-  const currentBookDto = useSelector(
-    (state: RootState) => state.book.currentBook,
-  );
-
-  const currentBook = currentBookDto
-    ? BookMapper.toDomain(currentBookDto)
-    : undefined;
+  const { book: currentBook } = useBookByBarcode(barcode);
 
   const closeModal = useCallback(
     () => dispatch(setDisplayLoan(false)),

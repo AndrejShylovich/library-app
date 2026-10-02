@@ -2,9 +2,14 @@ import { useBookCheckin } from "./useBookCheckin";
 import { Input } from "@/shared/ui/Input/Input";
 import { Button } from "@/shared/ui/Button/Button";
 import "./BookCheckIn.css";
+import type { DomainBook } from "@/entities/book/model/domain/Book";
 
-export const BookCheckin: React.FC = () => {
-  const { user, book, handleCheckin } = useBookCheckin();
+type Props = {
+  book: DomainBook;
+};
+
+export const BookCheckin: React.FC<Props> = ({ book }) => {
+  const { user, handleCheckin } = useBookCheckin();
 
   if (!book || !user) {
     return null;
@@ -19,7 +24,7 @@ export const BookCheckin: React.FC = () => {
           Employee ID:
           <Input
             className="book-checkin-input"
-            value={user._id}
+            value={user.id}
             readOnly
             aria-label="Employee ID"
           />
@@ -27,7 +32,7 @@ export const BookCheckin: React.FC = () => {
 
         <Button
           className="book-checkin-button"
-          onClick={handleCheckin}
+          onClick={() => handleCheckin(book)}
         >
           Check In Book
         </Button>

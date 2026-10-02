@@ -1,38 +1,44 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useLoginUser } from "@/entities/user/model/hooks/useLoginUser";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
-import { loginUser } from "@/entities/user/model/userSlice";
+import { toast } from "react-toastify";
+
+import type { LoginUserDto } from "@/entities/user/model/dto/UserDto";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/shared/store/ReduxStore";
+import { setDisplayLogin } from "@/shared/store/slices/ModalSlice";
 
 export const useAuthLogin = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const { error, loading, profileUser } = useSelector(
-    (state: RootState) => state.user,
+  const [loginUser, { isLoading, isError }] = useLoginUser();
+
+  const login = useCallback(
+    async (data: LoginUserDto) => {
+      try {
+        await loginUser(data);
+
+        toast.success("You have successfully logged in");
+        dispatch(setDisplayLogin(false));
+
+        navigate("/");
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [loginUser, navigate, dispatch],
   );
 
-  const login = (data: { email: string; password: string }) => {
-    dispatch(loginUser(data));
-  };
-
   useEffect(() => {
-    if (error) {
-      toast.error(error ?? "Failed to log in");
+    if (isError) {
+      toast.error("Failed to log in");
     }
-  }, [error]);
-
-  useEffect(() => {
-    if (!profileUser) return;
-
-    toast.success("You have successfully logged in");
-    navigate("/");
-  }, [profileUser, navigate]);
+  }, [isError]);
 
   return {
     login,
-    loading,
-    error,
+    loading: isLoading,
+    isError,
   };
 };

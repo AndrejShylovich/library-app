@@ -1,7 +1,6 @@
 import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
 import type { UserDto } from "@/entities/user/model/dto/UserDto";
 
-
 export interface BookDto {
   _id: string;
   barcode: string;
@@ -18,9 +17,9 @@ export interface BookDto {
 }
 
 export interface CheckoutBookDto {
-  book: BookDto;
+  bookId: string;
+  employeeId: string;
   libraryCard: string;
-  employee: UserDto;
 }
 
 export interface CheckinBookDto {

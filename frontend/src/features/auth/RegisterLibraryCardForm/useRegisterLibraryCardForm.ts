@@ -1,33 +1,31 @@
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import type {
-  AppDispatch,
-  RootState,
-} from "@/shared/store/ReduxStore";
+import { useDispatch } from "react-redux";
 
 import {
   setDisplayLibraryCard,
   setDisplayLogin,
 } from "@/shared/store/slices/ModalSlice";
 
-import { getLibraryCard } from "@/entities/library-card/model/libraryCardSlice";
+import { useCreateLibraryCardMutation } from "@/entities/library-card/api/libraryCardQueryApi";
+import { useMe } from "@/entities/user/model/hooks/useMe";
 
 export const useRegisterLibraryCardForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
 
-  const { loggedInUser, libraryCard } = useSelector(
-    (state: RootState) => ({
-      loggedInUser: state.user.loggedInUser,
-      libraryCard: state.libraryCard.libraryCard,
-    }),
-  );
+  const { user: loggedInUser } = useMe();
 
-  const createLibraryCard = useCallback(() => {
-    if (!loggedInUser) return;
+  const [createLibraryCardMutation, { data: libraryCard, isLoading }] =
+    useCreateLibraryCardMutation();
 
-    dispatch(getLibraryCard(loggedInUser._id));
-  }, [dispatch, loggedInUser]);
+  const createLibraryCard = useCallback(async () => {
+    if (!loggedInUser?.id) return;
+
+    try {
+      await createLibraryCardMutation(loggedInUser.id).unwrap();
+    } catch (e) {
+      console.error("Failed to create library card:", e);
+    }
+  }, [createLibraryCardMutation, loggedInUser?.id]);
 
   const openLogin = useCallback(() => {
     dispatch(setDisplayLibraryCard(false));
@@ -37,6 +35,7 @@ export const useRegisterLibraryCardForm = () => {
   return {
     loggedInUser,
     libraryCard,
+    isLoading,
     createLibraryCard,
     openLogin,
   };

@@ -51,12 +51,12 @@ async function startServer() {
       retryWrites: true,
       authMechanism: "DEFAULT",
     });
-    console.log("✅ Database connection successful");
+    console.log("Database connection successful");
 
     registerRoutes(app);
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
 
     app.use((err: any, req: Request, res: Response, next: Function) => {
@@ -67,7 +67,7 @@ async function startServer() {
       });
     });
   } catch (error) {
-    console.error("❌ Failed to connect to the server or database", error);
+    console.error("Failed to connect to the server or database", error);
     process.exit(1);
   }
 }

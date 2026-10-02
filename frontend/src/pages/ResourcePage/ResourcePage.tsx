@@ -1,34 +1,30 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 
-import { loadBookByBarcode } from "@/entities/book/model/bookSlice";
 import { BookOverview } from "@/widgets/book-overview/BookOverview";
 
-import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
-
 import "./ResourcePage.css";
+import { useBookByBarcode } from "@/entities/book/model/hooks/useBookByBarcode";
+import { useMe } from "@/entities/user/model/hooks/useMe";
 
 export default function ResourcePage() {
-  const dispatch = useDispatch<AppDispatch>();
   const { barcode } = useParams();
 
-  const error = useSelector((state: RootState) => state.book.error);
+  const { user } = useMe();
 
-  useEffect(() => {
-    if (barcode) {
-      dispatch(loadBookByBarcode(barcode));
-    }
-  }, [barcode, dispatch]);
+  const { book, isLoading, error } = useBookByBarcode(barcode);
 
-  if (!barcode || error) {
+  if (!barcode) {
+    return <Navigate to="/catalog" replace />;
+  }
+
+  if (error) {
     return <Navigate to="/catalog" replace />;
   }
 
   return (
     <main className="page">
       <div className="page-container">
-        <BookOverview />
+        <BookOverview book={book} user={user} loading={isLoading} />
       </div>
     </main>
   );

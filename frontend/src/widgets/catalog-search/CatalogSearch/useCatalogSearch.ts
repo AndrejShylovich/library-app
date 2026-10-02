@@ -1,35 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
-import type {
-  AppDispatch,
-  RootState,
-} from "@/shared/store/ReduxStore";
-
-import { queryBooks } from "@/entities/book/model/bookSlice";
+import { useQueryBooksQuery } from "@/entities/book/api/bookQueryApi";
 
 export const useCatalogSearch = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const location = useLocation();
 
-  const search = useMemo(
-    () => location.search,
-    [location.search],
-  );
+  const search = useMemo(() => location.search, [location.search]);
 
-  const { books, loading, pagingInformation } = useSelector(
-    (state: RootState) => state.book,
-  );
-
-  useEffect(() => {
-    if (!search) return;
-    dispatch(queryBooks(search));
-  }, [search, dispatch]);
+  const { data, isLoading, error } = useQueryBooksQuery(search, {
+    skip: !search,
+  });
 
   return {
-    books,
-    loading,
-    pagingInformation,
+    books: data?.items ?? [],
+    pagingInformation: data ?? null,
+    loading: isLoading,
+    error,
   };
 };

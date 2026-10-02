@@ -1,13 +1,16 @@
 import { LoanBookModalContext } from "./LoanBookModalContent";
-import { useLoanBookModal } from "./useLoanBookModal";
 import { Modal } from "@/shared/ui/Modal/Modal";
+import type { DomainBook } from "@/entities/book/model/domain/Book";
 
-export const LoanBookModal: React.FC = () => {
-  const { closeModal, currentBook } = useLoanBookModal();
+type Props = {
+  book: DomainBook;
+  onClose: () => void;
+};
 
+export const LoanBookModal = ({ book, onClose }: Props) => {
   return (
-    <Modal toggleModal={closeModal}>
-      {currentBook && <LoanBookModalContext book={currentBook} />}
+    <Modal toggleModal={onClose}>
+      <LoanBookModalContext book={book} />
     </Modal>
   );
 };

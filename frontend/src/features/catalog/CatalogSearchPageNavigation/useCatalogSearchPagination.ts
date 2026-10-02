@@ -1,30 +1,26 @@
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import type { RootState } from "@/shared/store/ReduxStore";
-
 import { calculatePaging } from "@/shared/lib/utils/catalog.utils";
+import { useQueryBooks } from "@/entities/book/model/hooks/useQueryBooks";
 
-export const useCatalogSearchPagination = () => {
-  const { pagingInformation } = useSelector(
-    (state: RootState) => state.book,
-  );
-
+export const useCatalogSearchPagination = (query: string) => {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
-  if (!pagingInformation || pagingInformation.totalPages === 0) {
+  const { page } = useQueryBooks(query);
+
+  if (!page || page.totalPages === 0) {
     return null;
   }
 
-  const { currentPage, totalPages } = pagingInformation;
+  const { currentPage, totalPages } = page;
 
-  const updatePageInQuery = (page: number) => {
+  const updatePageInQuery = (pageNumber: number) => {
     const params = new URLSearchParams(search);
 
-    params.set("page", String(page));
+    params.set("page", String(pageNumber));
 
-    navigate(`${pathname}?${params}`);
+    navigate(`${pathname}?${params.toString()}`);
   };
 
   const navigatePrevious = () => {
@@ -39,7 +35,7 @@ export const useCatalogSearchPagination = () => {
     }
   };
 
-  const pageNumbers = calculatePaging(pagingInformation);
+  const pageNumbers = calculatePaging(page);
 
   return {
     currentPage,

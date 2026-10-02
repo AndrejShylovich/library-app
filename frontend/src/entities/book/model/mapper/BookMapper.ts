@@ -1,12 +1,8 @@
-
 import { LoanRecordMapper } from "@/entities/loan-record/model/mapper/LoanRecordMapper";
-import type {
-  DomainBook,
-  DomainCheckinBookPayload,
-  DomainCheckoutBookPayload,
-} from "../domain/Book";
-import type { BookDto, CheckinBookDto, CheckoutBookDto } from "../dto/BookDto";
+import type { DomainBook, DomainCheckinBookPayload } from "../domain/Book";
+import type { BookDto, CheckinBookDto } from "../dto/BookDto";
 import { UserMapper } from "@/entities/user/model/mapper/UserMapper";
+import { parseDate } from "@/shared/lib/utils/date.utils";
 
 export const BookMapper = {
   toDomain(dto: BookDto): DomainBook {
@@ -18,7 +14,7 @@ export const BookMapper = {
       authors: dto.authors,
       description: dto.description,
       subjects: dto.subjects,
-      publicationDate: new Date(dto.publicationDate),
+      publicationDate: parseDate(dto.publicationDate),
       publisher: dto.publisher,
       pages: dto.pages,
       genre: dto.genre,
@@ -40,16 +36,6 @@ export const BookMapper = {
       pages: domain.pages,
       genre: domain.genre,
       records: domain.records.map(LoanRecordMapper.toDto),
-    };
-  },
-};
-
-export const CheckoutBookMapper = {
-  toDto(domain: DomainCheckoutBookPayload): CheckoutBookDto {
-    return {
-      book: BookMapper.toDto(domain.book),
-      libraryCard: domain.libraryCard,
-      employee: UserMapper.toDto(domain.employee),
     };
   },
 };

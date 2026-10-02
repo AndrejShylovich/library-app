@@ -1,64 +1,51 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-import type {
-  AppDispatch,
-  RootState,
-} from "@/shared/store/ReduxStore";
-
-import {
-  checkinBook,
-  setCurrentBook,
-} from "@/entities/book/model/bookSlice";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 
 import { setDisplayLoan } from "@/shared/store/slices/ModalSlice";
 
+import { useCheckinBook } from "@/entities/book/model/hooks/useCheckinBook";
+import { useMe } from "@/entities/user/model/hooks/useMe";
+
+import type { DomainBook } from "@/entities/book/model/domain/Book";
+
 export const useBookCheckin = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, book } = useSelector((state: RootState) => ({
-    user: state.user.loggedInUser,
-    book: state.book.currentBook,
-  }));
+  const { user } = useMe();
 
-  const handleCheckin = async () => {
-    if (!book || !user) {
-      toast.error(
-        "Cannot check in the book: no selected book or user.",
-      );
-      return;
-    }
+  const [checkinBookMutation] = useCheckinBook();
 
-    try {
-      await dispatch(
-        checkinBook({
+  const handleCheckin = useCallback(
+    async (book: DomainBook) => {
+      if (!user) {
+        toast.error("No user");
+        return;
+      }
+
+      try {
+        await checkinBookMutation({
           book,
           employee: user,
-        }),
-      ).unwrap();
+        });
 
-      dispatch(setCurrentBook(undefined));
-      dispatch(setDisplayLoan(false));
+        dispatch(setDisplayLoan(false));
 
-      navigate("/");
+        navigate("/");
 
-      toast.success(
-        `The book "${book.title}" has been successfully returned!`,
-      );
-    } catch (error) {
-      console.error("Checkin failed", error);
-
-      toast.error(
-        "Failed to return the book. Please try again.",
-      );
-    }
-  };
+        toast.success(`Returned "${book.title}"`);
+      } catch (e) {
+        console.error("Checkin failed", e);
+        toast.error("Checkin failed");
+      }
+    },
+    [user, checkinBookMutation, dispatch, navigate],
+  );
 
   return {
     user,
-    book,
     handleCheckin,
   };
 };

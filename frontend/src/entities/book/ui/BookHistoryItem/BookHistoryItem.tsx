@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-
 import "./BookHistoryItem.css";
 import { formatDate } from "@/shared/lib/utils/date.utils";
 import type { DomainLoanRecord } from "@/entities/loan-record/model/domain/LoanRecord";
@@ -24,17 +23,17 @@ export const BookHistoryItem: React.FC<BookHistoryItemProps> = ({ record }) => {
           Patron: {record.patronId}
         </Link>
 
-        <p>Loan Date: {formatDate(record.loanedDate)}</p>
+        <p>Loan Date: {formatDate(new Date(record.loanedDate))}</p>
 
         {isReturned && record.returnedDate && (
-          <p>Return Date: {formatDate(record.returnedDate)}</p>
+          <p>Return Date: {formatDate(new Date(record.returnedDate))}</p>
         )}
       </div>
 
       <div className="book-history-item-group">
         <p>Loaner: {record.employeeOutId}</p>
 
-        <p>Return By Date: {formatDate(record.dueDate)}</p>
+        <p>Return By Date: {formatDate(new Date(record.dueDate))}</p>
 
         {isReturned && record.employeeInId && (
           <p>Returner: {record.employeeInId}</p>

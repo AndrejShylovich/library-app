@@ -7,7 +7,6 @@ interface BookHistoryProps {
 }
 
 export const BookHistory: React.FC<BookHistoryProps> = ({ book }) => {
-
   return (
     <section className="book-history">
       <h2>Loan History</h2>

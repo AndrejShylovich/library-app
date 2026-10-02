@@ -56,10 +56,7 @@ export const CatalogAdvancedSearch: React.FC = () => {
 
       <form className="catalog-advanced-search-form">
         {searchFields.map((field) => (
-          <div
-            key={field.id}
-            className="catalog-advanced-form-input-group"
-          >
+          <div key={field.id} className="catalog-advanced-form-input-group">
             <p>{field.label}</p>
 
             <Input
@@ -72,10 +69,7 @@ export const CatalogAdvancedSearch: React.FC = () => {
         ))}
       </form>
 
-      <Button
-        className="catalog-advanced-search-button"
-        onClick={search}
-      >
+      <Button className="catalog-advanced-search-button" onClick={search}>
         Search
       </Button>
     </div>

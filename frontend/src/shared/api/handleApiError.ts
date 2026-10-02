@@ -1,20 +1,25 @@
 import { AxiosError } from "axios";
+
 import { clearAuthData } from "../lib/auth/authStorage";
 
-
 export const handleApiError = (
-  error: AxiosError,
+  error: AxiosError
 ): Promise<never> => {
-  if (error.response?.status === 401) {
+  const status = error.response?.status;
+
+  if (status === 401) {
     clearAuthData();
   }
 
-  if (error.response) {
-    console.error("API Error:", error.response.data);
-  } else if (error.request) {
-    console.error("No response from server:", error.request);
-  } else {
-    console.error("Axios error:", error.message);
+  if (!status) {
+    console.error("Network error:", error.message);
+  }
+
+  if (status && status >= 500) {
+    console.error(
+      "Server error:",
+      error.response?.data
+    );
   }
 
   return Promise.reject(error);

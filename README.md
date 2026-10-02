@@ -4,7 +4,7 @@ A fullstack library web application with authentication, a book catalog, and adv
 The project demonstrates work with a modern React stack, REST API, basic security practices, and testing.
 ---
 
-## 🚀 Стек технологий
+## 🚀 Tech Stack
 
 ### Frontend
 - **React + TypeScript**

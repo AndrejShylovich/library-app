@@ -1,3 +1,5 @@
+import { useRegisterUser } from "@/entities/user/model/hooks/useRegisterUser";
+
 import {
   useEffect,
   useState,
@@ -5,18 +7,8 @@ import {
   type ChangeEvent,
   type FormEvent,
 } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import { toast } from "react-toastify";
-
-import type {
-  AppDispatch,
-  RootState,
-} from "@/shared/store/ReduxStore";
-
-import {
-  registerUser,
-  resetRegisterSuccess,
-} from "@/entities/user/model/userSlice";
 
 interface RegisterFormData {
   firstName: string;
@@ -33,59 +25,57 @@ const initialFormData: RegisterFormData = {
 };
 
 export const useRegisterForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const { registerUser, isLoading, isSuccess, isError, error } =
+    useRegisterUser();
 
-  const { error, loading, registerSuccess } = useSelector(
-    (state: RootState) => state.user,
-  );
-
-  const [formData, setFormData] =
-    useState<RegisterFormData>(initialFormData);
+  const [formData, setFormData] = useState<RegisterFormData>(initialFormData);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (isError && error) {
+      toast.error("Registration failed");
     }
-  }, [error]);
+  }, [isError, error]);
 
   useEffect(() => {
-    if (registerSuccess) {
+    if (isSuccess) {
       toast.success("Registration was successful");
-      dispatch(resetRegisterSuccess());
     }
-  }, [registerSuccess, dispatch]);
+  }, [isSuccess]);
 
-  const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    },
-    [],
-  );
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }, []);
 
   const handleSubmit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      dispatch(
-        registerUser({
+      try {
+        await registerUser({
           type: "PATRON",
           ...formData,
-        }),
-      );
+        });
+
+        setFormData(initialFormData);
+      } catch (e) {
+        console.error(e);
+      }
     },
-    [dispatch, formData],
+    [registerUser, formData],
   );
 
   return {
     formData,
-    error,
-    loading,
-    registerSuccess,
+
+    loading: isLoading,
+    registerSuccess: isSuccess,
+    isError,
+
     handleChange,
     handleSubmit,
   };

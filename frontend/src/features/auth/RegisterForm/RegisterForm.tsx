@@ -8,18 +8,26 @@ interface RegisterFormProps {
 }
 
 const fields = [
-  { name: "firstName", label: "First Name", placeholder: "first", type: "text" },
+  {
+    name: "firstName",
+    label: "First Name",
+    placeholder: "first",
+    type: "text",
+  },
   { name: "lastName", label: "Last Name", placeholder: "last", type: "text" },
   { name: "email", label: "Email", placeholder: "email", type: "email" },
-  { name: "password", label: "Password", placeholder: "password", type: "password" },
+  {
+    name: "password",
+    label: "Password",
+    placeholder: "password",
+    type: "password",
+  },
 ] as const;
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({
-  toggleLogin,
-}) => {
+export const RegisterForm: React.FC<RegisterFormProps> = ({ toggleLogin }) => {
   const {
     formData,
-    error,
+    isError,
     loading,
     registerSuccess,
     handleChange,
@@ -30,14 +38,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     <form className="register-form" onSubmit={handleSubmit}>
       <h2>Enter your information</h2>
 
-      {error && <p className="register-form-error">There was an error</p>}
+      {isError && <p className="register-form-error">There was an error</p>}
 
       <div className="register-form-name-group">
         {fields.map((field) => (
-          <div
-            key={field.name}
-            className="register-form-input-group"
-          >
+          <div key={field.name} className="register-form-input-group">
             <h6>{field.label}</h6>
             <Input
               className="register-form-input-name"
@@ -52,11 +57,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
         ))}
       </div>
 
-      <Button
-        className="register-form-submit"
-        type="submit"
-        disabled={loading}
-      >
+      <Button className="register-form-submit" type="submit" disabled={loading}>
         Register
       </Button>
 

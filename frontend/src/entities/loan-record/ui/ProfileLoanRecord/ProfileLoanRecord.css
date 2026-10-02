@@ -1,4 +1,3 @@
-/* ==================== Profile Record ==================== */
 
 .profile-record {
   width: 100%;
@@ -26,14 +25,12 @@
   transform: translateY(-2px);
 }
 
-/* ==================== Title ==================== */
 
 .profile-record-title {
   font-size: 1rem;
   font-weight: 600;
 }
 
-/* ==================== Meta ==================== */
 
 .profile-record-meta {
   display: flex;
@@ -45,7 +42,6 @@
   color: var(--text-secondary);
 }
 
-/* ==================== Status ==================== */
 
 .profile-record-status {
   display: flex;
@@ -56,10 +52,9 @@
   font-weight: 500;
 }
 
-/* Иконка — размер задаём через контекстный селектор, без !important */
 
 .profile-record-status .record-icon {
-  font-size: 1.125rem; /* 18px */
+  font-size: 1.125rem; 
   line-height: 1;
 }
 

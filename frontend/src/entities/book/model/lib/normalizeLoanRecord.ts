@@ -1,12 +1,8 @@
 import type { LoanRecordDto } from "@/entities/loan-record/model/dto/LoanRecordDto";
 
-export const normalizeLoanRecord = (
-  record: LoanRecordDto,
-): LoanRecordDto => ({
+export const normalizeLoanRecord = (record: LoanRecordDto): LoanRecordDto => ({
   ...record,
   item: {
-    _id: typeof record.item === "string"
-      ? record.item
-      : record.item._id,
+    _id: typeof record.item === "string" ? record.item : record.item._id,
   },
 });

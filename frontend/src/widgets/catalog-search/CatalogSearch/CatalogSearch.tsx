@@ -13,10 +13,7 @@ import "./CatalogSearch.css";
 export const CatalogSearch: React.FC = () => {
   const { books: bookDtos, loading, pagingInformation } = useCatalogSearch();
 
-  const books = useMemo(
-    () => bookDtos.map(BookMapper.toDomain),
-    [bookDtos],
-  );
+  const books = useMemo(() => bookDtos.map(BookMapper.toDomain), [bookDtos]);
 
   if (loading) {
     return <div className="catalog-search">Loading...</div>;

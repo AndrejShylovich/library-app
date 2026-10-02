@@ -1,9 +1,10 @@
 import { Request, RequestHandler, Response } from "express";
 import { IUser } from "../models/User";
-import { findUserByEmail, login, register } from "../services/UserService";
+import { findUserByEmail, findUserById, login, register } from "../services/UserService";
 import { IUserModel } from "../daos/UserDao";
 import { InvalidUsernameOrPasswordError } from "../utils/LibraryErrors";
 import { generateToken } from "../utils/Jwt";
+import { AuthRequest } from "../middlewares/authMiddleware";
 
 function handleError(
   res: Response,
@@ -106,4 +107,39 @@ export const handleCheckEmail: RequestHandler = async (
   }
 };
 
-export default { handleRegister, handleLogin, handleCheckEmail };
+export async function handleMe(req: AuthRequest, res: Response): Promise<void> {
+  try {
+    if (!req.user?._id) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+
+    const user = await findUserById(req.user._id);
+
+    res.status(200).json({
+      user: {
+        _id: user._id,
+        type: user.type,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      },
+    });
+
+    return; 
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Failed to fetch user",
+      error: error.message,
+    });
+
+    return;
+  }
+}
+
+export default {
+  handleRegister,
+  handleLogin,
+  handleCheckEmail,
+  handleMe,
+};

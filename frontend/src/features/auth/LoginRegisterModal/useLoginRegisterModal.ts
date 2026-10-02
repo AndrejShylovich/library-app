@@ -1,12 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import { setDisplayLogin } from "@/shared/store/slices/ModalSlice";
 
 export const useLoginRegisterModal = () => {
-
-  const dispatch = useDispatch<AppDispatch>();
-  const { loggedInUser } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(true);
 
   const closeModal = useCallback(() => {
@@ -17,12 +15,9 @@ export const useLoginRegisterModal = () => {
     setIsLogin((prev) => !prev);
   }, []);
 
-  useEffect(() => {
-    if (loggedInUser) {
-      localStorage.setItem("userId", loggedInUser._id);
-      dispatch(setDisplayLogin(false));
-    }
-  }, [loggedInUser, dispatch]);
-  
-  return { isLogin, closeModal, toggleForm };
+  return {
+    isLogin,
+    closeModal,
+    toggleForm,
+  };
 };

@@ -1,41 +1,49 @@
-import { useEffect, type JSX } from "react";
-import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, type JSX, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchUser } from "@/entities/user/model/userSlice";
+
 import { UpdateUserForm } from "@/widgets/update-user-form/UpdateUserForm/UpdateUserForm";
 import { ProfileLoanHistory } from "@/widgets/profile-loan-history/ProfileLoanHistory/ProfileLoanHistory";
+
+import { useFetchUser } from "@/entities/user/model/hooks/useFetchUser";
+import { useMe } from "@/entities/user/model/hooks/useMe";
+
 import "./ProfilePage.css";
 
 export default function ProfilePage(): JSX.Element {
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { userId } = useParams();
 
-  const { loggedInUser, profileUser } = useSelector(
-    (state: RootState) => state.user,
-  );
+  const { user: loggedInUser, isLoading: meLoading } = useMe();
 
-  const canAccess =
-    loggedInUser?._id === userId || loggedInUser?.type === "EMPLOYEE";
+  const canAccess = useMemo(() => {
+    if (meLoading) return true;
+
+    if (!loggedInUser || !userId) return false;
+
+    return loggedInUser.id === userId || loggedInUser.role === "EMPLOYEE";
+  }, [loggedInUser, userId, meLoading]);
+
+  const { user: profileUser } = useFetchUser(
+    {
+      userId: userId!,
+      property: "profileUser",
+    },
+    {
+      skip: !userId || !canAccess,
+    },
+  );
 
   const profileTitle = profileUser
     ? `${profileUser.firstName} ${profileUser.lastName}'s Profile`
     : "Profile";
 
   useEffect(() => {
+    if (meLoading) return;
+
     if (!userId || !canAccess) {
       navigate("/");
-      return;
     }
-
-    dispatch(
-      fetchUser({
-        userId,
-        property: "profileUser",
-      }),
-    );
-  }, [userId, canAccess, dispatch, navigate]);
+  }, [userId, canAccess, meLoading, navigate]);
 
   return (
     <main className="page">
@@ -44,10 +52,11 @@ export default function ProfilePage(): JSX.Element {
 
         <div className="profile-page-cols">
           <div className="profile-page-left-column profile-panel">
-            <UpdateUserForm />
+            <UpdateUserForm profileUser={profileUser} />
           </div>
+
           <div className="profile-page-right-column profile-panel">
-            {profileUser && <ProfileLoanHistory />}
+            {profileUser && <ProfileLoanHistory profileUser={profileUser} />}
           </div>
         </div>
       </div>

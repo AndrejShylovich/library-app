@@ -1,26 +1,14 @@
-import { useSelector } from "react-redux";
+import { useBookByBarcode } from "@/entities/book/model/hooks/useBookByBarcode";
+import { useMe } from "@/entities/user/model/hooks/useMe";
 
-import type { RootState } from "@/shared/store/ReduxStore";
-import { BookMapper } from "@/entities/book/model/mapper/BookMapper";
+export const useBookOverview = (barcode?: string) => {
+  const { book: currentBook, isLoading } = useBookByBarcode(barcode);
 
-export const useBookOverview = () => {
-  const currentBookDto = useSelector(
-    (state: RootState) => state.book.currentBook,
-  );
-
-  const loading = useSelector(
-    (state: RootState) => state.book.loading,
-  );
-
-  const user = useSelector(
-    (state: RootState) => state.user.loggedInUser,
-  );
+  const { user } = useMe();
 
   return {
-    currentBook: currentBookDto
-      ? BookMapper.toDomain(currentBookDto)
-      : undefined,
-    loading,
+    currentBook,
+    loading: isLoading,
     user,
   };
 };

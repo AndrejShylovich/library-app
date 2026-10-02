@@ -1,42 +1,45 @@
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { setDisplayLoan } from "@/shared/store/slices/ModalSlice";
-
-import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
-import type { DomainBook } from "../../model/domain/Book";
 import { isBookAvailable } from "../../model/lib/isBookAvailable";
-import { setCurrentBook } from "../../model/bookSlice";
-import { BookMapper } from "../../model/mapper/BookMapper";
+import { useMe } from "@/entities/user/model/hooks/useMe";
+
+import type { DomainBook } from "../../model/domain/Book";
 
 export const useBookCard = (book: DomainBook) => {
-  const user = useSelector((state: RootState) => state.user.loggedInUser);
+  const { user } = useMe();
+
   const available = isBookAvailable(book);
-  const dispatch = useDispatch<AppDispatch>();
+
+  const [params, setParams] = useSearchParams();
   const navigate = useNavigate();
 
   const buttonClass = [
     "book-card-loan-button",
     available ? "available" : "unavailable",
-    user?.type === "EMPLOYEE" ? (available ? "checkout" : "checkin") : "",
+    user?.role === "EMPLOYEE" ? (available ? "checkout" : "checkin") : "",
   ]
     .filter(Boolean)
     .join(" ");
 
   const handleLoan = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-
-      if (user?.type !== "EMPLOYEE") {
+      if (user?.role !== "EMPLOYEE") {
         return;
       }
+      e.stopPropagation();
 
-      dispatch(setCurrentBook(BookMapper.toDto(book)));
-      dispatch(setDisplayLoan(true));
+      const next = new URLSearchParams(params);
+      next.set("loan", book.barcode);
+
+      setParams(next);
     },
-    [book, dispatch, user],
+    [user?.role, params, setParams, book.barcode],
   );
+
+  const closeLoan = useCallback(() => {
+    navigate("/catalog");
+  }, [navigate]);
 
   const displayBook = useCallback(() => {
     navigate(`/resource/${book.barcode}`);
@@ -46,6 +49,7 @@ export const useBookCard = (book: DomainBook) => {
     available,
     buttonClass,
     handleLoan,
+    closeLoan,
     displayBook,
   };
 };

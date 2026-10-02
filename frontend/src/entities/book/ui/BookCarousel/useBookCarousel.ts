@@ -13,14 +13,12 @@ export const useBookCarousel = (books: DomainBook[]) => {
 
   const showPrevious = useCallback(() => {
     if (!books.length) return;
-
-    setIndex((prev) => (prev + 1) % books.length);
+    setIndex((prev) => (prev - 1 + books.length) % books.length);
   }, [books.length]);
 
   const showNext = useCallback(() => {
     if (!books.length) return;
-
-    setIndex((prev) => (prev - 1 + books.length) % books.length);
+    setIndex((prev) => (prev + 1) % books.length);
   }, [books.length]);
 
   return {

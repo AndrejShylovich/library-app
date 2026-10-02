@@ -1,61 +1,54 @@
-import { useDispatch, useSelector } from "react-redux";
-import type {
-  AppDispatch,
-  RootState,
-} from "@/shared/store/ReduxStore";
+import { useCallback, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useCallback } from "react";
-import { UserMapper } from "@/entities/user/model/mapper/UserMapper";
+import { toast } from "react-toastify";
+
+import type { DomainUser } from "@/entities/user/model/domain/User";
+
+import { useMe } from "@/entities/user/model/hooks/useMe";
+import { useUpdateUser } from "@/entities/user/model/hooks/useUpdateUser";
+
 import { useEditableUser } from "./useEditableUser";
 import { useEmailAvailability } from "./useEmailAvailability";
-import { toast } from "react-toastify";
-import {
-  resetUpdateSuccess,
-  resetUser,
-  updateUser,
-} from "@/entities/user/model/userSlice";
-import { clearAuthData } from "@/shared/lib/auth/authStorage";
 
-export const useUpdateUserForm = () => {
-  const { loggedInUser, profileUser, updateSuccess, error } = useSelector(
-    (state: RootState) => state.user,
-  );
+import { useLogoutUserMutation } from "@/entities/user/api/userQueryApi";
 
-  const dispatch = useDispatch<AppDispatch>();
+export const useUpdateUserForm = (profileUser?: DomainUser) => {
   const navigate = useNavigate();
 
-  const isDisabled = loggedInUser?._id !== profileUser?._id;
+  const { user: loggedInUser } = useMe();
 
-  const domainUser = useMemo(() => {
-    return profileUser ? UserMapper.toDomain(profileUser) : undefined;
-  }, [profileUser]);
+  const [updateUser, updateState] = useUpdateUser();
+  const [logout] = useLogoutUserMutation();
+
+  const { isLoading, isSuccess, isError } = updateState;
+
+  const disabled = loggedInUser?.id !== profileUser?.id;
+
+  const domainUser = useMemo(() => profileUser, [profileUser]);
 
   const { user, isEditing, updateField, setIsEditing } =
     useEditableUser(domainUser);
 
-  const { emailError, checking, checkEmail } = useEmailAvailability();
+  const { emailError, checking, emailChecked, checkEmail, resetEmailCheck } =
+    useEmailAvailability();
 
   useEffect(() => {
-    if (!updateSuccess) return;
-
-    toast.success("Profile updated successfully");
-    dispatch(resetUpdateSuccess());
-  }, [updateSuccess, dispatch]);
-
-  useEffect(() => {
-    if (!error) return;
-
-    toast.error("Failed to update profile");
-  }, [error]);
+    if (isSuccess) {
+      toast.success("Profile updated successfully");
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
-    const email = user?.email;
-    const originalEmail = profileUser?.email;
+    if (isError) {
+      toast.error("Failed to update profile");
+    }
+  }, [isError]);
 
-    if (!email) return;
+  useEffect(() => {
+    if (!user?.email) return;
 
     const timer = setTimeout(() => {
-      checkEmail(email, originalEmail);
+      checkEmail(user.email, profileUser?.email);
     }, 400);
 
     return () => clearTimeout(timer);
@@ -64,40 +57,51 @@ export const useUpdateUserForm = () => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
+
+      if (name === "email") {
+        resetEmailCheck();
+      }
+
       updateField(name as keyof typeof user, value);
     },
-    [updateField],
+    [updateField, resetEmailCheck],
   );
 
   const handleSubmit = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
 
-      if (!user || emailError) return;
+      if (!user || emailError || !emailChecked) return;
 
-      const dto = UserMapper.toDto(user);
+      try {
+        await updateUser(user);
 
-      await dispatch(updateUser(dto));
-      setIsEditing(false);
+        setIsEditing(false);
+      } catch (error) {
+        console.error(error);
+      }
     },
-    [user, emailError, dispatch, setIsEditing],
+    [user, emailError, updateUser, setIsEditing, emailChecked],
   );
 
-  const handleLogout = useCallback(() => {
-    clearAuthData();
-
-    dispatch(resetUser("loggedInUser"));
-    dispatch(resetUser("profileUser"));
-
+  const handleLogout = useCallback(async () => {
+    await logout();
     navigate("/");
-  }, [dispatch, navigate]);
+  }, [logout, navigate]);
 
   return {
     user,
     isEditing,
-    disabled: isDisabled,
+    disabled,
+
     emailError,
     checking,
+    emailChecked,
+
+    isLoading,
+    isSuccess,
+    isError,
+
     handleChange,
     handleSubmit,
     handleLogout,

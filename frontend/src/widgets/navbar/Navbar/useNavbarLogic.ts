@@ -1,25 +1,25 @@
 import { useCallback, useRef, type KeyboardEvent } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import type { AppDispatch, RootState } from "@/shared/store/ReduxStore";
-
 import { setDisplayLogin } from "@/shared/store/slices/ModalSlice";
+import { useMe } from "@/entities/user/model/hooks/useMe";
 
 export const useNavbarLogic = () => {
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const { loggedInUser } = useSelector((state: RootState) => state.user);
+  const { user: loggedInUser } = useMe();
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const performSearch = useCallback(() => {
     const input = searchRef.current;
+
     if (!input) return;
 
     const query = input.value.trim();
+
     if (!query) return;
 
     navigate(`/catalog?title=${encodeURIComponent(query)}`);
@@ -37,9 +37,10 @@ export const useNavbarLogic = () => {
   );
 
   const navigateToProfile = useCallback(() => {
-    if (!loggedInUser?._id) return;
-    navigate(`/profile/${loggedInUser._id}`);
-  }, [navigate, loggedInUser?._id]);
+    if (!loggedInUser?.id) return;
+
+    navigate(`/profile/${loggedInUser.id}`);
+  }, [navigate, loggedInUser?.id]);
 
   const toggleLogin = useCallback(() => {
     dispatch(setDisplayLogin(true));

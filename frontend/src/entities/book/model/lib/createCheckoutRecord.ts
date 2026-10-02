@@ -10,6 +10,7 @@ export const createCheckoutRecord = (
   loanedDate: new Date().toISOString(),
   dueDate: createDueDate(),
   patron: patronId,
-  employeeOut: payload.employee._id,
-  item: payload.book._id,
+
+  employeeOut: payload.employeeId,
+  item: payload.bookId,
 });

@@ -18,10 +18,7 @@ export const RegisterLibraryCardForm: React.FC = () => {
             Use the button below to login to your account or register for free.
           </h4>
 
-          <Button
-            className="register-library-modal-button"
-            onClick={openLogin}
-          >
+          <Button className="register-library-modal-button" onClick={openLogin}>
             Login Here
           </Button>
         </>

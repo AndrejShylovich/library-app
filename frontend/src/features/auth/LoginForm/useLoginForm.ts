@@ -5,7 +5,7 @@ export const useLoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, loading, error } = useAuthLogin();
+  const { login, loading, isError } = useAuthLogin();
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
     setEmail(e.target.value);
@@ -26,7 +26,7 @@ export const useLoginForm = () => {
     email,
     password,
     loading,
-    error,
+    isError,
     handleEmailChange,
     handlePasswordChange,
     handleSubmit,

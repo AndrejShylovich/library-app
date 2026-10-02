@@ -16,7 +16,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ toggleRegister }) => {
   const {
     email,
     password,
-    error,
+    isError,
     loading,
     handleEmailChange,
     handlePasswordChange,
@@ -27,7 +27,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ toggleRegister }) => {
     <form className="login-form" onSubmit={handleSubmit}>
       <h2>Please Login</h2>
 
-      {error && (
+      {isError && (
         <p className="login-form-error">Username or password incorrect</p>
       )}
 
@@ -39,7 +39,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ toggleRegister }) => {
           placeholder={FIELD_LABELS.email}
           value={email}
           onChange={handleEmailChange}
-          required // Возвращаем нативную валидацию браузера
+          required 
           aria-label={FIELD_LABELS.email}
         />
       </div>

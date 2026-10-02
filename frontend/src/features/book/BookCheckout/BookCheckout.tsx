@@ -3,15 +3,17 @@ import { Input } from "@/shared/ui/Input/Input";
 import { Button } from "@/shared/ui/Button/Button";
 import "./BookCheckout.css";
 
-export const BookCheckout: React.FC = () => {
-  const {
-    user,
-    book,
-    libraryCardRef,
-    handleCheckout,
-  } = useBookCheckout();
+import type { DomainBook } from "@/entities/book/model/domain/Book";
 
-  if (!book || !user) {
+type Props = {
+  book: DomainBook;
+};
+
+export const BookCheckout: React.FC<Props> = ({ book }) => {
+  const { user, libraryCardRef, handleCheckout, isLoading } =
+    useBookCheckout(book);
+
+  if (!user) {
     return null;
   }
 
@@ -33,7 +35,7 @@ export const BookCheckout: React.FC = () => {
           Employee ID:
           <Input
             className="book-checkout-input"
-            value={user._id}
+            value={user.id}
             readOnly
             aria-label="Employee ID"
           />
@@ -42,8 +44,9 @@ export const BookCheckout: React.FC = () => {
         <Button
           className="book-checkout-button"
           onClick={handleCheckout}
+          disabled={isLoading}
         >
-          Loan Book
+          {isLoading ? "Processing..." : "Loan Book"}
         </Button>
       </div>
     </div>

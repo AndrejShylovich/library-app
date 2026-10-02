@@ -1,4 +1,3 @@
-/* ==================== Input Group ==================== */
 
 .input-group {
   display: flex;
@@ -6,7 +5,6 @@
   gap: var(--space-xs);
 }
 
-/* ==================== Label ==================== */
 
 .input-label {
   font-size: 0.9rem;
@@ -14,7 +12,6 @@
   color: var(--text-secondary);
 }
 
-/* ==================== Input ==================== */
 
 .input {
   width: 100%;
@@ -36,19 +33,16 @@
     background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* placeholder */
 
 .input::placeholder {
   color: var(--text-muted);
 }
 
-/* hover */
 
 .input:hover:not(:disabled):not(.input-error-state) {
   border-color: color-mix(in srgb, var(--primary) 30%, var(--border));
 }
 
-/* focus — только для клавиатуры */
 
 .input:focus-visible {
   outline: none;
@@ -57,7 +51,6 @@
   background: var(--background-secondary);
 }
 
-/* error state — сам инпут подсвечивается красным */
 
 .input.input-error-state {
   border-color: var(--danger);
@@ -68,7 +61,6 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
 }
 
-/* disabled */
 
 .input:disabled {
   background: var(--background-secondary);
@@ -77,7 +69,6 @@
   cursor: not-allowed;
 }
 
-/* ==================== Error message ==================== */
 
 .input-error {
   display: flex;

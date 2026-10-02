@@ -27,15 +27,12 @@ export const useCatalogAdvancedSearch = () => {
         continue;
       }
 
-      const queryKey =
-        queryKeys[key as keyof typeof queryKeys] ?? key;
+      const queryKey = queryKeys[key as keyof typeof queryKeys] ?? key;
 
       params.append(queryKey, value);
     }
 
-    navigate(
-      `/catalog${params.toString() ? `?${params}` : ""}`,
-    );
+    navigate(`/catalog${params.toString() ? `?${params}` : ""}`);
   };
 
   return {
